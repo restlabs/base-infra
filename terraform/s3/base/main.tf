@@ -6,4 +6,5 @@ module "base_s3_bucket" {
   owner         = var.owner
   region        = var.region[terraform.workspace]
   environment   = data.aws_ssm_parameter.account_env.value
+  project       = "base-infra"
 }

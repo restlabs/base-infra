@@ -9,10 +9,12 @@ terraform {
 
 locals {
   common_tags = {
-    name  = var.app_name
-    email = var.email
-    owner = var.owner
-    env   = var.environment
+    name          = var.app_name
+    code_location = var.code_location
+    email         = var.email
+    environment   = var.environment
+    owner         = var.owner
+    project       = var.project
   }
 }
 
