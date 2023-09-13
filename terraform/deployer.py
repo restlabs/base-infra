@@ -105,6 +105,7 @@ class TFDeployer:
         with open(f'{self.tfdir}/{self.tfvars}', 'w') as json_file:
             json.dump(data, json_file)
 
+        logger.info(f'displaying contents of {self.tfdir}/{self.tfvars}')
         with open(f'{self.tfdir}/{self.tfvars}', 'r') as json_file:
             data = json.load(json_file)
             logger.info(
