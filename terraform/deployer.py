@@ -191,9 +191,9 @@ def main():
                     app_region
                 )
 
+                tf_deployer.init()
                 tf_deployer.validate()
                 tf_deployer.create_tfvars()
-                tf_deployer.init()
                 tf_deployer.plan()
                 tf_deployer.apply()
                 tf_deployer.delete()
