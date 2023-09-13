@@ -12,6 +12,10 @@ env:
 jobs:
   deploy-base-infra:
     runs-on: ubuntu-latest
+    # These permissions are needed to interact with GitHub's OIDC Token endpoint.
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@v3
       
@@ -21,7 +25,7 @@ jobs:
           python-version: '3.11'
           
       - name: configuring aws
-        uses: aws-actions/configure-aws-credentials@v3
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
