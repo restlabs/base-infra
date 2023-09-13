@@ -1,0 +1,4 @@
+*.tfvars
+*.plan
+*.lock.*
+*.tfstate*

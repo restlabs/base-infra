@@ -1,0 +1,21 @@
+name: Deploy Base Infra
+on:
+  push:
+    branches:
+      - 'master'
+  pull_request:
+    branches:
+      - 'master'
+env:
+  AWS_REGION: 'us-east-1'
+jobs:
+  deploy-base-infra:
+    python-version: 3.10
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: check python version
+        run: python --version
+      - name: upgrade pip
+        run: python -m pip install --upgrade pip
+      - name:

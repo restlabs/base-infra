@@ -4,7 +4,7 @@ module "base_s3_bucket" {
   code_location = "terraform/s3"
   email         = var.email
   owner         = var.owner
-  region        = var.region[terraform.workspace]
+  region        = var.region
   environment   = data.aws_ssm_parameter.account_env.value
   project       = "base-infra"
 }
