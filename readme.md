@@ -1,4 +1,5 @@
 # Base Infra
+[![Deploy Base Infra](https://github.com/pafable/base-infra/actions/workflows/deploy.yml/badge.svg)](https://github.com/pafable/base-infra/actions/workflows/deploy.yml)
 
 Deploys base infrastructure to AWS. 
 This project uses a python script (deployer.py) in the terraform folder to loop through the folders in terraform and deploys them. 
