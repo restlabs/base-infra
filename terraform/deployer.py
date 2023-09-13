@@ -89,7 +89,9 @@ class TFDeployer:
                 'terraform',
                 f'-chdir={self.tfdir}',
                 'validate'
-            ]
+            ],
+            # will throw an error and stop the script if terraform runs into an error
+            check=True
         )
 
     def create_tfvars(self):
@@ -125,7 +127,9 @@ class TFDeployer:
                 'terraform',
                 f'-chdir={self.tfdir}',
                 'init'
-            ]
+            ],
+            # will throw an error and stop the script if terraform runs into an error
+            check=True
         )
 
     def plan(self):
@@ -141,7 +145,9 @@ class TFDeployer:
                 f'-var-file={self.tfvars}',
                 '-out',
                 self.tfplan
-            ]
+            ],
+            # will throw an error and stop the script if terraform runs into an error
+            check=True
         )
 
     def apply(self):
@@ -149,13 +155,15 @@ class TFDeployer:
         applies a terraform plan
         """
         logger.info('applying plan')
-        subprocess.run(
+        out = subprocess.run(
             [
                 'terraform',
                 f'-chdir={self.tfdir}',
                 'apply',
                 self.tfplan
-            ]
+            ],
+            # will throw an error and stop the script if terraform runs into an error
+            check=True
         )
 
     def delete(self):
