@@ -161,13 +161,10 @@ class TFDeployer:
         """
         removes terraform.plan and terraform.tfvars.json
         """
-        logger.info(f'deleting {self.tfplan}')
-        if os.path.exists(f'{self.tfdir}/{self.tfplan}'):
-            os.remove(f'{self.tfdir}/{self.tfplan}')
-
-        logger.info(f'deleting {self.tfvars}')
-        if os.path.exists(f'{self.tfdir}/{self.tfvars}'):
-            os.remove(f'{self.tfdir}/{self.tfvars}')
+        for file in [self.tfplan, self.tfvars]:
+            logger.info(f'deleting {file}')
+            if os.path.exists(f'{self.tfdir}/{file}'):
+                os.remove(f'{self.tfdir}/{file}')
 
 
 def main():
