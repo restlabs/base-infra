@@ -23,10 +23,10 @@ jobs:
         with:
           python-version: '3.11'
           
-      - name: configuring aws
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-region: ${{ env.AWS_REGION }}
+      # - name: configuring aws
+      #   uses: aws-actions/configure-aws-credentials@v4
+      #   with:
+      #     aws-region: ${{ env.AWS_REGION }}
           
       - name: check python version
         run: python --version
