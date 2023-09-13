@@ -6,10 +6,12 @@ import logging
 import os
 import subprocess
 
+dirname = os.path.dirname(__file__)
 tfplan_filename = 'terraform.plan'
 tfvars_filename = 'terraform.tfvars.json'
 params_region = 'us-east-1'
 
+# files for terraform to ignore within the terraform dir
 ignore = [
     'deployer.py',
     'modules',
@@ -19,6 +21,9 @@ ignore = [
 
 
 def logger() -> logging.Logger:
+    """
+    creates a logger
+    """
     retval = logging.getLogger(__name__)
 
     if not retval.hasHandlers():
@@ -35,7 +40,9 @@ def logger() -> logging.Logger:
 
 
 def ssm_get(ssm_name: str, region=params_region) -> Any:
-    """Retrieves ssm parameter. Used for creating terraform.tfvars.json"""
+    """
+    retrieves ssm parameter. Used for creating terraform.tfvars.json
+    """
     ssm = boto3.client('ssm', region)
     retval = ssm.get_parameter(
         Name=ssm_name
@@ -44,18 +51,38 @@ def ssm_get(ssm_name: str, region=params_region) -> Any:
 
 
 logger = logger()
+
+# base tags
+# these params are set in ssm parameter store
 app_email = ssm_get('/account/owner/email')
 app_owner = ssm_get('/account/owner')
 app_region = ssm_get('/account/region')
 
 
 class TFDeployer:
-    def __init__(self, tfplan: str, tfvars: str, tfdir: str):
+    """
+    creates a terraform deployer object
+    """
+    def __init__(
+            self,
+            tfplan: str,
+            tfvars: str,
+            tfdir: str,
+            appemail: str,
+            appowner: str,
+            appregion: str
+    ):
         self.tfplan = tfplan
         self.tfvars = tfvars
         self.tfdir = tfdir
+        self.appemail = appemail
+        self.appowner = appowner
+        self.appregion = appregion
 
     def validate(self):
+        """
+        validates terraform files have correct syntax
+        """
         logger.info('validating terraform files')
         subprocess.run(
             [
@@ -65,12 +92,15 @@ class TFDeployer:
             ]
         )
 
-    def create_tfvars(self, email: str, owner: str, region: str):
+    def create_tfvars(self):
+        """
+        creates a json file for tfvars
+        """
         logger.info('creating tfvars')
         data = {
-            'email': email,
-            'owner': owner,
-            'region': region
+            'email': self.appemail,
+            'owner': self.appowner,
+            'region': self.appregion
         }
         with open(f'{self.tfdir}/{self.tfvars}', 'w') as json_file:
             json.dump(data, json_file)
@@ -85,6 +115,9 @@ class TFDeployer:
             )
 
     def init(self):
+        """
+        initializes terraform
+        """
         logger.info('initializing terraform')
         subprocess.run(
             [
@@ -95,6 +128,9 @@ class TFDeployer:
         )
 
     def plan(self):
+        """
+        creates a terraform plan
+        """
         logger.info('creating plan')
         subprocess.run(
             [
@@ -108,6 +144,9 @@ class TFDeployer:
         )
 
     def apply(self):
+        """
+        applies terraform plan
+        """
         logger.info('applying plan')
         subprocess.run(
             [
@@ -120,23 +159,22 @@ class TFDeployer:
 
 
 def main():
-    for directory in os.listdir():
+    for directory in os.listdir(dirname):
         if directory not in ignore:
-            for app_dir in os.listdir(directory):
-                app_dir = f'{directory}/{app_dir}'
-
+            for app_dir in os.listdir(f'{dirname}/{directory}'):
+                app_dir = f'{dirname}/{directory}/{app_dir}'
+                logger.info(app_dir)
                 tf_deployer = TFDeployer(
                     tfplan_filename,
                     tfvars_filename,
-                    app_dir
-                )
-
-                tf_deployer.validate()
-                tf_deployer.create_tfvars(
+                    app_dir,
                     app_email,
                     app_owner,
                     app_region
                 )
+
+                tf_deployer.validate()
+                tf_deployer.create_tfvars()
                 tf_deployer.init()
                 tf_deployer.plan()
                 tf_deployer.apply()

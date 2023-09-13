@@ -1,10 +1,10 @@
 PYTHON ?= python3
 PIP ?= $(PYTHON) -m pip
 
-.PHONY: clean install
+.PHONY: clean install deploy
 
 deploy:
-	$(PYTHON) terraform/deploy.py
+	$(PYTHON) terraform/deployer.py
 
 install:
 	$(PYTHON) -m pip install --upgrade pip
