@@ -145,7 +145,7 @@ class TFDeployer:
 
     def apply(self):
         """
-        applies terraform plan
+        applies a terraform plan
         """
         logger.info('applying plan')
         subprocess.run(
@@ -157,13 +157,25 @@ class TFDeployer:
             ]
         )
 
+    def delete(self):
+        """
+        removes terraform.plan and terraform.tfvars.json
+        """
+        logger.info(f'deleting {self.tfplan}')
+        if os.path.exists(f'{self.tfdir}/{self.tfplan}'):
+            os.remove(f'{self.tfdir}/{self.tfplan}')
+
+        logger.info(f'deleting {self.tfvars}')
+        if os.path.exists(f'{self.tfdir}/{self.tfvars}'):
+            os.remove(f'{self.tfdir}/{self.tfvars}')
+
 
 def main():
     for directory in os.listdir(dirname):
         if directory not in ignore:
             for app_dir in os.listdir(f'{dirname}/{directory}'):
                 app_dir = f'{dirname}/{directory}/{app_dir}'
-                logger.info(app_dir)
+
                 tf_deployer = TFDeployer(
                     tfplan_filename,
                     tfvars_filename,
@@ -178,6 +190,7 @@ def main():
                 tf_deployer.init()
                 tf_deployer.plan()
                 tf_deployer.apply()
+                tf_deployer.delete()
 
 
 if __name__ == '__main__':
