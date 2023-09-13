@@ -10,7 +10,6 @@ env:
   AWS_REGION: 'us-east-1'
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
   
 jobs:
   deploy-base-infra:
@@ -23,10 +22,10 @@ jobs:
         with:
           python-version: '3.11'
           
-      # - name: configuring aws
-      #   uses: aws-actions/configure-aws-credentials@v4
-      #   with:
-      #     aws-region: ${{ env.AWS_REGION }}
+      - name: configuring aws
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
           
       - name: check python version
         run: python --version
