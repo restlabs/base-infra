@@ -44,6 +44,9 @@ def ssm_get(ssm_name: str, region=params_region) -> Any:
 
 
 logger = logger()
+app_email = ssm_get('/account/owner/email')
+app_owner = ssm_get('/account/owner')
+app_region = ssm_get('/account/region')
 
 
 class TFDeployer:
@@ -62,13 +65,12 @@ class TFDeployer:
             ]
         )
 
-    def create_tfvars(self):
+    def create_tfvars(self, email: str, owner: str, region: str):
         logger.info('creating tfvars')
         data = {
-            'app_name': 'base-infra',
-            'email': 'my-test@example.com',
-            'owner': 'pafable',
-            'region': 'us-east-2'
+            'email': email,
+            'owner': owner,
+            'region': region
         }
         with open(f'{self.tfdir}/{self.tfvars}', 'w') as json_file:
             json.dump(data, json_file)
@@ -130,7 +132,11 @@ def main():
                 )
 
                 tf_deployer.validate()
-                tf_deployer.create_tfvars()
+                tf_deployer.create_tfvars(
+                    app_email,
+                    app_owner,
+                    app_region
+                )
                 tf_deployer.init()
                 tf_deployer.plan()
                 tf_deployer.apply()

@@ -1,6 +1,6 @@
 variable "app_name" {
   type    = string
-  default = "base"
+  default = "base-infra"
 }
 
 variable "email" {}
