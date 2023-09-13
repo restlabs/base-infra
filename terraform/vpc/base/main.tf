@@ -1,7 +1,8 @@
-module "base_s3_bucket" {
-  source        = "../../modules/s3"
+module "base_vpc_bucket" {
+  source        = "../../modules/vpc"
   app_name      = var.app_name
-  code_location = "terraform/s3/base"
+  cidr_block    = "10.10.0.0/16"
+  code_location = "terraform/vpc/base"
   email         = var.email
   owner         = var.owner
   region        = var.region
