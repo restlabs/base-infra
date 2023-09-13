@@ -57,6 +57,8 @@ logger = logger()
 app_email = ssm_get('/account/owner/email')
 app_owner = ssm_get('/account/owner')
 app_region = ssm_get('/account/region')
+tf_state_bucket = ssm_get('/tools/terraform/state/bucket')
+tf_state_lock_db = ssm_get('/tools/terraform/state/dynamodb')
 
 
 class TFDeployer:
@@ -126,7 +128,13 @@ class TFDeployer:
             [
                 'terraform',
                 f'-chdir={self.tfdir}',
-                'init'
+                'init',
+                '-reconfigure',
+                f'-backend-config=bucket={tf_state_bucket}',
+                f'-backend-config=key={self.tfdir}/terraform.tfstate',
+                f'-backend-config=region={params_region}',
+                '-backend-config=encrypt=true',
+                f'backend-config=dynamodb_table={tf_state_lock_db}'
             ],
             # will throw an error and stop the script if terraform runs into an error
             check=True
