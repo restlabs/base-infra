@@ -10,10 +10,11 @@ env:
   AWS_REGION: 'us-east-1'
 jobs:
   deploy-base-infra:
-    python-version: 3.10
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-python@v4.7.0
       - name: check python version
         run: python --version
       - name: install dependencies
