@@ -84,7 +84,7 @@ class TFDeployer:
         self.appowner = appowner
         self.appregion = appregion
 
-    def validate(self):
+    def __validate(self):
         """
         validates terraform files have correct syntax
         """
@@ -99,7 +99,7 @@ class TFDeployer:
             check=True
         )
 
-    def create_backend_config(self):
+    def __create_backend_config(self):
         """
         creates a json file for terraform backend config
         """
@@ -115,7 +115,7 @@ class TFDeployer:
         with open(f'{self.tfdir}/{tfbackend_file}', 'w') as json_file:
             json.dump(data, json_file)
 
-    def create_tfvars(self):
+    def __create_tfvars(self):
         """
         creates a json file for tfvars
         """
@@ -138,10 +138,12 @@ class TFDeployer:
                 )
             )
 
-    def init(self):
+    def __init(self):
         """
         initializes terraform
         """
+        self.__create_backend_config()
+        self.__create_tfvars()
         logger.info('initializing terraform')
         subprocess.run(
             [
@@ -154,11 +156,13 @@ class TFDeployer:
             # will throw an error and stop the script if terraform runs into an error
             check=True
         )
+        self.__validate()
 
-    def plan(self, destroy=False):
+    def __plan(self, destroy=False):
         """
         creates a terraform plan
         """
+        self.__init()
         logger.info('creating plan')
 
         tf_commands = [
@@ -183,6 +187,7 @@ class TFDeployer:
         """
         applies a terraform plan
         """
+        self.__plan()
         logger.info('applying plan')
         out = subprocess.run(
             [
@@ -195,11 +200,11 @@ class TFDeployer:
             check=True
         )
 
-    def delete(self):
+    def delete_tfvars(self):
         """
-        removes terraform.plan and terraform.tfvars.json
+        removes terraform.plan, backend-config.tfvars.json and terraform.tfvars.json
         """
-        for file in [self.tfplan, self.tfvars]:
+        for file in [self.tfplan, self.tfvars, tfbackend_file]:
             logger.info(f'deleting {file}')
             if os.path.exists(f'{self.tfdir}/{file}'):
                 os.remove(f'{self.tfdir}/{file}')
@@ -222,13 +227,8 @@ def main():
                     app_region
                 )
 
-                tf_deployer.create_backend_config()
-                tf_deployer.create_tfvars()
-                tf_deployer.init()
-                tf_deployer.validate()
-                tf_deployer.plan()
                 tf_deployer.apply()
-                tf_deployer.delete()
+                tf_deployer.delete_tfvars()
 
 
 if __name__ == '__main__':
