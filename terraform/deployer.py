@@ -155,20 +155,26 @@ class TFDeployer:
             check=True
         )
 
-    def plan(self):
+    def plan(self, destroy=False):
         """
         creates a terraform plan
         """
         logger.info('creating plan')
+
+        tf_commands = [
+            'terraform',
+            f'-chdir={self.tfdir}',
+            'plan',
+            f'-var-file={self.tfvars}',
+            '-out',
+            self.tfplan
+        ]
+
+        if destroy:
+            tf_commands.append('-destroy')
+
         subprocess.run(
-            [
-                'terraform',
-                f'-chdir={self.tfdir}',
-                'plan',
-                f'-var-file={self.tfvars}',
-                '-out',
-                self.tfplan
-            ],
+            tf_commands,
             # will throw an error and stop the script if terraform runs into an error
             check=True
         )
