@@ -189,7 +189,7 @@ class TFDeployer:
         """
         self.__plan()
         logger.info('applying plan')
-        out = subprocess.run(
+        subprocess.run(
             [
                 'terraform',
                 f'-chdir={self.tfdir}',
