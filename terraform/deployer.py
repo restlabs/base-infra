@@ -168,7 +168,7 @@ class TFDeployer:
         )
         self.__validate()
 
-    def __plan(self, destroy=True):
+    def __plan(self, destroy=False):
         """
         creates a terraform plan
         """
