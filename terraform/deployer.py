@@ -115,6 +115,16 @@ class TFDeployer:
         with open(f'{self.tfdir}/{tfbackend_file}', 'w') as json_file:
             json.dump(data, json_file)
 
+        logger.info(f'displaying contents of {tfbackend_file}')
+        with open(f'{self.tfdir}/{tfbackend_file}', 'r') as json_file:
+            data = json.load(json_file)
+            logger.info(
+                json.dumps(
+                    data,
+                    indent=4
+                )
+            )
+
     def __create_tfvars(self):
         """
         creates a json file for tfvars
