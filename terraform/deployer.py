@@ -9,6 +9,7 @@ import subprocess
 dirname = os.path.dirname(__file__)
 tfplan_filename = 'terraform.plan'
 tfvars_filename = 'terraform.tfvars.json'
+tfbackend_file = 'backend-config.tfvars.json'
 params_region = 'us-east-1'
 
 # files for terraform to ignore within the terraform dir
@@ -70,6 +71,7 @@ class TFDeployer:
             tfplan: str,
             tfvars: str,
             tfdir: str,
+            tfkey: str,
             appemail: str,
             appowner: str,
             appregion: str
@@ -77,6 +79,7 @@ class TFDeployer:
         self.tfplan = tfplan
         self.tfvars = tfvars
         self.tfdir = tfdir
+        self.tfkey = tfkey
         self.appemail = appemail
         self.appowner = appowner
         self.appregion = appregion
@@ -95,6 +98,22 @@ class TFDeployer:
             # will throw an error and stop the script if terraform runs into an error
             check=True
         )
+
+    def create_backend_config(self):
+        """
+        creates a json file for terraform backend config
+        """
+        logger.info('creating backend config file')
+        data = {
+            'bucket': tf_state_bucket,
+            'key': f'{self.tfkey}/terraform.tfstate',
+            'region': params_region,
+            'encrypt': 'true',
+            'dynamodb_table': tf_state_lock_db
+        }
+
+        with open(f'{self.tfdir}/{tfbackend_file}', 'w') as json_file:
+            json.dump(data, json_file)
 
     def create_tfvars(self):
         """
@@ -129,12 +148,8 @@ class TFDeployer:
                 'terraform',
                 f'-chdir={self.tfdir}',
                 'init',
-                '-reconfigure',
-                f'-backend-config=bucket={tf_state_bucket}',
-                f'-backend-config=key={self.tfdir}/terraform.tfstate',
-                f'-backend-config=region={params_region}',
-                '-backend-config=encrypt=true',
-                f'backend-config=dynamodb_table={tf_state_lock_db}'
+                f'-backend-config={tfbackend_file}',
+                '-reconfigure'
             ],
             # will throw an error and stop the script if terraform runs into an error
             check=True
@@ -188,20 +203,23 @@ def main():
     for directory in os.listdir(dirname):
         if directory not in ignore:
             for app_dir in os.listdir(f'{dirname}/{directory}'):
+                tf_key = f'{directory}/{app_dir}'
                 app_dir = f'{dirname}/{directory}/{app_dir}'
 
                 tf_deployer = TFDeployer(
                     tfplan_filename,
                     tfvars_filename,
                     app_dir,
+                    tf_key,
                     app_email,
                     app_owner,
                     app_region
                 )
 
+                tf_deployer.create_backend_config()
+                tf_deployer.create_tfvars()
                 tf_deployer.init()
                 tf_deployer.validate()
-                tf_deployer.create_tfvars()
                 tf_deployer.plan()
                 tf_deployer.apply()
                 tf_deployer.delete()
