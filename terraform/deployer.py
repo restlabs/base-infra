@@ -7,7 +7,7 @@ import os
 import subprocess
 
 dirname = os.path.dirname(__file__)
-tfplan_filename = 'terraform.plan'
+tfplan_deploy_filename = 'terraform-deploy.plan'
 tfvars_filename = 'terraform.tfvars.json'
 tfbackend_file = 'backend-config.tfvars.json'
 params_region = 'us-east-1'
@@ -16,7 +16,7 @@ params_region = 'us-east-1'
 ignore = [
     'deployer.py',
     'modules',
-    tfplan_filename,
+    tfplan_deploy_filename,
     tfvars_filename
 ]
 
@@ -115,7 +115,7 @@ class TFDeployer:
         with open(f'{self.tfdir}/{tfbackend_file}', 'w') as json_file:
             json.dump(data, json_file)
 
-        logger.info(f'displaying contents of {tfbackend_file}')
+        logger.info(f'displaying contents of {tfbackend_file} :')
         with open(f'{self.tfdir}/{tfbackend_file}', 'r') as json_file:
             data = json.load(json_file)
             logger.info(
@@ -138,7 +138,7 @@ class TFDeployer:
         with open(f'{self.tfdir}/{self.tfvars}', 'w') as json_file:
             json.dump(data, json_file)
 
-        logger.info(f'displaying contents of {self.tfvars}')
+        logger.info(f'displaying contents of {self.tfvars} :')
         with open(f'{self.tfdir}/{self.tfvars}', 'r') as json_file:
             data = json.load(json_file)
             logger.info(
@@ -148,7 +148,7 @@ class TFDeployer:
                 )
             )
 
-    def __init(self):
+    def __tf_init(self):
         """
         initializes terraform
         """
@@ -160,7 +160,7 @@ class TFDeployer:
                 'terraform',
                 f'-chdir={self.tfdir}',
                 'init',
-                f'-backend-config={tfbackend_file}',
+                f'-backend-config={tfbackend_file}'
                 '-reconfigure'
             ],
             # will throw an error and stop the script if terraform runs into an error
@@ -168,11 +168,11 @@ class TFDeployer:
         )
         self.__validate()
 
-    def __plan(self, destroy=True):
+    def __plan(self, destroy=False):
         """
         creates a terraform plan
         """
-        self.__init()
+        self.__tf_init()
         logger.info('creating plan')
 
         tf_commands = [
@@ -225,10 +225,11 @@ def main():
         if directory not in ignore:
             for app_dir in os.listdir(f'{dirname}/{directory}'):
                 tf_key = f'{directory}/{app_dir}'
+                logger.info(f'DEPLOYING: {tf_key}')
                 app_dir = f'{dirname}/{directory}/{app_dir}'
 
                 tf_deployer = TFDeployer(
-                    tfplan_filename,
+                    tfplan_deploy_filename,
                     tfvars_filename,
                     app_dir,
                     tf_key,
