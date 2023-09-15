@@ -84,7 +84,7 @@ class TFDeployer:
         self.appowner = appowner
         self.appregion = appregion
 
-    def __validate(self):
+    def _validate(self):
         """
         validates terraform files have correct syntax
         """
@@ -99,7 +99,7 @@ class TFDeployer:
             check=True
         )
 
-    def __create_backend_config(self):
+    def _create_backend_config(self):
         """
         creates a json file for terraform backend config
         """
@@ -125,7 +125,7 @@ class TFDeployer:
                 )
             )
 
-    def __create_tfvars(self):
+    def _create_tfvars(self):
         """
         creates a json file for tfvars
         """
@@ -148,12 +148,12 @@ class TFDeployer:
                 )
             )
 
-    def __tf_init(self):
+    def _tf_init(self):
         """
         initializes terraform
         """
-        self.__create_backend_config()
-        self.__create_tfvars()
+        self._create_backend_config()
+        self._create_tfvars()
         logger.info('initializing terraform')
         subprocess.run(
             [
@@ -166,13 +166,13 @@ class TFDeployer:
             # will throw an error and stop the script if terraform runs into an error
             check=True
         )
-        self.__validate()
+        self._validate()
 
-    def __plan(self, destroy=True):
+    def _plan(self, destroy=True):
         """
         creates a terraform plan
         """
-        self.__tf_init()
+        self._tf_init()
         logger.info('creating plan')
 
         tf_commands = [
@@ -197,7 +197,7 @@ class TFDeployer:
         """
         applies a terraform plan
         """
-        self.__plan()
+        self._plan()
         logger.info('applying plan')
         subprocess.run(
             [
