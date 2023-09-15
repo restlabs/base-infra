@@ -160,7 +160,7 @@ class TFDeployer:
                 'terraform',
                 f'-chdir={self.tfdir}',
                 'init',
-                f'-backend-config={tfbackend_file}'
+                f'-backend-config={tfbackend_file}',
                 '-reconfigure'
             ],
             # will throw an error and stop the script if terraform runs into an error
