@@ -168,7 +168,7 @@ class TFDeployer:
         )
         self.__validate()
 
-    def __plan(self, destroy=False):
+    def __plan(self, destroy=True):
         """
         creates a terraform plan
         """
@@ -225,7 +225,7 @@ def main():
         if directory not in ignore:
             for app_dir in os.listdir(f'{dirname}/{directory}'):
                 tf_key = f'{directory}/{app_dir}'
-                logger.info(f'DEPLOYING: {tf_key}')
+                logger.info(f'\nDEPLOYING: {tf_key}')
                 app_dir = f'{dirname}/{directory}/{app_dir}'
 
                 tf_deployer = TFDeployer(
