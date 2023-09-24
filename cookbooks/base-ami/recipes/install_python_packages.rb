@@ -5,8 +5,8 @@ link 'set_python' do
   to '/usr/bin/python3'
 end
 
-python 'install_pip3' do
-  command "get-pip.py"
+execute 'install_pip3' do
+  command "python get-pip.py"
 end
 
 [
@@ -14,7 +14,7 @@ end
   'setuptools',
   'wheel',
 ].each do | package_name |
-  python 'python3' do
-    command "-m install pip #{package_name}"
+  execute 'install_python_packages' do
+    command "python -m install pip #{package_name}"
   end
 end
