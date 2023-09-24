@@ -6,7 +6,7 @@ link 'set_python' do
 end
 
 execute 'install_pip3' do
-  command 'python get-pip.py'
+  command 'python -m ensurepip --upgrade'
 end
 
 [
