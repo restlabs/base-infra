@@ -1,4 +1,3 @@
-
 [
   'git',
   'htop',
@@ -8,8 +7,7 @@
   'screenfetch',
   'tmux',
   'unzip',
-  'vim'
+  'vim',
 ].each do | package_name |
-
   apt_package package_name
 end
