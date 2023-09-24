@@ -1,4 +1,4 @@
-APP_USER = 'base-app'.freeze
+APP_USER = node['app_name_prefix']
 
 user "#{APP_USER}-user-00" do
   comment 'Base user'
