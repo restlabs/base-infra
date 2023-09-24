@@ -6,7 +6,7 @@ end
   'pip',
   'setuptools',
   'wheel',
-].each do package_name |
+].each do | package_name |
   python 'python3' do
     command "-m install pip #{package_name}"
   end
