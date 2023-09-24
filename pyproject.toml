@@ -13,3 +13,6 @@ description = "base-infra"
 dynamic = ["version"]
 name = "base-infra"
 requires-python = ">=3.10"
+
+[tool.setuptools.packages.find]
+where = ["terraform"]
