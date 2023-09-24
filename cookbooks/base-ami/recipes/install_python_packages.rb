@@ -1,3 +1,4 @@
+PIP_INSTALLER_URL = 'https://bootstrap.pypa.io/get-pip.py'
 link 'set_python' do
   action :create
   link_type :symbolic
@@ -6,7 +7,7 @@ link 'set_python' do
 end
 
 execute 'install_pip3' do
-  command 'python -m ensurepip --upgrade'
+  command "curl #{PIP_INSTALLER_URL} > get-pip.py && sudo python get-pip.py && rm -f get-pip.py"
 end
 
 [
