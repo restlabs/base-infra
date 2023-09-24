@@ -1,5 +1,5 @@
 python 'python3' do
-  command "get-pip.py"
+  code "get-pip.py"
 end
 
 [
