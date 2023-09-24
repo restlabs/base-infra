@@ -1,4 +1,4 @@
-file '/tmp/hello' do
+file '/tmp/hello.txt' do
   owner 'scleft'
   group 'scleft'
   mode '0755'
