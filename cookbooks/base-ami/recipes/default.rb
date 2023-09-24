@@ -2,4 +2,9 @@
 # Cookbook:: base-ami
 # Recipe:: default
 #
-# Copyright:: 2023, The Authors, All Rights Reserved.
+# Copyright:: 2023, scleft, All Rights Reserved.
+
+include_recipe '::create_base_users'
+include_recipe '::create_file'
+include_recipe '::install_base_package'
+include_recipe '::install_apache'

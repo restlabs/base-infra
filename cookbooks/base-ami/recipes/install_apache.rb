@@ -1,5 +1,5 @@
 execute 'check_platform' do
-  command "echo #{node[:platform]}"
+  command "echo platform: #{node[:platform]}"
 end
 
 apt_package 'Install Apache' do
@@ -8,7 +8,7 @@ apt_package 'Install Apache' do
     package_name 'httpd'
   when 'debian', 'ubuntu'
     package_name 'apache2'
-   end
+  end
 end
 
 file '/var/www/html/index.html' do
