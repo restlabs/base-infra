@@ -1,5 +1,8 @@
-execute 'set_python' do
-  command 'ln -s /usr/bin/python3 /usr/bin/python'
+link 'set_python' do
+  action :create
+  link_type :symbolic
+  target_file '/usr/bin/python'
+  to '/usr/bin/python3'
 end
 
 python 'install_pip3' do
