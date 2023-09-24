@@ -14,6 +14,8 @@ params_region = 'us-east-1'
 
 # files for terraform to ignore within the terraform dir
 ignore = [
+    'base_infra.egg-info',
+    'cookbooks',
     'deployer.py',
     'modules',
     tfplan_deploy_filename,
