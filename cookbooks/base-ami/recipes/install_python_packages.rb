@@ -1,3 +1,7 @@
+execute 'set_python' do
+  command 'ln -s /usr/bin/python3 /usr/bin/python'
+end
+
 python 'python3' do
   code "get-pip.py"
 end
