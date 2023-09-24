@@ -12,7 +12,7 @@ apt_package 'Install Apache' do
 end
 
 file '/var/www/html/index.html' do
-  content "This is configured by Chef.
+  content "This is configured by Chef.\n\n\n
 DO NOT EDIT THIS MANUALLY!\n"
   action :create
 end
