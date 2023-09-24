@@ -6,6 +6,7 @@ link 'set_python' do
 end
 
 python 'install_pip3' do
+  :nothing
   flags "get-pip.py"
 end
 
@@ -15,6 +16,7 @@ end
   'wheel',
 ].each do | package_name |
   python 'python3' do
+    :nothing
     flags "-m install pip #{package_name}"
   end
 end
