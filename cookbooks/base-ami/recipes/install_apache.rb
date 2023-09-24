@@ -19,7 +19,6 @@ end
 
 service 'start_apache' do
   action :enable
-
   case node[:platform]
   when 'amazon', 'centos', 'redhat'
     service_name 'httpd'
