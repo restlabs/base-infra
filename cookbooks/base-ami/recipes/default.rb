@@ -6,5 +6,5 @@
 
 include_recipe '::create_base_users'
 include_recipe '::create_file'
-include_recipe '::install_base_package'
+include_recipe '::install_base_packages'
 include_recipe '::install_apache'
