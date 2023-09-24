@@ -3,7 +3,7 @@ APP_USER = 'base-app'.freeze
 user "#{APP_USER}-user-00" do
   comment 'Base user'
   shell '/bin/bash'
-  uid '1000'
+  uid '1111'
 end
 
 user 'leet-user' do
