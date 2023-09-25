@@ -10,5 +10,7 @@
   'vim',
   'watch',
 ].each do | package_name |
-  apt_package package_name
+
+  yum_package package_name
+
 end
