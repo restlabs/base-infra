@@ -3,7 +3,7 @@ driver:
   name: ec2
   instance_type: 't2.micro'
   region: 'us-east-2'
-  associate_public_ip: false
+  associate_public_ip: true
   tags:
     Name: 'kitchen-base-ami'
     project: 'base-infra'
