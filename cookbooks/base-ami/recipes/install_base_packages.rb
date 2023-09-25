@@ -1,5 +1,8 @@
+execute 'instal_epel' do
+  command 'amazon-linux-extras install epel'
+end
+
 [
-  'epel-release',
   'git',
   'htop',
   'jq',
@@ -13,5 +16,4 @@
 ].each do | package_name |
 
   yum_package package_name
-
 end

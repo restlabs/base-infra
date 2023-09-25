@@ -64,6 +64,10 @@ tf_state_bucket = ssm_get('/tools/terraform/state/bucket')
 tf_state_lock_db = ssm_get('/tools/terraform/state/dynamodb')
 
 
+class ChefDeployer:
+    pass
+
+
 class TFDeployer:
     """
     creates a terraform deployer object
