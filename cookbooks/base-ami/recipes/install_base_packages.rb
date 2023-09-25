@@ -23,6 +23,7 @@ end
 # end
 
 [
+  'epel-release',
   'git',
   'htop',
   'jq',
