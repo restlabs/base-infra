@@ -1,4 +1,5 @@
 [
+  'epel-release',
   'git',
   'htop',
   'jq',
