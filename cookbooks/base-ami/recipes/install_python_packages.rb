@@ -1,4 +1,4 @@
-PIP_INSTALLER_URL = 'https://bootstrap.pypa.io/get-pip.py'
+PIP_INSTALLER_URL = 'https://bootstrap.pypa.io/get-pip.py'.freeze
 
 link 'set_python' do
   action :create

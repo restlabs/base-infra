@@ -2,7 +2,7 @@ execute 'check_platform' do
   command "echo platform: #{node[:platform]}"
 end
 
-apt_package 'Install Apache' do
+yum_package 'Install Apache' do
   case node[:platform]
   when 'amazon', 'centos', 'redhat'
     package_name 'httpd'
