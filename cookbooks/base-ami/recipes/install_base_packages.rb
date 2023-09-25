@@ -1,6 +1,6 @@
-execute 'install_epel' do
-  command 'whoami'
-end
+execute 'yum update -y'
+execute 'whoami'
+execute 'yum groupinstall -y "Development Tools"'
 
 execute 'install_epel' do
   command 'amazon-linux-extras install epel'
