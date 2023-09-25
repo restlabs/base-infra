@@ -2,6 +2,10 @@ execute 'install_epel' do
   command 'amazon-linux-extras install epel'
 end
 
+execute 'set_locale' do
+  command 'export LC_ALL=en_US.UTF-8'
+end
+
 [
   'git',
   'htop',
