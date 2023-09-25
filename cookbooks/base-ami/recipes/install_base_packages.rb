@@ -1,4 +1,4 @@
-execute 'instal_epel' do
+execute 'install_epel' do
   command 'amazon-linux-extras install epel'
 end
 
