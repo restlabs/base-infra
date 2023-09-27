@@ -1,6 +1,6 @@
 from typing import Any
 from deployer_logger import logger
-from tfdeployer import TFDeployer
+from tf_deployer import TFDeployer
 import boto3
 import os
 
@@ -39,10 +39,6 @@ app_owner = ssm_get('/account/owner')
 app_region = ssm_get('/account/region')
 tf_state_bucket = ssm_get('/tools/terraform/state/bucket')
 tf_state_lock_db = ssm_get('/tools/terraform/state/dynamodb')
-
-
-class ChefDeployer:
-    pass
 
 
 def main():

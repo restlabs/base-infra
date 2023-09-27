@@ -14,6 +14,9 @@ install:
 	$(PYTHON) -m pip install --upgrade pip
 	$(PIP) install deployer/
 
+kitchen-test:
+	cd cookbooks/base-ami && kitchen test
+
 terratest:
 	$(GO) -C terraform/modules/s3/test mod tidy
 	$(GO) -C terraform/modules/s3/test test -v

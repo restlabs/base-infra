@@ -10,6 +10,7 @@ This project uses a python script (deployer.py) in the terraform folder to loop 
 - Go 1.21+
 - Chef 18.2.7+
 - Kitchen 3.5.0+
+- Packer 1.9.4+
 
 ### Instructions
 1. Install dependencies
@@ -26,4 +27,9 @@ make deploy
 1. Test terraform modules
 ```commandline
 make terratest
+```
+
+2. Test Chef cookbooks
+```commandline
+make kitchen-test
 ```
