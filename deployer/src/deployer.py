@@ -32,8 +32,6 @@ def ssm_get(ssm_name: str, region=params_region) -> Any:
     return retval['Parameter']['Value']
 
 
-logger = logger()
-
 # base tags
 # these params are set in ssm parameter store
 app_email = ssm_get('/account/owner/email')
