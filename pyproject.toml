@@ -9,10 +9,10 @@ build-backend = "setuptools.build_meta"
 dependencies = [
     "boto3"
 ]
-description = "base-infra"
+description = "base-infra deployer utility"
 dynamic = ["version"]
-name = "base-infra"
+name = "base-infra-deployer"
 requires-python = ">=3.10"
 
 [tool.setuptools.packages.find]
-where = ["terraform"]
+where = ["deployer"]

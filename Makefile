@@ -5,7 +5,7 @@ GO ?= go
 .PHONY: clean install deploy terratest
 
 deploy:
-	$(PYTHON) terraform/deployer.py
+	$(PYTHON) deployer/deployer.py
 
 install:
 	$(PYTHON) -m pip install --upgrade pip
@@ -27,4 +27,5 @@ clean:
 		urllib3
 
 	rm -rf build \
-		*.egg-info
+		*.egg-info \
+		deployer/*egg-info
