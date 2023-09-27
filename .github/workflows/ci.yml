@@ -32,7 +32,6 @@ jobs:
 
       - name: run go mod init
         run: |
-          go mod init base-s3
           go mod tidy
           go test -v
         working-directory: 'terraform/s3/base/test'
