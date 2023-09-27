@@ -1,4 +1,4 @@
-name: Deploy Base Infra
+name: CI Tests
 on:
   push:
     branches:
@@ -30,8 +30,5 @@ jobs:
       - name: check go version
         run: go version
 
-      - name: run go mod init
-        run: |
-          go mod tidy
-          go test -v
-        working-directory: 'terraform/s3/base/test'
+      - name: test s3 module
+        run: make terratest

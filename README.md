@@ -6,7 +6,10 @@ This project uses a python script (deployer.py) in the terraform folder to loop 
 
 ## Requirements
 - Terraform 1.0+
-- Python 3.11
+- Python 3.11+
+- Go 1.21+
+- Chef 18.2.7+
+- Kitchen 3.5.0+
 
 ### Instructions
 1. Install dependencies
@@ -17,4 +20,10 @@ make install
 2. Deploy infrastructure
 ```commandline
 make deploy
+```
+
+## Testing
+1. Test terraform modules
+```commandline
+make terratest
 ```
