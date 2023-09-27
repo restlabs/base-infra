@@ -1,4 +1,4 @@
-package base
+package s3
 
 import (
 	"github.com/gruntwork-io/terratest/modules/terraform"
