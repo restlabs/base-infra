@@ -22,7 +22,7 @@ func TestTerraformBaseS3(t *testing.T) {
 			"owner":  "pafable",
 			"region": "us-east-1",
 		},
-		VarFiles: []string{"terrat-test.tfvars"},
+		//VarFiles: []string{"terratest.tfvars"},
 	})
 
 	// destroy resources when test ends successfully or not
