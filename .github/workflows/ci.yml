@@ -8,7 +8,7 @@ on:
       - 'test/*'
 
 jobs:
-  deploy-base-infra:
+  ci-tests:
     runs-on: ubuntu-latest
     environment: deploy
     steps:
