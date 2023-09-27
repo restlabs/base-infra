@@ -1,4 +1,4 @@
-name: Deploy Base Infra
+name: CI Tests
 on:
   push:
     branches:

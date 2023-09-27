@@ -18,11 +18,14 @@ func TestTerraformBaseS3(t *testing.T) {
 		},
 		Reconfigure: true,
 		Vars: map[string]interface{}{
+		    "app_name": "base-infra-1",
+		    "code_location": "terraform/modules/s3"
 			"email":  "pafable@test.com",
+			"environment": "dev"
 			"owner":  "pafable",
+			"project": "base-infra"
 			"region": "us-east-1",
 		},
-		//VarFiles: []string{"terratest.tfvars"},
 	})
 
 	// destroy resources when test ends successfully or not
