@@ -14,5 +14,5 @@ dynamic = ["version"]
 name = "base-infra-deployer"
 requires-python = ">=3.10"
 
-[tool.setuptools.packages.find]
-where = ["deployer"]
+#[tool.setuptools.packages.find]
+#where = ["deployer"]

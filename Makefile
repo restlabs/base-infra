@@ -5,11 +5,14 @@ GO ?= go
 .PHONY: clean install deploy terratest
 
 deploy:
-	$(PYTHON) deployer/deployer.py
+	$(PYTHON) deployer/src/deployer.py
+
+deployer-test:
+	$(PYTHON) -m unittest -v deployer/tests/test_deployer.py
 
 install:
 	$(PYTHON) -m pip install --upgrade pip
-	$(PIP) install .
+	$(PIP) install deployer/
 
 terratest:
 	$(GO) -C terraform/modules/s3/test mod tidy
@@ -18,6 +21,7 @@ terratest:
 clean:
 	$(PIP) uninstall -y \
 		base-infra \
+		base-infra-deployer \
 		boto3 \
 		botocore \
 		jmespath \
@@ -28,4 +32,6 @@ clean:
 
 	rm -rf build \
 		*.egg-info \
-		deployer/*egg-info
+		deployer/build \
+		deployer/*egg-info \
+		src/*.egg-info
