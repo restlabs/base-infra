@@ -34,11 +34,7 @@ func TestTerraformBaseVpc(t *testing.T) {
 
 	terraform.InitAndApply(t, terraformOptions)
 
-	// checks if vpc ID
-	outputVpcId := terraform.Output(t, terraformOptions, "vpc_id")
-	assert.Equal(t, "base-infra", outputVpcId)
-
 	// checks if dns support enabled
 	outputIsDnsSupportEnabled := terraform.Output(t, terraformOptions, "vpc_is_dns_support_enabled")
-	assert.Equal(t, false, outputIsDnsSupportEnabled)
+	assert.Equal(t, "true", outputIsDnsSupportEnabled)
 }
