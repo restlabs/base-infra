@@ -5,10 +5,10 @@ GO ?= go
 .PHONY: clean install deploy terratest
 
 deploy:
-	$(PYTHON) deployer/src/deployer.py
+	$(PYTHON) base-infra-deployer/src/deployer.py
 
 deployer-test:
-	$(PYTHON) -m unittest -v deployer/tests/test_deployer.py
+	$(PYTHON) -m unittest -v base-infra-deployer/tests/test_deployer.py
 
 install:
 	$(PYTHON) -m pip install --upgrade pip

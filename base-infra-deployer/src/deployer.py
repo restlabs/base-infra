@@ -1,10 +1,11 @@
+import atexit
 from typing import Any
 from deployer_logger import logger
 from tf_deployer import TFDeployer
 import boto3
 import os
 
-dirname = os.path.dirname(__file__)
+dirname = f'{os.getcwd()}/terraform'
 tfplan_deploy_filename = 'terraform-deploy.plan'
 tfvars_filename = 'terraform.tfvars.json'
 tfbackend_file = 'backend-config.tfvars.json'
@@ -14,7 +15,7 @@ params_region = 'us-east-1'
 ignore = [
     'base_infra.egg-info',
     'cookbooks',
-    'deployer.py',
+    'base-infra-deployer.py',
     'modules',
     tfplan_deploy_filename,
     tfvars_filename
@@ -41,6 +42,16 @@ tf_state_bucket = ssm_get('/tools/terraform/state/bucket')
 tf_state_lock_db = ssm_get('/tools/terraform/state/dynamodb')
 
 
+def cleanup(tf_dir: str):
+    """
+    removes terraform.plan, backend-config.tfvars.json and terraform.tfvars.json
+    """
+    for file in ['terraform.plan', 'backend-config.tfvars.json', 'terraform.tfvars.json']:
+        logger.info(f'deleting {file} in {tf_dir}')
+        if os.path.exists(f'{tf_dir}/{file}'):
+            os.remove(f'{tf_dir}/{file}')
+
+
 def main():
     for directory in os.listdir(dirname):
         if directory not in ignore:
@@ -63,8 +74,9 @@ def main():
                     params_region
                 )
 
+                atexit.register(cleanup, app_dir) # run cleanup even on errors or exits
                 tf_deployer.apply()
-                tf_deployer.delete_tfvars()
+
 
 
 if __name__ == '__main__':

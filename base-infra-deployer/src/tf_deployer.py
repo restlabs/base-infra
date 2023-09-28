@@ -1,12 +1,11 @@
 from deployer_logger import logger
 import json
-import os
 import subprocess
 
 
 class TFDeployer:
     """
-    creates a terraform deployer object
+    creates a terraform base-infra-deployer object
     """
     def __init__(
             self,
@@ -159,12 +158,3 @@ class TFDeployer:
             # will throw an error and stop the script if terraform runs into an error
             check=True
         )
-
-    def delete_tfvars(self):
-        """
-        removes terraform.plan, backend-config.tfvars.json and terraform.tfvars.json
-        """
-        for file in [self.tf_plan, self.tf_vars, self.backend_file]:
-            logger.info(f'deleting {file}')
-            if os.path.exists(f'{self.tf_dir}/{file}'):
-                os.remove(f'{self.tf_dir}/{file}')

@@ -38,8 +38,8 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE }}
           aws-region: 'us-east-1'
 
-      - name: test deployer python script
-        run: make deployer-test
+      - name: test base-infra-deployer python script
+        run: make base-infra-deployer-test
 
       - name: test s3 module
         run: make terratest
