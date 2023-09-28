@@ -6,7 +6,7 @@ on:
   
 jobs:
   deploy-base-infra:
-    if: ${{ github.event.pull_request.merged }}
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     environment: deploy
     steps:
