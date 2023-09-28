@@ -1,11 +1,12 @@
 name: Deploy Base Infra
 on:
-  pull_request:
+  push:
     branches:
       - 'main'
   
 jobs:
   deploy-base-infra:
+    if: ${{ github.event.pull_request.merged }}
     runs-on: ubuntu-latest
     environment: deploy
     steps:
