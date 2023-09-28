@@ -41,5 +41,5 @@ jobs:
       - name: test base-infra-deployer python script
         run: make deployer-test
 
-      - name: test s3 module
+      - name: test terraform module
         run: make terratest
