@@ -48,6 +48,24 @@ class TFDeployer:
             check=True
         )
 
+    def _write_json_to_file(
+            self,
+            data_json: dict,
+            file_to_display: str
+    ):
+        with open(f'{self.tf_dir}/{file_to_display}', 'w') as json_file:
+            json.dump(data_json, json_file)
+
+        logger.info(f'displaying contents of {file_to_display} :')
+        with open(f'{self.tf_dir}/{file_to_display}', 'r') as json_file:
+            data = json.load(json_file)
+            logger.info(
+                json.dumps(
+                    data,
+                    indent=4
+                )
+            )
+
     def _create_backend_config(self):
         """
         creates a json file for terraform backend config
@@ -61,18 +79,7 @@ class TFDeployer:
             'dynamodb_table': self.backend_dynamo
         }
 
-        with open(f'{self.tf_dir}/{self.backend_file}', 'w') as json_file:
-            json.dump(data, json_file)
-
-        logger.info(f'displaying contents of {self.backend_file} :')
-        with open(f'{self.tf_dir}/{self.backend_file}', 'r') as json_file:
-            data = json.load(json_file)
-            logger.info(
-                json.dumps(
-                    data,
-                    indent=4
-                )
-            )
+        self._write_json_to_file(data, self.backend_file)
 
     def _create_tfvars(self):
         """
@@ -84,18 +91,8 @@ class TFDeployer:
             'owner': self.app_owner,
             'region': self.app_region
         }
-        with open(f'{self.tf_dir}/{self.tf_vars}', 'w') as json_file:
-            json.dump(data, json_file)
 
-        logger.info(f'displaying contents of {self.tf_vars} :')
-        with open(f'{self.tf_dir}/{self.tf_vars}', 'r') as json_file:
-            data = json.load(json_file)
-            logger.info(
-                json.dumps(
-                    data,
-                    indent=4
-                )
-            )
+        self._write_json_to_file(data, self.tf_vars)
 
     def _tf_init(self):
         """
