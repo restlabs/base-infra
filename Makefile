@@ -12,7 +12,7 @@ deployer-test:
 
 install:
 	$(PYTHON) -m pip install --upgrade pip
-	$(PIP) install deployer/
+	$(PIP) install base-infra-deployer/
 
 kitchen-test:
 	cd cookbooks/base-ami && kitchen test
