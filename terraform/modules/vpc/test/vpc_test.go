@@ -1,4 +1,4 @@
-package s3
+package vpc
 
 import (
 	"github.com/gruntwork-io/terratest/modules/terraform"
@@ -6,12 +6,12 @@ import (
 	"testing"
 )
 
-func TestTerraformBaseS3(t *testing.T) {
+func TestTerraformBaseVpc(t *testing.T) {
 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: "../",
 		BackendConfig: map[string]interface{}{
 			"bucket":         "pafable-tfstates-100",
-			"key":            "s3/base/terraform.tfstate",
+			"key":            "vpc/base/terraform.tfstate",
 			"region":         "us-east-1",
 			"encrypt":        "true",
 			"dynamodb_table": "terraform-lock",
@@ -19,7 +19,8 @@ func TestTerraformBaseS3(t *testing.T) {
 		Reconfigure: true,
 		Vars: map[string]interface{}{
 			"app_name":      "base-infra",
-			"code_location": "terraform/modules/s3",
+			"cidr_block":    "10.10.0.0/16",
+			"code_location": "terraform/modules/vpc",
 			"email":         "pafable@test.com",
 			"environment":   "dev",
 			"owner":         "pafable",
@@ -33,11 +34,11 @@ func TestTerraformBaseS3(t *testing.T) {
 
 	terraform.InitAndApply(t, terraformOptions)
 
-	// checks if bucket name is base-infra-1-bucket-test-us-east-1
-	outputBucketName := terraform.Output(t, terraformOptions, "bucket_name")
-	assert.Equal(t, "base-infra-bucket-dev-us-east-1", outputBucketName)
+	// checks if vpc ID
+	outputVpcId := terraform.Output(t, terraformOptions, "vpc_id")
+	assert.Equal(t, "base-infra", outputVpcId)
 
-	// checks if region is us-east-1
-	outputBucketRegion := terraform.Output(t, terraformOptions, "bucket_region")
-	assert.Equal(t, "us-east-1", outputBucketRegion)
+	// checks if dns support enabled
+	outputIsDnsSupportEnabled := terraform.Output(t, terraformOptions, "vpc_is_dns_support_enabled")
+	assert.Equal(t, false, outputIsDnsSupportEnabled)
 }
