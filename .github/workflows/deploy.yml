@@ -1,8 +1,8 @@
 name: Deploy Base Infra
 on:
-  push:
-    branches:
-      - 'main'
+  pull_request_target:
+    types:
+      - closed
   
 jobs:
   deploy-base-infra:
