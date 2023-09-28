@@ -1,6 +1,6 @@
 name: Deploy Base Infra
 on:
-  pull_request:
+  push:
     branches:
       - 'main'
   
