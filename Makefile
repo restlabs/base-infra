@@ -20,6 +20,8 @@ kitchen-test:
 terratest:
 	$(GO) -C terraform/modules/s3/test mod tidy
 	$(GO) -C terraform/modules/s3/test test -v
+	$(GO) -C terraform/modules/vpc/test mod tidy
+	$(GO) -C terraform/modules/vpc/test test -v
 
 clean:
 	$(PIP) uninstall -y \
