@@ -1,0 +1,22 @@
+---
+- name: Install and start nginx
+  hosts: localhost
+  connection: local
+  become: true
+  tasks:
+   - name: Install nginx
+     yum:
+       name: nginx
+       state: latest
+       update_cache: yes
+
+   - name: Start nginx
+     service:
+       name: nginx
+       state: started
+       enabled: yes
+
+   - name: Create custom index.html
+     ansible.builtin.copy:
+      content: 'DO NOT EDIT THIS MANUALLY! This is configured by Ansible.'
+      dest: /var/www/html/index.html

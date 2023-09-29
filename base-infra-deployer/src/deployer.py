@@ -74,9 +74,8 @@ def main():
                     params_region
                 )
 
-                atexit.register(cleanup, app_dir) # run cleanup even on errors or exits
+                atexit.register(cleanup, app_dir)  # run cleanup even on errors or exits
                 tf_deployer.apply()
-
 
 
 if __name__ == '__main__':
