@@ -2,7 +2,7 @@ PYTHON ?= python3
 PIP ?= $(PYTHON) -m pip
 GO ?= go
 
-.PHONY: clean install deploy terratest
+.PHONY: clean install deploy deployer-test kitchen-test terratest
 
 deploy:
 	$(PYTHON) base-infra-deployer/src/deployer.py

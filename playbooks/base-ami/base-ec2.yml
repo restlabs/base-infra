@@ -1,0 +1,40 @@
+---
+- name: Configuring EC2
+  hosts: localhost
+  connection: local
+  become: true
+  tasks:
+   - name: Upgrade packages
+     yum:
+       name: "*"
+       state: latest
+
+   - name: Install net-tools
+     yum:
+       name: net-tools
+       state: latest
+       update_cache: yes
+
+   - name: Install vim
+     yum:
+       name: vim
+       state: latest
+       update_cache: yes
+
+   - name: Install tmux
+     yum:
+       name: tmux
+       state: latest
+       update_cache: yes
+
+   - name: Install lynx
+     yum:
+       name: lynx
+       state: latest
+       update_cache: yes
+
+   - name: Install wget
+     yum:
+       name: wget
+       state: latest
+       update_cache: yes

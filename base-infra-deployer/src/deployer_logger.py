@@ -18,6 +18,3 @@ def logger() -> logging.Logger:
         retval.addHandler(stream_handler)
 
     return retval
-
-
-logger = logger()
