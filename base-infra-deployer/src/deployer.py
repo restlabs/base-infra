@@ -53,29 +53,33 @@ def cleanup(tf_dir: str):
 
 
 def main():
-    for directory in os.listdir(dirname):
-        if directory not in ignore:
-            for app_dir in os.listdir(f'{dirname}/{directory}'):
-                tf_key = f'{directory}/{app_dir}'
-                logger.info(f'\nDEPLOYING: {tf_key}')
-                app_dir = f'{dirname}/{directory}/{app_dir}'
+    try:
+        for directory in os.listdir(dirname):
+            if directory not in ignore:
+                for app_dir in os.listdir(f'{dirname}/{directory}'):
+                    tf_key = f'{directory}/{app_dir}'
+                    logger.info(f'\nDEPLOYING: {tf_key}')
+                    app_dir = f'{dirname}/{directory}/{app_dir}'
 
-                tf_deployer = TFDeployer(
-                    tfplan_deploy_filename,
-                    tfvars_filename,
-                    app_dir,
-                    tf_key,
-                    app_email,
-                    app_owner,
-                    app_region,
-                    tf_state_bucket,
-                    tf_state_lock_db,
-                    tfbackend_file,
-                    params_region
-                )
+                    tf_deployer = TFDeployer(
+                        tfplan_deploy_filename,
+                        tfvars_filename,
+                        app_dir,
+                        tf_key,
+                        app_email,
+                        app_owner,
+                        app_region,
+                        tf_state_bucket,
+                        tf_state_lock_db,
+                        tfbackend_file,
+                        params_region
+                    )
 
-                atexit.register(cleanup, app_dir)  # run cleanup even on errors or exits
-                tf_deployer.apply()
+                    atexit.register(cleanup, app_dir)  # run cleanup even on errors or exits
+                    tf_deployer.apply()
+
+    except Exception as e:
+        raise logger.critical(e)
 
 
 if __name__ == '__main__':

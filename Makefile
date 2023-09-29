@@ -2,7 +2,7 @@ PYTHON ?= python3
 PIP ?= $(PYTHON) -m pip
 GO ?= go
 
-.PHONY: clean install deploy deployer-test kitchen-test terratest
+.PHONY: clean install deploy deployer-test kitchen-test terratest test
 
 deploy:
 	$(PYTHON) base-infra-deployer/src/deployer.py
@@ -22,6 +22,8 @@ terratest:
 	$(GO) -C terraform/modules/s3/test test -v
 	$(GO) -C terraform/modules/vpc/test mod tidy
 	$(GO) -C terraform/modules/vpc/test test -v
+
+test: terratest deployer-test
 
 clean:
 	$(PIP) uninstall -y \
