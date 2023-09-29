@@ -5,12 +5,13 @@ Deploys base infrastructure to AWS.
 This project uses a python script (deployer.py) in the terraform folder to loop through the folders in terraform and deploys them. 
 
 ## Requirements
-- Terraform 1.0+
-- Python 3.11+
-- Go 1.21+
+- Ansible Core 2.15+
 - Chef 18.2.7+
+- Go 1.21+
 - Kitchen 3.5.0+
 - Packer 1.9.4+
+- Python 3.11+
+- Terraform 1.0+
 
 ### Instructions
 1. Install dependencies
@@ -24,12 +25,22 @@ make deploy
 ```
 
 ## Testing
-1. Test terraform modules
+1. Test deployer
+```commandline
+make deployer-test
+```
+
+2. Test terraform modules
 ```commandline
 make terratest
 ```
 
-2. Test Chef cookbooks
+3. Test Chef cookbooks
 ```commandline
 make kitchen-test
+```
+
+4. Run all tests (terraform and python deployer)
+```commandline
+make test
 ```
