@@ -1,6 +1,10 @@
-from deployer_logger import logger
 import json
 import subprocess
+
+try:
+    from .deployer_logger import logger
+except ImportError:
+    from deployer_logger import logger
 
 
 class TFDeployer:

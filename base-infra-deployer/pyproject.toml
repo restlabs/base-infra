@@ -14,5 +14,8 @@ name = "base-infra-deployer"
 requires-python = ">=3.10"
 version = "1.0.0"
 
-#[tool.setuptools.packages.find]
-#where = ["base-infra-deployer"]
+[project.scripts]
+base-deploy = "deployer.base_infra_deployer:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
