@@ -57,6 +57,12 @@ def main():
         help='Specify the target directory to deploy',
         required=True
     )
+    parser.add_argument(
+        '--destroy',
+        '-d',
+        help='Destroy',
+        required=False
+    )
 
     args = parser.parse_args()
 
@@ -75,7 +81,8 @@ def main():
             tf_state_bucket,
             tf_state_lock_db,
             tfbackend_file,
-            params_region
+            params_region,
+            args.create
         )
 
         atexit.register(cleanup, app_dir)  # run cleanup even on errors or exits

@@ -1,6 +1,12 @@
 name: Deploy Base Infra
 on:
   workflow_dispatch:
+    inputs:
+      destroy:
+        description: 'destroy resources'
+        default: false
+        required: false
+        type: boolean
   
 jobs:
   deploy-base-infra:
@@ -29,4 +35,4 @@ jobs:
         run: make install
      
       - name: deploy
-        run: make deploy
+        run: make DESTROY=${{ inputs.destroy}} deploy
