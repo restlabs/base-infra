@@ -1,5 +1,9 @@
-from __version__ import __version__
 import argparse
+
+try:
+    from .__version__ import __version__
+except ImportError:
+    from __version__ import __version__
 
 
 class Base(argparse.ArgumentParser):

@@ -5,8 +5,9 @@ GO ?= go
 .PHONY: clean install deploy deployer-test kitchen-test terratest test
 
 deploy:
-	$(PYTHON) base-infra-deployer/src/deployer.py --target "s3/base"
-	$(PYTHON) base-infra-deployer/src/deployer.py --target "vpc/base"
+	base-deploy --version
+	base-deploy --target "s3/base"
+	base-deploy --target "vpc/base"
 
 deployer-test:
 	$(PYTHON) -m unittest -v base-infra-deployer/tests/test_deployer.py
@@ -39,6 +40,6 @@ clean:
 
 	rm -rf build \
 		*.egg-info \
-		deployer/build \
-		deployer/*egg-info \
+		base-infra-deployer/build \
+		base-infra-deployer/src/*egg-info \
 		src/*.egg-info

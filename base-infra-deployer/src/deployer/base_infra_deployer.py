@@ -1,11 +1,16 @@
 from typing import Any
-from deployer_logger import logger
-from tf_deployer import TFDeployer
-from base_args import Base
 import atexit
 import boto3
 import os
 
+try:
+    from .deployer_logger import logger
+    from .tf_deployer import TFDeployer
+    from .base_args import Base
+except ImportError:
+    from deployer_logger import logger
+    from tf_deployer import TFDeployer
+    from base_args import Base
 
 dirname = f'{os.getcwd()}/terraform'
 tfplan_deploy_filename = 'terraform-deploy.plan'
@@ -17,7 +22,7 @@ params_region = 'us-east-1'
 ignore = (
     'base_infra.egg-info',
     'cookbooks',
-    'base-infra-deployer.py',
+    'base-infra-base_infra_deployer.py',
     'modules',
     tfplan_deploy_filename,
     tfvars_filename
