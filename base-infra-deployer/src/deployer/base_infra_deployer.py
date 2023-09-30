@@ -82,7 +82,7 @@ def main():
             tf_state_lock_db,
             tfbackend_file,
             params_region,
-            args.create
+            args.destroy
         )
 
         atexit.register(cleanup, app_dir)  # run cleanup even on errors or exits
