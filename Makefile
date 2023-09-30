@@ -5,7 +5,8 @@ GO ?= go
 .PHONY: clean install deploy deployer-test kitchen-test terratest test
 
 deploy:
-	$(PYTHON) base-infra-deployer/src/deployer.py
+	$(PYTHON) base-infra-deployer/src/deployer.py --target "s3/base"
+	$(PYTHON) base-infra-deployer/src/deployer.py --target "vpc/base"
 
 deployer-test:
 	$(PYTHON) -m unittest -v base-infra-deployer/tests/test_deployer.py
@@ -27,7 +28,6 @@ test: terratest deployer-test
 
 clean:
 	$(PIP) uninstall -y \
-		base-infra \
 		base-infra-deployer \
 		boto3 \
 		botocore \

@@ -10,9 +10,9 @@ dependencies = [
     "boto3"
 ]
 description = "base-infra-deployer deployer utility"
-dynamic = ["version"]
 name = "base-infra-deployer"
 requires-python = ">=3.10"
+version = "1.0.0"
 
 #[tool.setuptools.packages.find]
 #where = ["base-infra-deployer"]
