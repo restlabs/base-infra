@@ -12,5 +12,5 @@ provider "aws" {
 
 provider "aws" {
   alias   = "parameters"
-  default = "us-east-1"
+  region = "us-east-1"
 }
