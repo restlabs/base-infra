@@ -55,7 +55,6 @@ def cleanup(tf_dir: str):
 
 
 def main():
-
     parser = Base(description='Runs base infra deployer')
     parser.add_argument(
         '--target',
