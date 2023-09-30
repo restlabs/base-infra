@@ -1,8 +1,6 @@
 name: Deploy Base Infra
 on:
-  pull_request_target:
-    types:
-      - closed
+  workflow_dispatch:
   
 jobs:
   deploy-base-infra:
