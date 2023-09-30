@@ -11,5 +11,6 @@ provider "aws" {
 }
 
 provider "aws" {
-  alias = "parameters"
+  alias  = "parameters"
+  region = "us-wast-1"
 }

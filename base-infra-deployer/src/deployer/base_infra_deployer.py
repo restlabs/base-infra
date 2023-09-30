@@ -18,16 +18,6 @@ tfvars_filename = 'terraform.tfvars.json'
 tfbackend_file = 'backend-config.tfvars.json'
 params_region = 'us-east-1'
 
-# files for terraform to ignore within the terraform dir
-ignore = (
-    'base_infra.egg-info',
-    'cookbooks',
-    'base-infra-base_infra_deployer.py',
-    'modules',
-    tfplan_deploy_filename,
-    tfvars_filename
-)
-
 
 def ssm_get(ssm_name: str, region=params_region) -> Any:
     """
@@ -87,6 +77,7 @@ def main():
             tfbackend_file,
             params_region
         )
+
         atexit.register(cleanup, app_dir)  # run cleanup even on errors or exits
         tf_deployer.apply()
 
