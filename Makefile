@@ -6,8 +6,8 @@ GO ?= go
 
 deploy:
 	base-deploy --version
-	base-deploy --target "s3/base"
-	base-deploy --target "vpc/base"
+	base-deploy --target "s3/base" --destroy $(DESTROY)
+	base-deploy --target "vpc/base" --destroy $(DESTROY)
 
 deployer-test:
 	$(PYTHON) -m unittest -v base-infra-deployer/tests/test_deployer.py

@@ -23,7 +23,8 @@ class TFDeployer:
             backend_bucket: str,
             backend_dynamo: str,
             backend_file: str,
-            params_region: str
+            params_region: str,
+            create: bool
     ):
         self.tf_plan = tf_plan
         self.tf_vars = tf_vars
@@ -36,6 +37,7 @@ class TFDeployer:
         self.backend_dynamo = backend_dynamo
         self.backend_file = backend_file
         self.params_region = params_region
+        self.create = create
 
     def _validate(self):
         """
@@ -118,7 +120,7 @@ class TFDeployer:
         )
         self._validate()
 
-    def _plan(self, destroy=True):
+    def _plan(self):
         """
         creates a terraform plan
         """
@@ -134,7 +136,7 @@ class TFDeployer:
             self.tf_plan
         ]
 
-        if destroy:
+        if self.create is not None and self.create is True:
             tf_commands.append('-destroy')
 
         subprocess.run(
