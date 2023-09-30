@@ -67,7 +67,7 @@ def main():
 
     try:
         print(f'DEPLOYING: {args.target}')
-        app_dir = f'{dirname}/{args.taget}'
+        app_dir = f'{dirname}/{args.target}'
 
         # for directory in os.listdir(dirname):
         #     if directory not in ignore:
