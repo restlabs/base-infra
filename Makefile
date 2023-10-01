@@ -8,6 +8,7 @@ deploy:
 	base-deploy --version
 	base-deploy --target "s3/base" --destroy $(DESTROY)
 	base-deploy --target "vpc/base" --destroy $(DESTROY)
+	base-deploy --target "eks/base" --destroy $(DESTROY)
 
 deployer-test:
 	$(PYTHON) -m unittest -v base-infra-deployer/tests/test_deployer.py
