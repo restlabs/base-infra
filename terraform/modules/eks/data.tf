@@ -1,6 +1,4 @@
 data "aws_vpc" "selected" {
-  count = var.isDefaultVpc ? 1 : 0
-
   default = true
 }
 
@@ -18,7 +16,7 @@ data "aws_subnets" "private" {
   }
 
   tags = {
-    type = "private"
+    Name = "private-subnet"
   }
 }
 
