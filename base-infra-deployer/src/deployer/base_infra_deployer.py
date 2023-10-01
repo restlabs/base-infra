@@ -39,11 +39,12 @@ tf_state_bucket = ssm_get('/tools/terraform/state/bucket')
 tf_state_lock_db = ssm_get('/tools/terraform/state/dynamodb')
 
 
-def cleanup(tf_dir: str):
+def cleanup(tf_dir: str, tf_target: str):
     """
     removes terraform.plan, backend-config.tfvars.json and terraform.tfvars.json
     """
-    for file in ('terraform.plan', 'backend-config.tfvars.json', 'terraform.tfvars.json'):
+    logger.info(f'DELETING {tf_target.upper()} TERRAFORM FILES................')
+    for file in ('terraform-deploy.plan', 'backend-config.tfvars.json', 'terraform.tfvars.json'):
         logger.info(f'deleting {file} in {tf_dir}')
         if os.path.exists(f'{tf_dir}/{file}'):
             os.remove(f'{tf_dir}/{file}')
@@ -67,7 +68,7 @@ def main():
     args = parser.parse_args()
 
     try:
-        print(f'DEPLOYING: {args.target}')
+        print(f'DEPLOYING: {args.target.upper()}')
         app_dir = f'{dirname}/{args.target}'
 
         tf_deployer = TFDeployer(
@@ -85,7 +86,13 @@ def main():
             args.destroy
         )
 
-        atexit.register(cleanup, app_dir)  # run cleanup even on errors or exits
+        # run cleanup even on errors or exits
+        atexit.register(
+            cleanup,
+            app_dir,
+            args.target
+        )
+
         tf_deployer.apply()
 
     except Exception as e:
