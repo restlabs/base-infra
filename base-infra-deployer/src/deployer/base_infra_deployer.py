@@ -83,7 +83,7 @@ def main():
             tf_state_lock_db,
             tfbackend_file,
             params_region,
-            args.destroy
+            bool(args.destroy)
         )
 
         # run cleanup even on errors or exits

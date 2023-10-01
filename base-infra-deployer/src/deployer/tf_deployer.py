@@ -24,7 +24,7 @@ class TFDeployer:
             backend_dynamo: str,
             backend_file: str,
             params_region: str,
-            create: bool
+            destroy: bool
     ):
         self.tf_plan = tf_plan
         self.tf_vars = tf_vars
@@ -37,7 +37,7 @@ class TFDeployer:
         self.backend_dynamo = backend_dynamo
         self.backend_file = backend_file
         self.params_region = params_region
-        self.create = create
+        self.destroy = destroy
 
     def _validate(self):
         """
@@ -136,7 +136,7 @@ class TFDeployer:
             self.tf_plan
         ]
 
-        if self.create is not None and self.create is True:
+        if self.destroy is not None and self.destroy is True:
             tf_commands.append('-destroy')
 
         subprocess.run(
