@@ -6,9 +6,9 @@ locals {
   cluster_name = "${var.owner}-${var.environment}-eks-${var.region}"
   base_tags = {
     owner         = var.owner
-    code_location = "terraform/eks/base"
-    project       = "base-infra"
-    email         = "test@test.test"
+    code_location = var.code_location
+    project       = var.project
+    email         = var.email
     environment   = var.environment
   }
 }

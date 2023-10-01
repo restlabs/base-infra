@@ -1,3 +1,8 @@
+variable "code_location" {
+  type        = string
+  description = "Location of code"
+}
+
 variable "disk_size" {
   type        = number
   description = "EBS volume size"
@@ -16,6 +21,11 @@ variable "eks_version" {
   default     = 1.27
 }
 
+variable "email" {
+  type        = string
+  description = "Email for project"
+}
+
 variable "environment" {
   type        = string
   description = "Environment for this project. Default is poc = proof of concept "
@@ -31,6 +41,11 @@ variable "kubernetes_namespace" {
 variable "owner" {
   type        = string
   description = "Owner of this cluster"
+}
+
+variable "project" {
+  type        = string
+  description = "project name"
 }
 
 variable "region" {
