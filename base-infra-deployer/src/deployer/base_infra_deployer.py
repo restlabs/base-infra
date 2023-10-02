@@ -63,6 +63,7 @@ def main():
         '-d',
         action='stored_true',
         help='Destroy',
+        nargs='?',
         required=False
     )
 
