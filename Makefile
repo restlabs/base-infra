@@ -1,4 +1,4 @@
-PYTHON ?= python3
+PYTHON ?= python
 PIP ?= $(PYTHON) -m pip
 GO ?= go
 
@@ -6,14 +6,15 @@ GO ?= go
 
 deploy:
 	base-deploy --version
-	base-deploy --target "s3/base" --destroy $(DESTROY)
-	base-deploy --target "vpc/base" --destroy $(DESTROY)
-	base-deploy --target "eks/base" --destroy $(DESTROY)
+	base-deploy --target "s3/base" $(DESTROY)
+	base-deploy --target "vpc/base" $(DESTROY)
+	base-deploy --target "eks/base" $(DESTROY)
 
 deployer-test:
 	$(PYTHON) -m unittest -v base-infra-deployer/tests/test_deployer.py
 
 install:
+	$(PYTHON) --version
 	$(PYTHON) -m pip install --upgrade pip
 	$(PIP) install base-infra-deployer/
 

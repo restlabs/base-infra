@@ -61,6 +61,7 @@ def main():
     parser.add_argument(
         '--destroy',
         '-d',
+        action='stored_true',
         help='Destroy',
         required=False
     )
@@ -83,7 +84,7 @@ def main():
             tf_state_lock_db,
             tfbackend_file,
             params_region,
-            bool(args.destroy)
+            args.destroy
         )
 
         # run cleanup even on errors or exits

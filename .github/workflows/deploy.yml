@@ -3,10 +3,9 @@ on:
   workflow_dispatch:
     inputs:
       destroy:
-        description: 'destroy resources'
-        default: false
+        description: 'destroy resources by entering in "--destroy"'
         required: false
-        type: boolean
+        type: string
   
 jobs:
   deploy-base-infra:
