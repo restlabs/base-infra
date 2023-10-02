@@ -61,9 +61,8 @@ def main():
     parser.add_argument(
         '--destroy',
         '-d',
-        action='stored_true',
+        action='store_true',
         help='Destroy',
-        nargs='?',
         required=False
     )
 
