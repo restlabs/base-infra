@@ -1,4 +1,4 @@
-name: Deploy Base Infra
+name: Deploy Base Infra EKS
 on:
   workflow_dispatch:
     inputs:
