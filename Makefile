@@ -2,12 +2,15 @@ PYTHON ?= python
 PIP ?= $(PYTHON) -m pip
 GO ?= go
 
-.PHONY: clean install deploy deployer-test kitchen-test terratest test
+.PHONY: clean install deploy-all deploy-eks deployer-test kitchen-test terratest test
 
-deploy:
+deploy-all:
 	base-deploy --version
 	base-deploy --target "s3/base" $(DESTROY)
 	base-deploy --target "vpc/base" $(DESTROY)
+	base-deploy --target "eks/base" $(DESTROY)
+
+deploy-eks:
 	base-deploy --target "eks/base" $(DESTROY)
 
 deployer-test:
