@@ -18,7 +18,6 @@ variable "eks_nodegroup_instance_type" {
 variable "eks_version" {
   type        = number
   description = "Kubernetes version"
-  default     = 1.27
 }
 
 variable "email" {
