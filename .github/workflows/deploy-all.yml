@@ -1,0 +1,37 @@
+name: Deploy Base Infra
+on:
+  workflow_dispatch:
+    inputs:
+      destroy:
+        description: 'destroy resources by entering in "--destroy"'
+        required: false
+        type: string
+  
+jobs:
+  deploy-base-infra:
+    runs-on: ubuntu-latest
+    environment: deploy
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4.7.0
+        with:
+          python-version: '3.11'
+          
+      - name: configuring aws
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: ${{ secrets.AWS_ROLE }}
+          aws-region: 'us-east-1'
+          
+      - name: check python version
+        run: python --version
+      
+      - name: install dependencies
+        run: make install
+     
+      - name: deploy
+        run: make DESTROY=${{ inputs.destroy}} deploy-all
