@@ -28,12 +28,13 @@ Log into AWS or use the the AWSCLI and set the following parameters in Systems M
 These parameters are used by base-deploy to create a terraform backend config file.
 Fill in the parameters based on your environment. You can change the region for base-deploy to check by editing this [line](https://github.com/pafable/base-infra/blob/main/base-infra-deployer/src/deployer/base_infra_deployer.py#L19).
 
-Parameters:
-- /account/owner/email
-- /account/owner
-- /account/region
-- /tools/terraform/state/bucket
-- /tools/terraform/state/dynamodb
+| Parameters                      | Description                 |
+|---------------------------------|-----------------------------|
+| /account/owner/email            | owner email                 |
+| /account/owner                  | owner                       |
+| /account/region                 | terraform backend region    |
+| /tools/terraform/state/bucket   | terraform s3 backend bucket |
+| /tools/terraform/state/dynamodb | terraform dynamodb backend  |
 
 ## Instructions:
 ### Building the project
