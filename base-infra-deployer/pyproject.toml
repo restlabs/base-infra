@@ -16,7 +16,7 @@ requires-python = ">=3.10"
 version = "1.0.0"
 
 [project.scripts]
-base-deploy = "deployer.base_infra_deployer:main"
+base-deploy = "deployer.main:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
