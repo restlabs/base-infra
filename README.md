@@ -66,4 +66,4 @@ make test
 ```
 
 ### TODO
-- Add Packer to base-infra-deployer script
+- Add Packer to base-infra-deployer script to deploy chef cookbooks and ansible playbooks
