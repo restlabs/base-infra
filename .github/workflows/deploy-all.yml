@@ -3,9 +3,10 @@ on:
   workflow_dispatch:
     inputs:
       destroy:
-        description: 'destroy resources with "--destroy"'
+        description: 'destroy resource(s)'
+        default: false
         required: false
-        type: string
+        type: boolean
   
 jobs:
   deploy-base-infra:
@@ -14,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Setup Python
+      - name: setup Python
         uses: actions/setup-python@v4.7.0
         with:
           python-version: '3.11'
@@ -26,6 +27,14 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           role-to-assume: ${{ secrets.AWS_ROLE }}
           aws-region: 'us-east-1'
+
+      - name: check input
+        run: |
+          if [ "${{ inputs.destroy }}" == "true" ]; then
+            echo "DESTROY=--destroy" >> $GITHUB_ENV
+          else
+            echo "DESTROY=" >> $GITHUB_ENV
+          fi
           
       - name: check python version
         run: python --version
@@ -34,4 +43,4 @@ jobs:
         run: make install
      
       - name: deploy
-        run: make DESTROY=${{ inputs.destroy}} deploy-all
+        run: make DESTROY=$DESTROY deploy-all
