@@ -8,17 +8,17 @@ module "ssm_param" {
   params = [
     {
       name        = "/eks/base/arn"
-      value       = module.base_eks.eks_arn
+      value       = module.base_eks.cluster_arn
       description = "EKS cluster for base-infra"
     },
     {
       name        = "/eks/base/endpoint"
-      value       = module.base_eks.eks_endpoint
+      value       = module.base_eks.cluster_endpoint
       description = "EKS cluster endpoint for base-infra"
     },
     {
       name        = "/eks/base/id"
-      value       = module.base_eks.eks_cluster_id
+      value       = module.base_eks.cluster_name
       description = "EKS cluster ID for base-infra"
     }
   ]

@@ -7,8 +7,24 @@ locals {
   instance_types   = ["t3.small"]
 }
 
+data "aws_ssm_parameter" "base_vpc_id" {
+  provider = "aws.parameters"
+  name     = "/vpc/base/id"
+}
+
 data "aws_vpc" "selected" {
-  default = true
+  id = data.aws_ssm_parameter.base_vpc_id.value
+}
+
+data "aws_subnets" "tf_subnet" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.selected.id]
+  }
+
+  tags = {
+    subnet_type = "public"
+  }
 }
 
 module "base_eks" {
@@ -16,7 +32,9 @@ module "base_eks" {
   version         = "19.16.0"
   cluster_name    = local.cluster_name
   cluster_version = 1.28
-  vpc_id          = data.aws_vpc.selected.id
+  # cluster_endpoint_public_access_cidrs = [] # set this when going to prod
+  control_plane_subnet_ids = data.aws_subnets.tf_subnet.ids
+  vpc_id                   = data.aws_vpc.selected.id
   eks_managed_node_group_defaults = {
     ami_type         = local.ami_type
     desired_capacity = local.desired_capacity
