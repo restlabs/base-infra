@@ -31,7 +31,7 @@ terratest:
 	$(GO) -C terraform/modules/vpc/test mod tidy
 	$(GO) -C terraform/modules/vpc/test test -v
 
-test: terratest deployer-test
+test: install terratest deployer-test
 
 clean:
 	$(PIP) uninstall -y \
