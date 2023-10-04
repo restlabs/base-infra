@@ -12,6 +12,7 @@ When you're ready to deploy your project build and install the base-infra-deploy
 __TESTED ON__: MacOS and Linux
 ### Requirements
 - Ansible Core 2.15+
+- AWSCLI 2+
 - Chef 18.2.7+
 - Go 1.21+
 - Kitchen 3.5.0+
