@@ -20,7 +20,7 @@ __TESTED ON__: MacOS and Linux
 - Python 3.11+
 - Terraform 1.0+
 
-### Prequistes
+### Prerequisites
 Create an S3 bucket and dynamodb table to serve as a remote backends for terraform.
 Configure AWS credentials by using either environment variables or credentials file.
 
