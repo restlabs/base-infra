@@ -9,22 +9,7 @@ This project uses a python script (base_infra_deployer.py) in the deployer folde
 When adding more terraform resources into the project, create a folder for your project in the terraform folder. 
 When you're ready to deploy your project build and install the base-infra-deployer code, it will create a CLI command called `base-deploy`.
 
-Building the project
-```commandline
-python3 -m pip install base-infra-deployer
-```
-
-Executing the base-deploy CLI tool. Pass in the directory name in the terraform folder
-```commandline
-base-deploy --target "s3/base"
-```
-
-To destroy run the following
-```commandline
-base-deploy --target "s3/base" --destroy
-```
-
-
+__TESTED ON__: MacOS and Linux
 ### Requirements
 - Ansible Core 2.15+
 - Chef 18.2.7+
@@ -34,20 +19,34 @@ base-deploy --target "s3/base" --destroy
 - Python 3.11+
 - Terraform 1.0+
 
-### Instructions
-1. Install dependencies
+### Prequistes
+Configure AWS credentials by using either environment variables or credentials file.
+
+## Instructions:
+### Building the project
+1. _Install dependencies_
 
 This will automatically install python libraries needed by base-infra-deployer and create the `base-deploy` CLI command.
 ```commandline
 make install
 ```
 
-2. Deploy all infrastructure
+Alternatively you can achieve the same command by doing the following
+```commandline
+python3 -m pip install base-infra-deployer
+```
+
+2. _Deploy all infrastructure_
 This will deploy all in terraform folder.
 ```commandline
 make deploy-all
 ```
-3. Destroying the deployed infrastructure
+If you want to only deploy a certain project, you can use the `base-deploy` CLI command
+```commandline
+base-deploy --target "s3/base" 
+```
+
+3. _Destroying the deployed infrastructure_
 Set the environment variable `DESTROY` to `--destroy`. 
 ```commandline
 make deploy-all
@@ -59,22 +58,21 @@ base-deploy --target "s3/base" --destroy
 ```
 
 ### Testing
-1. Test deployer
+1. _Test deployer_
 
 Runs unittest for base-infra-deployer
 ```commandline
 make deployer-test
 ```
 
-2. Test terraform modules
-
+2. _Test terraform modules_
 
 Runs tests for terraform modules
 ```commandline
 make terratest
 ```
 
-3. Test Chef cookbooks
+3. _Test Chef cookbooks_
 
 
 Runs tests for Chef cookbooks
@@ -82,7 +80,7 @@ Runs tests for Chef cookbooks
 make kitchen-test
 ```
 
-4. Run all tests (terraform and python deployer)
+4. _Run all tests (terraform and python deployer)_
 ```commandline
 make test
 ```
