@@ -47,6 +47,16 @@ This will deploy all in terraform folder.
 ```commandline
 make deploy-all
 ```
+3. Destroying the deployed infrastructure
+Set the environment variable `DESTROY` to `--destroy`. 
+```commandline
+make deploy-all
+```
+
+You can also use the `base-deploy` command with the `--destroy` flag.
+```commandline
+base-deploy --target "s3/base" --destroy
+```
 
 ### Testing
 1. Test deployer
@@ -76,6 +86,16 @@ make kitchen-test
 ```commandline
 make test
 ```
+
+### Setting up a development environment
+The required python libraries are:
+- boto3
+- pylint
+
+Create a python virtual environment, use `make install` or `python3 -m pip install base-infra-deployer` to install dependencies.
+Please use pylint to check your code for style issues.
+
+Set up your AWS access keys by either setting up environment variables or editing the aws credentials file.
 
 ### TODO
 - Add Packer to base-infra-deployer script to deploy chef cookbooks and ansible playbooks
