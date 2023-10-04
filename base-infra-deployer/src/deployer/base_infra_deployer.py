@@ -69,7 +69,7 @@ def main():
     args = parser.parse_args()
 
     try:
-        print(f'DEPLOYING: {args.target.upper()}')
+        logger.info(f'DEPLOYING: {args.target.upper()}')
         app_dir = f'{dirname}/{args.target}'
 
         tf_deployer = TFDeployer(

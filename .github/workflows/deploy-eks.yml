@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       destroy:
-        description: 'destroy resources by entering in "--destroy"'
+        description: 'destroy resources with "--destroy"'
         required: false
         type: string
 
