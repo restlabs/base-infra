@@ -47,5 +47,7 @@ module "base_eks" {
     min_capacity     = local.min_capacity
   }
 
-  eks_managed_node_groups = {}
+  eks_managed_node_groups = {
+    blue = {}
+  }
 }
