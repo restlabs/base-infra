@@ -67,3 +67,4 @@ make test
 
 ### TODO
 - Add Packer to base-infra-deployer script to deploy chef cookbooks and ansible playbooks
+- Create ephemeral github actions self-hosted runner in a docker container
