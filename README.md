@@ -21,7 +21,18 @@ __TESTED ON__: MacOS and Linux
 - Terraform 1.0+
 
 ### Prequistes
+Create an S3 bucket and dynamodb table to serve as a remote backends for terraform.
 Configure AWS credentials by using either environment variables or credentials file.
+
+Log into AWS or use the the AWSCLI and set the following parameters in Systems Manager Parameter Store in us-east-1 region. 
+These parameters are used by base-deploy to create a terraform backend config file.
+Fill in the parameters based on your environment. You can change the region for base-deploy to check by editing this [line](https://github.com/pafable/base-infra/blob/main/base-infra-deployer/src/deployer/base_infra_deployer.py#L19).
+
+- /account/owner/email
+- /account/owner
+- /account/region
+- /tools/terraform/state/bucket
+- /tools/terraform/state/dynamodb
 
 ## Instructions:
 ### Building the project
@@ -50,7 +61,7 @@ base-deploy --target "s3/base"
 
 3. _Destroying the deployed infrastructure_
 
-4. Set the environment variable `DESTROY` to `--destroy`. 
+Set the environment variable `DESTROY` to `--destroy`. 
 ```commandline
 make deploy-all
 ```
