@@ -38,6 +38,7 @@ python3 -m pip install base-infra-deployer
 ```
 
 2. _Deploy all infrastructure_
+
 This will deploy all in terraform folder.
 ```commandline
 make deploy-all
@@ -48,7 +49,8 @@ base-deploy --target "s3/base"
 ```
 
 3. _Destroying the deployed infrastructure_
-Set the environment variable `DESTROY` to `--destroy`. 
+
+4. Set the environment variable `DESTROY` to `--destroy`. 
 ```commandline
 make deploy-all
 ```
