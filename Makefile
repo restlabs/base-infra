@@ -14,6 +14,7 @@ deploy-eks:
 	base-deploy --target "eks/base" $(DESTROY)
 
 deployer-test:
+	$(PYTHON) -m pylint base-infra-deployer/src
 	$(PYTHON) -m unittest -v base-infra-deployer/tests/test_deployer.py
 
 install:
@@ -38,6 +39,7 @@ clean:
 		boto3 \
 		botocore \
 		jmespath \
+		pylint \
 		python-dateutil \
 		six \
 		s3transfer \

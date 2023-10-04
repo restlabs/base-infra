@@ -1,13 +1,14 @@
 [build-system]
 requires = [
-    "setuptools >= 65.5.1",
-    "wheel >= 0.38.4"
+    "setuptools >= 68.2.2",
+    "wheel >= 0.41.2"
 ]
 build-backend = "setuptools.build_meta"
 
 [project]
 dependencies = [
-    "boto3"
+    "boto3",
+    "pylint"
 ]
 description = "base-infra-deployer deployer utility"
 name = "base-infra-deployer"
