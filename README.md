@@ -3,9 +3,28 @@
 [![CI Tests](https://github.com/pafable/base-infra/actions/workflows/ci.yml/badge.svg)](https://github.com/pafable/base-infra/actions/workflows/ci.yml)
 
 Deploys base infrastructure to AWS. 
-This project uses a python script (deployer.py) in the terraform folder to loop through the folders in terraform and deploys them. 
+This project uses a python script (base_infra_deployer.py) in the deployer folder to deploy infrastructure in the terraform folder.
 
-## Requirements
+When adding more terraform resources into the project, create a folder for your project in the terraform folder. 
+When you're ready to deploy your project build and install the base-infra-deployer code, it will create a CLI command called `base-deploy`.
+
+Building the project
+```commandline
+python3 -m pip install base-infra-deployer
+```
+
+Executing the base-deploy CLI tool. Pass in the directory name in the terraform folder
+```commandline
+base-deploy --target "s3/base"
+```
+
+To destroy run the following
+```commandline
+base-deploy --target "s3/base" --destroy
+```
+
+
+### Requirements
 - Ansible Core 2.15+
 - Chef 18.2.7+
 - Go 1.21+
@@ -20,12 +39,12 @@ This project uses a python script (deployer.py) in the terraform folder to loop 
 make install
 ```
 
-2. Deploy infrastructure
+2. Deploy all infrastructure
 ```commandline
-make deploy
+make deploy-all
 ```
 
-## Testing
+### Testing
 1. Test deployer
 ```commandline
 make deployer-test
@@ -45,3 +64,6 @@ make kitchen-test
 ```commandline
 make test
 ```
+
+### TODO
+- Add Packer to base-infra-deployer script
