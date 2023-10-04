@@ -1,5 +1,6 @@
 # Base Infra
 [![Deploy Base Infra](https://github.com/pafable/base-infra/actions/workflows/deploy.yml/badge.svg)](https://github.com/pafable/base-infra/actions/workflows/deploy.yml)
+
 [![CI Tests](https://github.com/pafable/base-infra/actions/workflows/ci.yml/badge.svg)](https://github.com/pafable/base-infra/actions/workflows/ci.yml)
 
 Deploys base infrastructure to AWS. 
@@ -35,27 +36,38 @@ base-deploy --target "s3/base" --destroy
 
 ### Instructions
 1. Install dependencies
+
+This will automatically install python libraries needed by base-infra-deployer and create the `base-deploy` CLI command.
 ```commandline
 make install
 ```
 
 2. Deploy all infrastructure
+This will deploy all in terraform folder.
 ```commandline
 make deploy-all
 ```
 
 ### Testing
 1. Test deployer
+
+Runs unittest for base-infra-deployer
 ```commandline
 make deployer-test
 ```
 
 2. Test terraform modules
+
+
+Runs tests for terraform modules
 ```commandline
 make terratest
 ```
 
 3. Test Chef cookbooks
+
+
+Runs tests for Chef cookbooks
 ```commandline
 make kitchen-test
 ```
