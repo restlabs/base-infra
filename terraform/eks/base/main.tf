@@ -1,11 +1,13 @@
 locals {
-  ami_type       = "AL2_x86_64"
-  cluster_name   = "${var.owner}-${var.environment}-eks-${var.region}"
-  disk_size      = 50
-  desired_size   = 3
-  max_size       = 4
-  min_size       = 1
-  instance_types = ["t3.small"]
+  ami_type                  = "AL2_x86_64"
+  cluster_name              = "${var.owner}-${var.environment}-eks-${var.region}"
+  disk_size                 = 50
+  desired_size              = 3
+  max_size                  = 4
+  min_size                  = 1
+  instance_types            = ["t3.small"]
+  is_private_access_enabled = var.environment == "poc" || var.environment == "dev" ? false : true
+  is_public_access_enabled  = var.environment == "poc" || var.environment == "dev" ? true : false
 }
 
 data "aws_ssm_parameter" "base_vpc_id" {
@@ -29,16 +31,16 @@ data "aws_subnets" "tf_subnet" {
 }
 
 module "base_eks" {
-  source                               = "terraform-aws-modules/eks/aws"
-  version                              = "19.16.0"
-  cluster_name                         = local.cluster_name
-  cluster_version                      = 1.28
-#  cluster_endpoint_public_access_cidrs = [] # set this when going to prod
-  control_plane_subnet_ids             = data.aws_subnets.tf_subnet.ids
-  cluster_endpoint_private_access      = false # set this to true when going to prod
-  cluster_endpoint_public_access       = true # set this to false when going to prod
-  subnet_ids                           = data.aws_subnets.tf_subnet.ids
-  vpc_id                               = data.aws_vpc.selected.id
+  source          = "terraform-aws-modules/eks/aws"
+  version         = "19.16.0"
+  cluster_name    = local.cluster_name
+  cluster_version = 1.28
+  #  cluster_endpoint_public_access_cidrs = [] # set this when going to prod
+  control_plane_subnet_ids        = data.aws_subnets.tf_subnet.ids
+  cluster_endpoint_private_access = local.is_private_access_enabled
+  cluster_endpoint_public_access  = local.is_public_access_enabled
+  subnet_ids                      = data.aws_subnets.tf_subnet.ids
+  vpc_id                          = data.aws_vpc.selected.id
 
   eks_managed_node_group_defaults = {
     ami_type       = local.ami_type
