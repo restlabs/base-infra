@@ -2,9 +2,20 @@ variable "app_name" {
   type = string
 }
 
+variable "block_public_acl" {
+  type    = bool
+  default = true
+}
+
 variable "code_location" {
   type = string
 }
+
+variable "is_versioning_enabled" {
+  type    = string
+  default = "Enabled"
+}
+
 
 variable "email" {
   type = string
