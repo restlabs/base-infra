@@ -1,3 +1,6 @@
+"""
+Terraform deployer
+"""
 import json
 import subprocess
 
@@ -8,6 +11,9 @@ except ImportError:
 
 
 class TFDeployer:
+    # pylint: disable=R0902
+    # pylint: disable=R0913
+    # pylint: disable=R0903
     """
     creates a terraform base-infra-deployer object
     """
@@ -59,11 +65,20 @@ class TFDeployer:
             data_json: dict,
             file_to_display: str
     ):
-        with open(f'{self.tf_dir}/{file_to_display}', 'w') as json_file:
+        with open(
+                f'{self.tf_dir}/{file_to_display}',
+                'w',
+                encoding='utf-8'
+        ) as json_file:
             json.dump(data_json, json_file)
 
+        # pylint: disable=W1309
+        # pylint: disable=W1203
         logger.info(f'displaying contents of {file_to_display} :')
-        with open(f'{self.tf_dir}/{file_to_display}', 'r') as json_file:
+        with open(
+                f'{self.tf_dir}/{file_to_display}',
+                'r', encoding='utf-8'
+        ) as json_file:
             data = json.load(json_file)
             logger.info(
                 json.dumps(

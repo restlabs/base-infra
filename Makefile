@@ -10,10 +10,14 @@ deploy-all:
 	base-deploy --target "vpc/base" $(DESTROY)
 	base-deploy --target "eks/base" $(DESTROY)
 
-deploy-eks:
-	base-deploy --target "eks/base" $(DESTROY)
+deploy-eks: deploy-vpc
+	base-deploy --target "eks/base"
+
+deploy-vpc:
+	base-deploy --target "vpc/base" $(DESTROY)
 
 deployer-test:
+	$(PYTHON) -m pylint base-infra-deployer/src
 	$(PYTHON) -m unittest -v base-infra-deployer/tests/test_deployer.py
 
 install:
@@ -30,7 +34,7 @@ terratest:
 	$(GO) -C terraform/modules/vpc/test mod tidy
 	$(GO) -C terraform/modules/vpc/test test -v
 
-test: terratest deployer-test
+test: install terratest deployer-test
 
 clean:
 	$(PIP) uninstall -y \
@@ -38,6 +42,7 @@ clean:
 		boto3 \
 		botocore \
 		jmespath \
+		pylint \
 		python-dateutil \
 		six \
 		s3transfer \
