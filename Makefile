@@ -8,7 +8,6 @@ deploy-all:
 	base-deploy --version
 	base-deploy --target "s3/base" $(DESTROY)
 	base-deploy --target "vpc/base" $(DESTROY)
-	base-deploy --target "eks/base" $(DESTROY)
 
 deploy-eks: deploy-vpc
 	base-deploy --target "eks/base"
