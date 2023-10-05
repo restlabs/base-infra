@@ -1,5 +1,6 @@
 locals {
-  subnet_list = [ 0, 1, 2 ]
+  # needs to be strings
+  subnet_list = [ "0", "1", "2" ]
 }
 
 module "base_vpc" {
