@@ -33,7 +33,7 @@ module "base_eks" {
   version         = "19.16.0"
   cluster_name    = local.cluster_name
   cluster_version = 1.28
-  # cluster_endpoint_public_access_cidrs = [] # set this when going to prod
+  cluster_endpoint_public_access_cidrs = ["47.14.183.138/32"] # set this when going to prod
   control_plane_subnet_ids = data.aws_subnets.tf_subnet.ids
   subnet_ids               = data.aws_subnets.tf_subnet.ids
   vpc_id                   = data.aws_vpc.selected.id
@@ -50,6 +50,9 @@ module "base_eks" {
   eks_managed_node_groups = {
     default = {
       use_custom_launch_template = true
+      launch_template_tags = {
+        Name = "${local.base_tags.project}-eks-default-node"
+      }
     }
   }
 }
