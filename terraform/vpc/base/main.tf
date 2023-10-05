@@ -21,6 +21,9 @@ resource "aws_subnet" "tf_public_subnets" {
 
 resource "aws_internet_gateway" "tf_gw" {
   vpc_id = module.base_vpc.vpc_id
+  tags = {
+    Name = "${local.common_tags.project}-igw"
+  }
 }
 
 resource "aws_default_route_table" "tf_default_rtb" {
@@ -29,5 +32,9 @@ resource "aws_default_route_table" "tf_default_rtb" {
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.tf_gw.id
+  }
+
+  tags = {
+    Name = "${local.common_tags.project}-rtb"
   }
 }
