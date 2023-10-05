@@ -11,11 +11,12 @@ module "base_vpc" {
 }
 
 resource "aws_subnet" "tf_public_subnets" {
-  for_each          = toset(["0", "1", "2"])
-  availability_zone = var.availability_zones[each.key]
-  cidr_block        = "10.10.${each.value}.0/24"
-  vpc_id            = module.base_vpc.vpc_id
-  tags              = merge(local.common_tags, { subnet_type = "public" }, { Name = "base-infra-public-${each.value}" })
+  for_each                = toset(["0", "1", "2"])
+  availability_zone       = var.availability_zones[each.key]
+  cidr_block              = "10.10.${each.value}.0/24"
+  map_public_ip_on_launch = true
+  vpc_id                  = module.base_vpc.vpc_id
+  tags                    = merge(local.common_tags, { subnet_type = "public" }, { Name = "base-infra-public-${each.value}" })
 }
 
 resource "aws_internet_gateway" "tf_gw" {

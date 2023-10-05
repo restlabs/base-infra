@@ -10,8 +10,11 @@ deploy-all:
 	base-deploy --target "vpc/base" $(DESTROY)
 	base-deploy --target "eks/base" $(DESTROY)
 
-deploy-eks:
-	base-deploy --target "eks/base" $(DESTROY)
+deploy-eks: deploy-vpc
+	base-deploy --target "eks/base"
+
+deploy-vpc:
+	base-deploy --target "vpc/base" $(DESTROY)
 
 deployer-test:
 	$(PYTHON) -m pylint base-infra-deployer/src
