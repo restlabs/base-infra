@@ -36,6 +36,7 @@ module "base_eks" {
 #  cluster_endpoint_public_access_cidrs = [] # set this when going to prod
   control_plane_subnet_ids             = data.aws_subnets.tf_subnet.ids
   cluster_endpoint_private_access      = false # set this to true when going to prod
+  cluster_endpoint_public_access       = true # set this to false when going to prod
   subnet_ids                           = data.aws_subnets.tf_subnet.ids
   vpc_id                               = data.aws_vpc.selected.id
 
