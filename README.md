@@ -1,12 +1,10 @@
 # Base Infra
-[![Deploy Base Infra](https://github.com/pafable/base-infra/actions/workflows/deploy.yml/badge.svg)](https://github.com/pafable/base-infra/actions/workflows/deploy.yml)
-
 [![CI Tests](https://github.com/pafable/base-infra/actions/workflows/ci.yml/badge.svg)](https://github.com/pafable/base-infra/actions/workflows/ci.yml)
 
-Deploys base infrastructure to AWS. 
+Deploys base infrastructure to AWS.
 This project uses a python script (base_infra_deployer.py) in the deployer folder to deploy infrastructure in the terraform folder.
 
-When adding more terraform resources into the project, create a folder for your project in the terraform folder. 
+When adding more terraform resources into the project, create a folder for your project in the terraform folder.
 When you're ready to deploy your project build and install the base-infra-deployer code, it will create a CLI command called `base-deploy`.
 
 __TESTED ON__: MacOS and Linux
@@ -18,13 +16,15 @@ __TESTED ON__: MacOS and Linux
 - Kitchen 3.5.0+
 - Packer 1.9.4+
 - Python 3.11+
+- Snyk 1.666+
 - Terraform 1.0+
+- Trivy 0.45+
 
 ### Prerequisites
 Create an S3 bucket and dynamodb table to serve as a remote backends for terraform.
 Configure AWS credentials by using either environment variables or credentials file.
 
-Log into AWS or use the AWSCLI and set the following parameters in Systems Manager Parameter Store in us-east-1 region. 
+Log into AWS or use the AWSCLI and set the following parameters in Systems Manager Parameter Store in us-east-1 region.
 These parameters are used by base-deploy to create a terraform backend config file.
 Fill in the parameters based on your environment. You can change the region for base-deploy to check by editing this [line](https://github.com/pafable/base-infra/blob/main/base-infra-deployer/src/deployer/base_infra_deployer.py#L19).
 
@@ -63,7 +63,7 @@ base-deploy --target "s3/base"
 
 3. _Destroying the deployed infrastructure_
 
-Set the environment variable `DESTROY` to `--destroy`. 
+Set the environment variable `DESTROY` to `--destroy`.
 ```commandline
 make deploy-all
 ```

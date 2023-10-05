@@ -1,3 +1,7 @@
+locals {
+  subnet_list = [ 0, 1, 2 ]
+}
+
 module "base_vpc" {
   source        = "../../modules/vpc"
   app_name      = var.app_name
@@ -11,10 +15,10 @@ module "base_vpc" {
 }
 
 resource "aws_subnet" "tf_public_subnets" {
-  for_each                = toset(["0", "1", "2"])
+  for_each                = toset(local.subnet_list)
   availability_zone       = var.availability_zones[each.key]
   cidr_block              = "10.10.${each.value}.0/24"
-  map_public_ip_on_launch = true
+  map_public_ip_on_launch = false
   vpc_id                  = module.base_vpc.vpc_id
   tags                    = merge(local.common_tags, { subnet_type = "public" }, { Name = "base-infra-public-${each.value}" })
 }
