@@ -1,6 +1,7 @@
 locals {
   ami_type                  = "AL2_x86_64"
   cluster_name              = "${var.owner}-${var.environment}-eks-${var.region}"
+  eks_version               = 1.28
   disk_size                 = 50
   desired_size              = 3
   max_size                  = 4
@@ -34,7 +35,7 @@ module "base_eks" {
   source          = "terraform-aws-modules/eks/aws"
   version         = "19.16.0"
   cluster_name    = local.cluster_name
-  cluster_version = 1.28
+  cluster_version = local.eks_version
   #  cluster_endpoint_public_access_cidrs = [] # set this when going to prod
   control_plane_subnet_ids        = data.aws_subnets.tf_subnet.ids
   cluster_endpoint_private_access = local.is_private_access_enabled
