@@ -29,14 +29,15 @@ data "aws_subnets" "tf_subnet" {
 }
 
 module "base_eks" {
-  source          = "terraform-aws-modules/eks/aws"
-  version         = "19.16.0"
-  cluster_name    = local.cluster_name
-  cluster_version = 1.28
-  cluster_endpoint_public_access_cidrs = ["47.14.183.138/32"] # set this when going to prod
-  control_plane_subnet_ids = data.aws_subnets.tf_subnet.ids
-  subnet_ids               = data.aws_subnets.tf_subnet.ids
-  vpc_id                   = data.aws_vpc.selected.id
+  source                               = "terraform-aws-modules/eks/aws"
+  version                              = "19.16.0"
+  cluster_name                         = local.cluster_name
+  cluster_version                      = 1.28
+#  cluster_endpoint_public_access_cidrs = [] # set this when going to prod
+  control_plane_subnet_ids             = data.aws_subnets.tf_subnet.ids
+  cluster_endpoint_private_access      = false # set this to true when going to prod
+  subnet_ids                           = data.aws_subnets.tf_subnet.ids
+  vpc_id                               = data.aws_vpc.selected.id
 
   eks_managed_node_group_defaults = {
     ami_type       = local.ami_type
