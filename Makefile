@@ -1,6 +1,7 @@
 PYTHON ?= python3
 PIP ?= $(PYTHON) -m pip
 GO ?= go
+TRIVY ?= trivy
 
 .PHONY: clean install deploy-all deploy-eks deployer-test kitchen-test terratest test
 
@@ -34,6 +35,10 @@ terratest:
 	$(GO) -C terraform/modules/vpc/test test -v
 
 test: install terratest deployer-test
+
+tf-trivy:
+	$(TRIVY) config --config=trivy.yaml terraform
+
 
 clean:
 	$(PIP) uninstall -y \
