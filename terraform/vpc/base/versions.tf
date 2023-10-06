@@ -1,5 +1,5 @@
 module "terraform_aws_version" {
-  source = "../../modules/terraform_version"
+  source = "../../modules/terraform-aws-version"
 }
 
 locals {

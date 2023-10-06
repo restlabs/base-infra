@@ -2,17 +2,19 @@ module "terraform_aws_version" {
   source = "../../modules/terraform-aws-version"
 }
 
-terraform {
-  backend "s3" {}
+module "helm_version" {
+  source = "../../modules/helm-version"
 }
 
 locals {
   base_tags = {
+    base_tags = {
     owner         = var.owner
-    code_location = "terraform/eks/base"
+    code_location = "terraform/helm/argocd"
     project       = "base-infra"
     email         = var.email
     environment   = var.environment
+  }
   }
 }
 
@@ -24,10 +26,15 @@ provider "aws" {
 }
 
 provider "aws" {
-  alias  = "parameters"
+  alias = "parameters"
   region = "us-east-1"
   default_tags {
     tags = local.base_tags
   }
 }
 
+provider "helm" {
+  kubernetes {
+    host = ""
+  }
+}
