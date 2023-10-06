@@ -1,0 +1,11 @@
+exit-code: 1
+severity:
+  - CRITICAL
+misconfiguration:
+  trace: true
+  skip-dirs:
+    - "**/terraform/**/**/.terraform"
+  skip-files:
+    - "terraform-aws-modules/eks/aws/main.tf"
+    - "terraform-aws-modules/eks/aws/node_groups.tf"
+quiet: false
