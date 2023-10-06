@@ -11,7 +11,7 @@ deploy-all:
 	base-deploy --target "vpc/base" $(DESTROY)
 
 deploy-eks:
-	base-deploy --target "eks/base"
+	base-deploy --target "eks/base" $(DESTROY)
 
 deploy-vpc:
 	base-deploy --target "vpc/base" $(DESTROY)

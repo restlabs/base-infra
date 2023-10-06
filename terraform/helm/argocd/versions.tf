@@ -24,3 +24,9 @@ provider "aws" {
     tags = local.base_tags
   }
 }
+
+provider "helm" {
+  kubernetes {
+    host = ""
+  }
+}
