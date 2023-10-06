@@ -25,6 +25,14 @@ provider "aws" {
   }
 }
 
+provider "aws" {
+  alias = "parameters"
+  region = "us-east-1"
+  default_tags {
+    tags = local.base_tags
+  }
+}
+
 provider "helm" {
   kubernetes {
     host = ""
