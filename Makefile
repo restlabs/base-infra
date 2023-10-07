@@ -9,6 +9,14 @@ deploy-all:
 	base-deploy --version
 	make deploy-vpc
 	make deploy-s3
+	make deploy-eks
+	make deploy-argo
+
+destroy-all:
+	make deploy-argo
+	make deploy-eks
+	make deploy-s3
+	make deploy-vpc
 
 deploy-argo:
 	base-deploy --target "helm/argo" $(DESTROY)
