@@ -1,12 +1,6 @@
 name: Destroy All
 on:
   workflow_dispatch:
-    inputs:
-      destroy:
-        description: 'destroy resource(s)'
-        default: true
-        required: false
-        type: boolean
 
 jobs:
   deploy-base-infra:
@@ -28,14 +22,6 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE }}
           aws-region: 'us-east-1'
 
-      - name: check input
-        run: |
-          if [ "${{ inputs.destroy }}" == "true" ]; then
-            echo "DESTROY=--destroy" >> $GITHUB_ENV
-          else
-            echo "DESTROY=" >> $GITHUB_ENV
-          fi
-
       - name: check python version
         run: python --version
 
@@ -43,4 +29,4 @@ jobs:
         run: make install
 
       - name: deploy
-        run: make DESTROY=$DESTROY destroy-all
+        run: make DESTROY=--destroy destroy-all
