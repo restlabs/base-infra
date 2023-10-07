@@ -33,7 +33,7 @@ helm install argocd --namespace hello-world argo/argo-cd \
 
 ### Retrieving initial admin password
 ```commandline
-kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+kubectl -n argo get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 ```
 
 

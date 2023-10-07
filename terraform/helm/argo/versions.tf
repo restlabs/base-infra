@@ -7,14 +7,14 @@ module "helm_version" {
 }
 
 locals {
-    base_tags = {
-      code_location = "terraform/helm/argo"
-      email         = var.email
-      environment   = data.aws_ssm_parameter.account_env.value
-      owner         = var.owner
-      project       = "base-infra"
-    }
+  base_tags = {
+    code_location = "terraform/helm/argo"
+    email         = var.email
+    environment   = data.aws_ssm_parameter.account_env.value
+    owner         = var.owner
+    project       = "base-infra"
   }
+}
 
 terraform {
   backend "s3" {}
