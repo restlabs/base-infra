@@ -1,4 +1,4 @@
-PYTHON ?= python3
+PYTHON ?= python
 PIP ?= $(PYTHON) -m pip
 GO ?= go
 TRIVY ?= trivy
@@ -7,11 +7,25 @@ TRIVY ?= trivy
 
 deploy-all:
 	base-deploy --version
-	base-deploy --target "s3/base" $(DESTROY)
-	base-deploy --target "vpc/base" $(DESTROY)
+	make deploy-vpc
+	make deploy-s3
+	make deploy-eks
+	make deploy-argo
+
+destroy-all:
+	make deploy-argo
+	make deploy-eks
+	make deploy-s3
+	make deploy-vpc
+
+deploy-argo:
+	base-deploy --target "helm/argo" $(DESTROY)
 
 deploy-eks:
 	base-deploy --target "eks/base" $(DESTROY)
+
+deploy-s3:
+	base-deploy --target "s3/base" $(DESTROY)
 
 deploy-vpc:
 	base-deploy --target "vpc/base" $(DESTROY)

@@ -1,34 +1,14 @@
 locals {
   ami_type                  = "AL2_x86_64"
-  cluster_name              = "${var.owner}-${var.environment}-eks-${var.region}"
+  cluster_name              = "${var.owner}-${local.base_tags.environment}-eks-${var.region}"
   eks_version               = 1.28
   disk_size                 = 50
   desired_size              = 3
   max_size                  = 4
   min_size                  = 1
   instance_types            = ["t3.small"]
-  is_private_access_enabled = var.environment == "poc" || var.environment == "dev" ? false : true
-  is_public_access_enabled  = var.environment == "poc" || var.environment == "dev" ? true : false
-}
-
-data "aws_ssm_parameter" "base_vpc_id" {
-  provider = "aws.parameters"
-  name     = "/vpc/base/id"
-}
-
-data "aws_vpc" "selected" {
-  id = data.aws_ssm_parameter.base_vpc_id.value
-}
-
-data "aws_subnets" "tf_subnet" {
-  filter {
-    name   = "vpc-id"
-    values = [data.aws_vpc.selected.id]
-  }
-
-  tags = {
-    subnet_type = "public"
-  }
+  is_private_access_enabled = local.base_tags.environment == "poc" || local.base_tags.environment == "dev" ? false : true
+  is_public_access_enabled  = local.base_tags.environment == "poc" || local.base_tags.environment == "dev" ? true : false
 }
 
 module "base_eks" {
