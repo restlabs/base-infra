@@ -17,7 +17,7 @@ module "base_vpc" {
 }
 
 module "base_igw" {
-  source        = "../../modules/internet_gateway"
+  source        = "../../modules/internet-gateway"
   app_name      = local.common_tags.project
   code_location = local.code_location
   email         = var.email
