@@ -13,7 +13,9 @@ __TESTED ON__: MacOS and Linux
 - AWSCLI 2+
 - Chef 18.2.7+
 - Go 1.21+
+- Helm 3.13+
 - Kitchen 3.5.0+
+- kubectl 1.28+
 - Packer 1.9.4+
 - Python 3.11+
 - Snyk 1.666+

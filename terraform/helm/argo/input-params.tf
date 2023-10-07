@@ -15,3 +15,8 @@ data "aws_eks_cluster" "eks_cluster" {
 data "aws_eks_cluster_auth" "eks_cluster" {
   name = local.cluster_name
 }
+
+data "aws_ssm_parameter" "account_env" {
+  provider = aws.parameters
+  name     = "/account/env"
+}

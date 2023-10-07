@@ -7,15 +7,17 @@ module "helm_version" {
 }
 
 locals {
-  base_tags = {
     base_tags = {
-      owner         = var.owner
-      code_location = "terraform/helm/argocd"
-      project       = "base-infra"
+      code_location = "terraform/helm/argo"
       email         = var.email
-      environment   = var.environment
+      environment   = data.aws_ssm_parameter.account_env.value
+      owner         = var.owner
+      project       = "base-infra"
     }
   }
+
+terraform {
+  backend "s3" {}
 }
 
 provider "aws" {
@@ -28,9 +30,6 @@ provider "aws" {
 provider "aws" {
   alias  = "parameters"
   region = "us-east-1"
-  default_tags {
-    tags = local.base_tags
-  }
 }
 
 provider "helm" {

@@ -12,7 +12,7 @@ locals {
     code_location = "terraform/eks/base"
     project       = "base-infra"
     email         = var.email
-    environment   = var.environment
+    environment   = data.aws_ssm_parameter.account_env.value
   }
 }
 
@@ -26,8 +26,5 @@ provider "aws" {
 provider "aws" {
   alias  = "parameters"
   region = "us-east-1"
-  default_tags {
-    tags = local.base_tags
-  }
 }
 

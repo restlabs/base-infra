@@ -3,11 +3,6 @@ variable "email" {
   description = "email"
 }
 
-variable "environment" {
-  type        = string
-  description = "environment"
-}
-
 variable "owner" {
   type        = string
   description = "owner"
