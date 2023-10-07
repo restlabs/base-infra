@@ -1,9 +1,9 @@
 locals {
-  cluster_name = "${var.owner}-${var.environment}-eks-${var.region}"
+  cluster_name = "${var.owner}-${local.base_tags.environment}-eks-${var.region}"
 }
 
 resource "helm_release" "argocd" {
-  chart            = "argo"
+  chart            = "argo-cd"
   create_namespace = true
   name             = "argo"
   namespace        = "argo"

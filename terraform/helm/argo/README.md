@@ -1,6 +1,8 @@
 ## ArgoCD Deployment
 The helm repo utilized in this project is https://argoproj.github.io/argo-helm
 
+helm artifacthub: https://artifacthub.io/packages/helm/argo/argo-cd
+
 ### Terraform deployment with make
 To automatically install go to the base-infra root directory and run `make deploy-argo` command.
 
