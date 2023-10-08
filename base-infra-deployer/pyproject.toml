@@ -13,7 +13,7 @@ dependencies = [
 description = "base-infra-deployer deployer utility"
 name = "base-infra-deployer"
 requires-python = ">=3.10"
-version = "1.0.0"
+version = "1.0.1"
 
 [project.scripts]
 base-deploy = "deployer.main:main"

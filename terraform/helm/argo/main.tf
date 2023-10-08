@@ -5,11 +5,6 @@ locals {
   namespace     = "argo"
   repository    = "https://argoproj.github.io/argo-helm"
 
-  base_infra_repo = {
-    name = local.base_tags.project
-    url  = "https://github.com/pafable/base-infra/kubernetes/manifests"
-  }
-
   test_repo = {
     name = "test-repo"
     url  = "https://github.com/pafable/kubernetes-apps"
@@ -22,7 +17,6 @@ locals {
 
     configs = {
       repositories = {
-        base-infra = local.base_infra_repo
         test-repo  = local.test_repo
       }
     }

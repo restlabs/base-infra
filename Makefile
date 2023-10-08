@@ -10,9 +10,11 @@ deploy-all:
 	make deploy-s3
 	make deploy-eks
 	make deploy-argo
+	make deploy-argo-example
 
 .PHONY: destroy-all
 destroy-all:
+	make deploy-argo-example
 	make deploy-argo
 	make deploy-eks
 	make deploy-s3
