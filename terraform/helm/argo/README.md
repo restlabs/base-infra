@@ -31,6 +31,7 @@ helm install argocd --namespace hello-world argo/argo-cd \
     --set server.service.type=LoadBalancer # do not include this if you do not want your argo server to be publicly accessible through the internet
 ```
 
+
 ### Retrieving initial admin password
 ```commandline
 kubectl -n argo get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
