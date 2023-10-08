@@ -1,6 +1,5 @@
 locals {
   cluster_name        = "${var.owner}-${local.base_tags.environment}-eks-${var.region}"
-  base_infra_repo_url = "https://github.com/pafable/base-infra"
   chart               = "argo-cd"
   chart_version       = "5.46.7"
   namespace           = "argo"
@@ -8,7 +7,7 @@ locals {
 
   base_infra_repo = {
     name = local.base_tags.project
-    url  = local.base_infra_repo_url
+    url  = "https://github.com/pafable/base-infra/kubernetes/manifests"
   }
 
   test_repo = {
