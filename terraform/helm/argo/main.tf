@@ -1,8 +1,8 @@
 locals {
   cluster_name       = "${var.owner}-${local.base_tags.environment}-eks-${var.region}"
-  isLB               = false
-  service_type_name  = isLB ? "server.service.type" : null
-  service_type_value = isLB ? "LoadBalancer" : null
+#  value              = [
+#
+#  ]
 }
 
 resource "helm_release" "argocd" {
@@ -48,8 +48,17 @@ resource "helm_release" "argocd" {
     value = 2
   }
 
-  set {
-    name  = local.service_type_name
-    value = local.service_type_value
-  }
+  values = [
+    yamlencode(
+      {
+        repositories = [
+          {
+            my-github = {
+              url = "https://github.com/pafable/base-infra"
+            }
+          }
+        ]
+      }
+    )
+  ]
 }
