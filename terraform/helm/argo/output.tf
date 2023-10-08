@@ -5,7 +5,3 @@ output "argo_status" {
 output "argo_metadata" {
   value = module.argo.metadata
 }
-
-output "repositories" {
-  value = module.argo.values
-}
