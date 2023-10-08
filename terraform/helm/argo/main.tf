@@ -1,9 +1,9 @@
 locals {
-  cluster_name        = "${var.owner}-${local.base_tags.environment}-eks-${var.region}"
-  chart               = "argo-cd"
-  chart_version       = "5.46.7"
-  namespace           = "argo"
-  repository          = "https://argoproj.github.io/argo-helm"
+  cluster_name  = "${var.owner}-${local.base_tags.environment}-eks-${var.region}"
+  chart         = "argo-cd"
+  chart_version = "5.46.7"
+  namespace     = "argo"
+  repository    = "https://argoproj.github.io/argo-helm"
 
   base_infra_repo = {
     name = local.base_tags.project
@@ -12,7 +12,7 @@ locals {
 
   test_repo = {
     name = "test-repo"
-    url  = "https://test-repo.local"
+    url  = "https://github.com/pafable/kubernetes-apps"
   }
 
   values_map = {

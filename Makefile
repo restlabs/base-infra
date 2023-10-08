@@ -22,6 +22,10 @@ destroy-all:
 deploy-argo:
 	base-deploy --target "helm/argo" $(DESTROY)
 
+.PHONY: deploy-argo-example
+deploy-argo-example:
+	base-deploy --target "kubernetes/manifests/argo-example-app" $(DESTROY)
+
 .PHONY: deploy-eks
 deploy-eks:
 	base-deploy --target "eks/base" $(DESTROY)

@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argo-example-app-app-app
+  namespace: argo
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/pafable/kubernetes-apps.git
+    targetRevision: HEAD
+    path: .
+    directory:
+      recurse: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argo-example-app-app
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
