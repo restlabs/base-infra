@@ -32,5 +32,4 @@ variable "repository" {
 
 variable "values_map" {
   description = "values to be passed into the chart"
-  type        = map(object({}))
 }
