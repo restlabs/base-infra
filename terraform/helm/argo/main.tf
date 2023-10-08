@@ -45,21 +45,19 @@ resource "helm_release" "argocd" {
     value = 2
   }
 
-#  set {
-#    name  = "configs.repositories.base-infra.url"
-#    value = "https://github.com/pafable/base-infra"
-#  }
-
   values = [
     yamlencode({
       configs = {
-        repositories = [
-          {
-            my-github = {
-              url = "https://github.com/pafable/base-infra"
-            }
+        repositories = {
+          base-infra = {
+            name = "base-infra"
+            url  = "https://github.com/pafable/base-infra"
+          },
+          eks-cluster = {
+            name = "eks-cluster"
+            url  = "https://github.com/pafable/eks-cluster"
           }
-        ]
+        }
       }
     })
   ]
