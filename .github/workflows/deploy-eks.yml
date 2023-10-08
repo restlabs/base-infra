@@ -9,7 +9,7 @@ on:
         type: boolean
 
 jobs:
-  deploy-base-infra:
+  deploy-eks:
     runs-on: ubuntu-latest
     environment: deploy
     steps:
