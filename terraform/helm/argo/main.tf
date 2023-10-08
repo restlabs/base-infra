@@ -1,8 +1,5 @@
 locals {
-  cluster_name       = "${var.owner}-${local.base_tags.environment}-eks-${var.region}"
-  isLB               = false
-  service_type_name  = isLB ? "server.service.type" : null
-  service_type_value = isLB ? "LoadBalancer" : null
+  cluster_name = "${var.owner}-${local.base_tags.environment}-eks-${var.region}"
 }
 
 resource "helm_release" "argocd" {
@@ -48,8 +45,20 @@ resource "helm_release" "argocd" {
     value = 2
   }
 
-  set {
-    name  = local.service_type_name
-    value = local.service_type_value
-  }
+  values = [
+    yamlencode({
+      configs = {
+        repositories = {
+          base-infra = {
+            name = "base-infra"
+            url  = "https://github.com/pafable/base-infra"
+          },
+          eks-cluster = {
+            name = "eks-cluster"
+            url  = "https://github.com/pafable/eks-cluster"
+          }
+        }
+      }
+    })
+  ]
 }
