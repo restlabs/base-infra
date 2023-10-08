@@ -3,8 +3,7 @@ PIP ?= $(PYTHON) -m pip
 GO ?= go
 TRIVY ?= trivy
 
-.PHONY: clean install deploy-all deploy-eks deployer-test kitchen-test terratest test
-
+.PHONY: deploy-all
 deploy-all:
 	base-deploy --version
 	make deploy-vpc
@@ -12,48 +11,59 @@ deploy-all:
 	make deploy-eks
 	make deploy-argo
 
+.PHONY: destroy-all
 destroy-all:
 	make deploy-argo
 	make deploy-eks
 	make deploy-s3
 	make deploy-vpc
 
+.PHONY: deploy-argo
 deploy-argo:
 	base-deploy --target "helm/argo" $(DESTROY)
 
+.PHONY: deploy-eks
 deploy-eks:
 	base-deploy --target "eks/base" $(DESTROY)
 
+.PHONY: deploy-s3
 deploy-s3:
 	base-deploy --target "s3/base" $(DESTROY)
 
+.PHONY: deploy-vpc
 deploy-vpc:
 	base-deploy --target "vpc/base" $(DESTROY)
 
+.PHONY: deployer-test
 deployer-test:
 	$(PYTHON) -m pylint base-infra-deployer/src
 	$(PYTHON) -m unittest -v base-infra-deployer/tests/test_deployer.py
 
+.PHONY: install
 install:
 	$(PYTHON) --version
 	$(PYTHON) -m pip install --upgrade pip
 	$(PIP) install base-infra-deployer/
 
+.PHONY: kitchen-test
 kitchen-test:
 	cd cookbooks/base-ami && kitchen test
 
+.PHONY: terratest
 terratest:
 	$(GO) -C terraform/modules/s3/test mod tidy
 	$(GO) -C terraform/modules/s3/test test -v
 	$(GO) -C terraform/modules/vpc/test mod tidy
 	$(GO) -C terraform/modules/vpc/test test -v
 
+.PHONY: test
 test: install terratest deployer-test
 
+.PHONY: tf-trivy
 tf-trivy:
 	$(TRIVY) config --config=trivy.yaml terraform
 
-
+.PHONY: clean
 clean:
 	$(PIP) uninstall -y \
 		base-infra-deployer \
