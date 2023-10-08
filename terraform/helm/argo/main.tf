@@ -1,8 +1,5 @@
 locals {
-  cluster_name       = "${var.owner}-${local.base_tags.environment}-eks-${var.region}"
-#  value              = [
-#
-#  ]
+  cluster_name = "${var.owner}-${local.base_tags.environment}-eks-${var.region}"
 }
 
 resource "helm_release" "argocd" {
@@ -48,9 +45,14 @@ resource "helm_release" "argocd" {
     value = 2
   }
 
+#  set {
+#    name  = "configs.repositories.base-infra.url"
+#    value = "https://github.com/pafable/base-infra"
+#  }
+
   values = [
-    yamlencode(
-      {
+    yamlencode({
+      configs = {
         repositories = [
           {
             my-github = {
@@ -59,6 +61,6 @@ resource "helm_release" "argocd" {
           }
         ]
       }
-    )
+    })
   ]
 }
