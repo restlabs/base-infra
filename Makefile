@@ -66,14 +66,20 @@ tf-trivy:
 .PHONY: clean
 clean:
 	$(PIP) uninstall -y \
+		asteroid \
 		base-infra-deployer \
 		boto3 \
 		botocore \
+		dill \
+		isort \
 		jmespath \
+		mccabe \
+		platformdirs \
 		pylint \
 		python-dateutil \
 		six \
 		s3transfer \
+		tomlkit \
 		urllib3
 
 	rm -rf build \

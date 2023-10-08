@@ -31,11 +31,6 @@ locals {
     repoServer = {
       autoscaling = {
         enabled = true
-      }
-    }
-
-    repoServer = {
-      autoscaling = {
         minReplicas = 2
       }
     }
@@ -43,11 +38,6 @@ locals {
     server = {
       autoscaling = {
         enabled = true
-      }
-    }
-
-    server = {
-      autoscaling = {
         minReplicas = 2
       }
     }
