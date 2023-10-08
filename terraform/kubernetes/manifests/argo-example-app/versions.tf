@@ -21,6 +21,14 @@ terraform {
 }
 
 provider "aws" {
+  region = var.region
+
+  default_tags {
+    tags = local.base_tags
+  }
+}
+
+provider "aws" {
   alias  = "parameters"
   region = "us-east-1"
 }
