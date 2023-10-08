@@ -22,14 +22,15 @@ TFBACKEND_FILE = 'backend-config.tfvars.json'
 PARAMS_REGION = 'us-east-1'
 
 
-def ssm_get(ssm_name: str, region=PARAMS_REGION) -> Any:
+def ssm_get(
+        ssm_name: str,
+        region=PARAMS_REGION
+) -> Any:
     """
     retrieves ssm parameter. Used for creating terraform.tfvars.json
     """
     ssm = boto3.client('ssm', region)
-    retval = ssm.get_parameter(
-        Name=ssm_name
-    )
+    retval = ssm.get_parameter(Name=ssm_name)
     return retval['Parameter']['Value']
 
 
@@ -42,7 +43,10 @@ tf_state_bucket = ssm_get('/tools/terraform/state/bucket')
 tf_state_lock_db = ssm_get('/tools/terraform/state/dynamodb')
 
 
-def cleanup(tf_dir: str, tf_target: str):
+def cleanup(
+        tf_dir: str,
+        tf_target: str
+):
     """
     removes terraform.plan, backend-config.tfvars.json and terraform.tfvars.json
     """

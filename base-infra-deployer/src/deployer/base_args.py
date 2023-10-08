@@ -11,8 +11,15 @@ except ImportError:
 
 class Base(argparse.ArgumentParser):
     """Base arguments"""
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(
+            self,
+            *args,
+            **kwargs
+    ):
+        super().__init__(
+            *args,
+            **kwargs
+        )
         self.add_argument(
             '-v',
             '--version',
