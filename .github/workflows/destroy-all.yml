@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy-base-infra:
+  destroy-infra:
     runs-on: ubuntu-latest
     environment: deploy
     steps:
@@ -28,5 +28,5 @@ jobs:
       - name: install dependencies
         run: make install
 
-      - name: deploy
+      - name: destroy
         run: make DESTROY=--destroy destroy-all
