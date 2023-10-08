@@ -1,11 +1,11 @@
 output "argo_status" {
-  value = helm_release.argocd.status
+  value = module.argo.status
 }
 
 output "argo_metadata" {
-  value = helm_release.argocd.metadata
+  value = module.argo.metadata
 }
 
-output "repositories" {
-  value = helm_release.argocd.values
+output "argo_values" {
+  value = module.argo.values
 }
