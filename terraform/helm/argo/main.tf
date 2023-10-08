@@ -1,5 +1,8 @@
 locals {
-  cluster_name = "${var.owner}-${local.base_tags.environment}-eks-${var.region}"
+  cluster_name       = "${var.owner}-${local.base_tags.environment}-eks-${var.region}"
+  isLB               = false
+  service_type_name  = isLB ? "server.service.type" : null
+  service_type_value = isLB ? "LoadBalancer" : null
 }
 
 resource "helm_release" "argocd" {
@@ -43,5 +46,10 @@ resource "helm_release" "argocd" {
   set {
     name  = "applicationSet.replicaCount"
     value = 2
+  }
+
+  set {
+    name  = local.service_type_name
+    value = local.service_type_value
   }
 }
