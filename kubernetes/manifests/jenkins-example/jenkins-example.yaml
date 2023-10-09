@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/pafable/kubernetes-apps.git
     targetRevision: HEAD
-    path: jenkins-example
+    path: jenkins
     directory:
       recurse: true
   destination:

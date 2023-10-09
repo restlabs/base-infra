@@ -11,6 +11,7 @@ deploy-all:
 	make deploy-eks
 	make deploy-argo
 	make deploy-argo-example
+	make deploy-jenkins-example
 
 .PHONY: destroy-all
 destroy-all:
