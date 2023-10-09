@@ -82,7 +82,7 @@ def main():
         # pylint: disable=W1309
         # pylint: disable=W1203
         logger.info(f'DEPLOYING: {args.target.upper()}')
-        app_dir = f'{dirname}/{args.target}'
+        app_dir = f'{dirname}/{str(args.target.strip())}'
 
         tf_deployer = TFDeployer(
             TFPLAN_DEPLOY_FILENAME,
@@ -96,7 +96,7 @@ def main():
             tf_state_lock_db,
             TFBACKEND_FILE,
             PARAMS_REGION,
-            args.destroy
+            bool(args.destroy)
         )
 
         # run cleanup even on errors or exits
