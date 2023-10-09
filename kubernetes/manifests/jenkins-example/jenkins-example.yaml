@@ -1,19 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argo-example-app
+  name: jenkins-example
   namespace: argo
 spec:
   project: default
   source:
     repoURL: https://github.com/pafable/kubernetes-apps.git
     targetRevision: HEAD
-    path: example-app
+    path: jenkins-example
     directory:
       recurse: true
   destination:
     server: https://kubernetes.default.svc
-    namespace: argo-example-app
+    namespace: jenkins
   syncPolicy:
     automated:
       prune: true
