@@ -30,6 +30,10 @@ deploy-argo:
 deploy-argo-example:
 	base-deploy --target "kubernetes/manifests/argo-example-app" $(DESTROY)
 
+.PHONY: deploy-jenkins-example
+deploy-jenkins-example:
+	base-deploy --target "kubernetes/manifests/jenkins-example"	$(DESTROY)
+
 .PHONY: deploy-eks
 deploy-eks:
 	base-deploy --target "eks/base" $(DESTROY)
