@@ -14,11 +14,13 @@ deploy-all:
 
 .PHONY: destroy-all
 destroy-all:
-	make deploy-argo-example
-	make deploy-argo
-	make deploy-eks
-	make deploy-s3
-	make deploy-vpc
+	# goes in opposite order of deploy-all.
+	# last entry in deploy-all is first
+	make deploy-argo-example DESTROY=--destroy
+	make deploy-argo DESTROY=--destroy
+	make deploy-eks DESTROY=--destroy
+	make deploy-s3 DESTROY=--destroy
+	make deploy-vpc DESTROY=--destroy
 
 .PHONY: deploy-argo
 deploy-argo:
