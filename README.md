@@ -28,7 +28,7 @@ Configure AWS credentials by using either environment variables or credentials f
 
 Log into AWS or use the AWSCLI and set the following parameters in Systems Manager Parameter Store in us-east-1 region.
 These parameters are used by base-deploy to create a terraform backend config file.
-Fill in the parameters based on your environment. You can change the region for base-deploy to check by editing this [line](https://github.com/pafable/base-infra/blob/main/base-infra-deployer/src/deployer/base_infra_deployer.py#L19](https://github.com/pafable/base-infra/blob/main/base-infra-deployer/src/deployer/main.py#L22).
+Fill in the parameters based on your environment. You can change the region for base-deploy to check by editing this [line](https://github.com/pafable/base-infra/blob/main/base-infra-deployer/src/deployer/main.py#L22).
 
 | Parameters                      | Description                                                                    |
 |---------------------------------|--------------------------------------------------------------------------------|
