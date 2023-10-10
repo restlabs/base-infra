@@ -1,4 +1,4 @@
-resource "helm_release" "argocd" {
+resource "helm_release" "tf_helm" {
   chart            = var.chart
   create_namespace = var.create_namespace
   name             = var.release_name
@@ -7,6 +7,8 @@ resource "helm_release" "argocd" {
   version          = var.chart_version
 
   values = [
-    yamlencode(var.values_map)
+    yamlencode(
+      var.values_map
+    )
   ]
 }
