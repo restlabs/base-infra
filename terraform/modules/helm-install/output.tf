@@ -1,11 +1,11 @@
 output "status" {
-  value = helm_release.argocd.status
+  value = helm_release.tf_helm.status
 }
 
 output "metadata" {
-  value = helm_release.argocd.metadata
+  value = helm_release.tf_helm.metadata
 }
 
 output "values" {
-  value = helm_release.argocd.values
+  value = helm_release.tf_helm.values
 }
