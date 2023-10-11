@@ -107,7 +107,31 @@ class TFDeployer:
         creates a json file for tfvars
         """
         logger.info('creating tfvars')
+
+        branch = subprocess.run(
+            [
+                "git",
+                "rev-parse",
+                "--abbrev-ref",
+                "HEAD"
+            ],
+            capture_output=True,
+            encoding='utf-8'
+        ).stdout.strip()
+
+        commit = subprocess.run(
+            [
+                    "git",
+                    "rev-parse",
+                    "HEAD"
+                ],
+                capture_output=True,
+                encoding='utf-8'
+        ).stdout.strip()
+
         data = {
+            'branch': branch,
+            'commit': commit,
             'email': self.app_email,
             'owner': self.app_owner,
             'region': self.app_region

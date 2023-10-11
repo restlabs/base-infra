@@ -11,6 +11,13 @@ variable "availability_zones" {
   ]
 }
 
+variable "branch" {
+  type = string
+}
+
+variable "commit" {
+  type = string
+}
 variable "email" {}
 
 variable "owner" {}

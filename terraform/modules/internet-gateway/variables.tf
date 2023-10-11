@@ -33,6 +33,10 @@ variable "region" {
   type        = string
 }
 
+variable "tags" {
+  type = map(string)
+}
+
 variable "vpc_id" {
   description = "vpc id"
   type        = string
