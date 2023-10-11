@@ -2,7 +2,7 @@
 [![CI Tests](https://github.com/pafable/base-infra/actions/workflows/ci.yml/badge.svg)](https://github.com/pafable/base-infra/actions/workflows/ci.yml)
 
 Deploys base infrastructure to AWS.
-This project uses a python script (base_infra_deployer.py) in the deployer folder to deploy infrastructure in the terraform folder.
+This project uses a python script in the base-infra-deployer folder to deploy infrastructure within the terraform folder.
 
 When adding more terraform resources into the project, create a folder for your project in the terraform folder.
 When you're ready to deploy your project build and install the base-infra-deployer code, it will create a CLI command called `base-deploy`.
@@ -12,6 +12,7 @@ __TESTED ON__: MacOS and Linux
 - Ansible Core 2.15+
 - AWSCLI 2+
 - Chef 18.2.7+
+- Docker 24+
 - Go 1.21+
 - Helm 3.13+
 - Kitchen 3.5.0+
