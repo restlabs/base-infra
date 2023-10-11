@@ -2,7 +2,6 @@ locals {
   public_subnet_list  = ["0", "1", "2"]       # needs to be strings
   private_subnet_list = ["100", "101", "102"] # needs to be strings
   code_location       = "terraform/vpc/base"
-  private_subnet_ids  = { id = module.private_subnets.subnet_ids }
 }
 
 module "base_vpc" {
