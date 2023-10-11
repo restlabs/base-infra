@@ -15,7 +15,7 @@ except ImportError:
     from tf_deployer import TFDeployer
     from base_args import Base
 
-dirname = f'{os.getcwd()}/terraform'
+dirname = f'{os.getcwd()}'
 TFPLAN_DEPLOY_FILENAME = 'terraform-deploy.plan'
 TFVARS_FILENAME = 'terraform.tfvars.json'
 TFBACKEND_FILE = 'backend-config.tfvars.json'

@@ -12,4 +12,5 @@ resource "aws_ssm_parameter" "s3_ssm_arn" {
   type        = "String"
   value       = each.value.value
   description = each.value.description
+  tags        = var.tags
 }

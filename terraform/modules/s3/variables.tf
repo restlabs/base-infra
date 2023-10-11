@@ -7,32 +7,16 @@ variable "block_public_acl" {
   default = true
 }
 
-variable "code_location" {
-  type = string
-}
-
 variable "is_versioning_enabled" {
   type    = string
   default = "Enabled"
 }
 
-
-variable "email" {
-  type = string
-}
-
-variable "environment" {
-  type = string
-}
-
-variable "owner" {
-  type = string
-}
-
-variable "project" {
-  type = string
-}
-
 variable "region" {
   type = string
+}
+
+variable "tags" {
+  type    = map(string)
+  default = { Name = "foo" }
 }

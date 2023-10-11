@@ -5,3 +5,7 @@ variable "params" {
     value       = string
   }))
 }
+
+variable "tags" {
+  type = map(string)
+}
