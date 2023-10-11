@@ -6,7 +6,9 @@ locals {
   common_tags = {
     # keep Name key capitalized so that it will be set in the resource name!
     Name          = var.app_name
+    branch        = var.branch
     code_location = "terraform/vpc/base"
+    commit        = var.commit
     email         = var.email
     environment   = data.aws_ssm_parameter.account_env.value
     owner         = var.owner
