@@ -6,10 +6,6 @@ variable "cidr_block" {
   type = string
 }
 
-variable "code_location" {
-  type = string
-}
-
 variable "email" {
   type = string
 }

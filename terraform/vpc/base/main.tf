@@ -1,14 +1,12 @@
 locals {
   public_subnet_list  = ["0", "1", "2"]       # needs to be strings
   private_subnet_list = ["100", "101", "102"] # needs to be strings
-  code_location       = "terraform/vpc/base"
 }
 
 module "base_vpc" {
   source        = "../../modules/vpc"
   app_name      = var.app_name
   cidr_block    = "10.10.0.0/16"
-  code_location = local.code_location
   email         = var.email
   owner         = var.owner
   region        = var.region
@@ -20,7 +18,6 @@ module "base_vpc" {
 module "base_igw" {
   source        = "../../modules/internet-gateway"
   app_name      = local.common_tags.project
-  code_location = local.code_location
   email         = var.email
   environment   = data.aws_ssm_parameter.account_env.value
   owner         = var.owner
