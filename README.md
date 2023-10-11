@@ -9,19 +9,21 @@ When you're ready to deploy your project build and install the base-infra-deploy
 
 __TESTED ON__: MacOS and Linux
 ### Requirements
-- Ansible Core 2.15+
-- AWSCLI 2+
-- Chef 18.2.7+
-- Docker 24+
-- Go 1.21+
-- Helm 3.13+
-- Kitchen 3.5.0+
-- kubectl 1.28+
-- Packer 1.9.4+
-- Python 3.11+
-- Snyk 1.666+
-- Terraform 1.0+
-- Trivy 0.45+
+| Tools         | Version  |
+|---------------|----------|
+| Ansible Core  | 2.15+    |
+| AWSCli        | 2+       |
+| Chef          | 18+      |
+| Docker        | 24+      |
+| Go            | 1.21+    |
+| Helm          | 3.13+    |
+| Kitchen       | 3.5+     |
+| Kubectl       | 1.28+    |
+| Packer        | 1.9+     |
+| Python        | 3.11+    |
+| Snyk          | 1.666+   |
+| Terraform     | 1.5+     |
+| Trivy         | 0.45+    |
 
 ### Prerequisites
 Create an S3 bucket and dynamodb table to serve as a remote backends for terraform.

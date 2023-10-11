@@ -12,4 +12,6 @@ module "ssm_param" {
       description = "S3 bucket for Base Infra"
     }
   ]
+
+  tags = local.base_tags
 }

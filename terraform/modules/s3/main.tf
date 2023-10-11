@@ -1,5 +1,10 @@
+locals {
+  environment = try(var.tags.environment, "test")
+}
+
 resource "aws_s3_bucket" "tf_bucket" {
-  bucket = "${var.app_name}-bucket-${var.environment}-${var.region}"
+  bucket = "${var.app_name}-bucket-${local.environment}-${var.region}"
+  tags   = var.tags
 }
 
 resource "aws_s3_bucket_public_access_block" "tf_s3_block_public_acl" {

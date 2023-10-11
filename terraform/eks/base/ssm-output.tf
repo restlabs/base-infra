@@ -22,4 +22,6 @@ module "ssm_param" {
       description = "EKS cluster ID for base-infra"
     }
   ]
+
+  tags = local.base_tags
 }

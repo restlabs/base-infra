@@ -27,37 +27,37 @@ destroy-all:
 
 .PHONY: deploy-arc
 deploy-arc:
-	base-deploy --target "helm/github-arc" $(DESTROY)
+	base-deploy --target "terraform/helm/github-arc" $(DESTROY)
 
 
 .PHONY: deploy-argo
 deploy-argo:
-	base-deploy --target "helm/argo" $(DESTROY)
+	base-deploy --target "terraform/helm/argo" $(DESTROY)
 
 
 .PHONY: deploy-argo-example
 deploy-argo-example:
-	base-deploy --target "kubernetes/manifests/argo-example-app" $(DESTROY)
+	base-deploy --target "terraform/kubernetes/manifests/argo-example-app" $(DESTROY)
 
 
 .PHONY: deploy-jenkins-example
 deploy-jenkins-example:
-	base-deploy --target "kubernetes/manifests/jenkins-example"	$(DESTROY)
+	base-deploy --target "terraform/kubernetes/manifests/jenkins-example"	$(DESTROY)
 
 
 .PHONY: deploy-eks
 deploy-eks:
-	base-deploy --target "eks/base" $(DESTROY)
+	base-deploy --target "terraform/eks/base" $(DESTROY)
 
 
 .PHONY: deploy-s3
 deploy-s3:
-	base-deploy --target "s3/base" $(DESTROY)
+	base-deploy --target "terraform/s3/base" $(DESTROY)
 
 
 .PHONY: deploy-vpc
 deploy-vpc:
-	base-deploy --target "vpc/base" $(DESTROY)
+	base-deploy --target "terraform/vpc/base" $(DESTROY)
 
 
 .PHONY: deployer-test
@@ -98,7 +98,7 @@ tf-trivy:
 .PHONY: clean
 clean:
 	$(PIP) uninstall -y \
-		asteroid \
+		astroid \
 		base-infra-deployer \
 		boto3 \
 		botocore \

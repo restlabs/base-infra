@@ -1,9 +1,12 @@
 locals {
   base_tags = {
-    owner         = var.owner
+    branch        = var.branch
     code_location = "terraform/s3/base"
-    project       = "base-infra"
+    commit        = var.commit
     email         = var.email
+    environment   = data.aws_ssm_parameter.account_env.value
+    owner         = var.owner
+    project       = var.app_name
   }
 }
 
@@ -16,7 +19,7 @@ terraform {
 }
 
 provider "aws" {
-  region = var.region[terraform.workspace]
+  region = var.region
 
   default_tags {
     tags = local.base_tags
@@ -26,8 +29,4 @@ provider "aws" {
 provider "aws" {
   alias  = "parameters"
   region = "us-east-1"
-
-  default_tags {
-    tags = local.base_tags
-  }
 }

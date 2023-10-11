@@ -18,13 +18,8 @@ func TestTerraformBaseS3(t *testing.T) {
 		},
 		Reconfigure: true,
 		Vars: map[string]interface{}{
-			"app_name":      "base-infra",
-			"code_location": "terraform/modules/s3",
-			"email":         "pafable@test.com",
-			"environment":   "dev",
-			"owner":         "pafable",
-			"project":       "base-infra",
-			"region":        "us-east-1",
+			"app_name": "base-infra",
+			"region":   "us-east-1",
 		},
 	})
 
@@ -35,7 +30,7 @@ func TestTerraformBaseS3(t *testing.T) {
 
 	// checks if bucket name is base-infra-1-bucket-test-us-east-1
 	outputBucketName := terraform.Output(t, terraformOptions, "bucket_name")
-	assert.Equal(t, "base-infra-bucket-dev-us-east-1", outputBucketName)
+	assert.Equal(t, "base-infra-bucket-test-us-east-1", outputBucketName)
 
 	// checks if region is us-east-1
 	outputBucketRegion := terraform.Output(t, terraformOptions, "bucket_region")

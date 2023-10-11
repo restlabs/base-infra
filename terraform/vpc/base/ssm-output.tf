@@ -17,4 +17,6 @@ module "ssm_param" {
       description = "Base Infra VPC arn"
     }
   ]
+
+  tags = local.common_tags
 }
