@@ -3,11 +3,6 @@ variable "app_name" {
   type        = string
 }
 
-variable "code_location" {
-  description = "code location"
-  type        = string
-}
-
 variable "email" {
   description = "email"
   type        = string
