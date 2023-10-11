@@ -31,5 +31,6 @@ variable "region" {
 }
 
 variable "tags" {
-  type = map(string)
+  type    = map(string)
+  default = { Name = "foo" }
 }

@@ -108,7 +108,7 @@ class TFDeployer:
         """
         logger.info('creating tfvars')
 
-        branch = subprocess.run(
+        _branch = subprocess.run(
             [
                 "git",
                 "rev-parse",
@@ -116,22 +116,24 @@ class TFDeployer:
                 "HEAD"
             ],
             capture_output=True,
+            check=True,
             encoding='utf-8'
         ).stdout.strip()
 
-        commit = subprocess.run(
+        _commit = subprocess.run(
             [
-                    "git",
-                    "rev-parse",
-                    "HEAD"
-                ],
-                capture_output=True,
-                encoding='utf-8'
+                "git",
+                "rev-parse",
+                "HEAD"
+            ],
+            capture_output=True,
+            check=True,
+            encoding='utf-8'
         ).stdout.strip()
 
         data = {
-            'branch': branch,
-            'commit': commit,
+            'branch': _branch,
+            'commit': _commit,
             'email': self.app_email,
             'owner': self.app_owner,
             'region': self.app_region
