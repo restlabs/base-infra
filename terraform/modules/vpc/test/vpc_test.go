@@ -19,10 +19,10 @@ func TestTerraformBaseVpc(t *testing.T) {
 		Reconfigure: true,
 		Vars: map[string]interface{}{
 			"app_name":      "base-infra",
-			"branch":        "somerandombranch"
+			"branch":        "somerandombranch",
 			"cidr_block":    "10.10.0.0/16",
 			"code_location": "terraform/modules/vpc",
-			"commit":        "somerandomcommit"
+			"commit":        "somerandomcommit",
 			"email":         "pafable@test.com",
 			"environment":   "dev",
 			"owner":         "pafable",
