@@ -18,14 +18,13 @@ func TestTerraformBaseVpc(t *testing.T) {
 		},
 		Reconfigure: true,
 		Vars: map[string]interface{}{
-			"app_name":      "base-infra",
-			"cidr_block":    "10.10.0.0/16",
-			"code_location": "terraform/modules/vpc",
-			"email":         "pafable@test.com",
-			"environment":   "dev",
-			"owner":         "pafable",
-			"project":       "base-infra",
-			"region":        "us-east-1",
+			"app_name":    "base-infra",
+			"cidr_block":  "10.10.0.0/16",
+			"email":       "pafable@test.com",
+			"environment": "dev",
+			"owner":       "pafable",
+			"project":     "base-infra",
+			"region":      "us-east-1",
 		},
 	})
 
