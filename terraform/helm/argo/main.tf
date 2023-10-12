@@ -17,7 +17,7 @@ locals {
 
     configs = {
       repositories = {
-        test-repo  = local.test_repo
+        test-repo = local.test_repo
       }
     }
 

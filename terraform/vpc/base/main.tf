@@ -38,7 +38,7 @@ module "public_subnets" {
   subnet_list        = toset(local.public_subnet_list)
   vpc_id             = module.base_vpc.vpc_id
   subnet_type        = "public"
-  tags               = local.common_tags
+  tags               = merge(local.common_tags, { subnet_type = "public" })
 }
 
 resource "aws_default_route_table" "tf_default_rtb" {
@@ -77,7 +77,7 @@ module "private_subnets" {
   subnet_list        = toset(local.private_subnet_list)
   vpc_id             = module.base_vpc.vpc_id
   subnet_type        = "private"
-  tags               = local.common_tags
+  tags               = merge(local.common_tags, { subnet_type = "private" })
 }
 
 resource "aws_route_table" "private_rtb" {
