@@ -37,6 +37,7 @@ Fill in the parameters based on your environment. You can change the region for 
 |---------------------------------|--------------------------------------------------------------------------------|
 | /account/owner/email            | owner email                                                                    |
 | /account/owner                  | owner                                                                          |
+| /account/owner/public/ip        | your public ip to access the kubernetes api server                             |
 | /account/region                 | region for terraform to deploy resources to (NOT THE TERRAFORM BACKEND REGION) |
 | /tools/terraform/state/bucket   | terraform s3 backend bucket                                                    |
 | /tools/terraform/state/dynamodb | terraform dynamodb backend                                                     |
