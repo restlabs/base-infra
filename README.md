@@ -8,6 +8,8 @@ When adding more terraform resources into the project, create a folder for your 
 When you're ready to deploy your project build and install the base-infra-deployer code, it will create a CLI command called `base-deploy`.
 
 __TESTED ON__: MacOS and Linux
+If you're developing on Windows, please use WSL2
+
 ### Requirements
 | Tools         | Version  |
 |---------------|----------|
@@ -21,6 +23,7 @@ __TESTED ON__: MacOS and Linux
 | Kubectl       | 1.28+    |
 | Packer        | 1.9+     |
 | Python        | 3.11+    |
+| ShellCheck    | 0.9.9+   |
 | Snyk          | 1.666+   |
 | Terraform     | 1.5+     |
 | Trivy         | 0.45+    |

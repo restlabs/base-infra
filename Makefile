@@ -1,4 +1,4 @@
-PYTHON ?= python
+PYTHON ?= python3
 PIP ?= $(PYTHON) -m pip
 GO ?= go
 TRIVY ?= trivy
@@ -86,8 +86,13 @@ terratest:
 	$(GO) -C terraform/modules/vpc/test test -v
 
 
+.PHONY: test-shell
+test-shell:
+	shellcheck setup-aws-params.sh
+
+
 .PHONY: test
-test: install terratest deployer-test
+test: install terratest test-shell deployer-test
 
 
 .PHONY: tf-trivy
