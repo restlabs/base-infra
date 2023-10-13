@@ -1,4 +1,4 @@
-resource "aws_ssm_parameter" "s3_ssm_arn" {
+resource "aws_ssm_parameter" "ssm_param_output" {
   for_each = {
     for v in var.params :
 
@@ -8,9 +8,13 @@ resource "aws_ssm_parameter" "s3_ssm_arn" {
     }
   }
 
+  description = each.value.description
   name        = each.key
+  tags        = var.tags
   type        = "String"
   value       = each.value.value
-  description = each.value.description
-  tags        = var.tags
+
+  lifecycle {
+    prevent_destroy = false
+  }
 }
