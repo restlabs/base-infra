@@ -24,7 +24,13 @@ jobs:
           
       - name: check python version
         run: python --version
-      
+
+      - name: set up terraform
+        uses: hashicorp/setup-terraform@v2.0.3
+        with:
+          terraform_version: 1.6.1
+          terraform_wrapper: false
+
       - name: install dependencies
         run: make install
      

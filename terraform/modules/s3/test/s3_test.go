@@ -36,5 +36,5 @@ func TestTerraformBaseS3(t *testing.T) {
 
 	// checks if region is us-east-1
 	outputBucketRegion := terraform.Output(t, terraformOptions, "bucket_region")
-	assert.Equal(t, "us-east-1", outputBucketRegion)
+	assert.Equal(t, backendRegion, outputBucketRegion)
 }
