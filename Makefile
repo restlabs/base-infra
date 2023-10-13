@@ -92,7 +92,7 @@ test-shell:
 
 
 .PHONY: test
-test: install terratest deployer-test
+test: install terratest test-shell deployer-test
 
 
 .PHONY: tf-trivy
