@@ -7,7 +7,7 @@ import (
 )
 
 func TestTerraformBaseS3(t *testing.T) {
-    backendRegion := "us-east-1"
+	backendRegion := "us-east-1"
 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: "../",
 		BackendConfig: map[string]interface{}{
@@ -18,7 +18,7 @@ func TestTerraformBaseS3(t *testing.T) {
 			"dynamodb_table": "terraform-lock",
 		},
 		Reconfigure: true,
-		Upgrade: true,
+		Upgrade:     true,
 		Vars: map[string]interface{}{
 			"app_name": "ci-test",
 			"region":   backendRegion,
@@ -32,7 +32,7 @@ func TestTerraformBaseS3(t *testing.T) {
 
 	// checks if bucket name is base-infra-1-bucket-test-us-east-1
 	outputBucketName := terraform.Output(t, terraformOptions, "bucket_name")
-	assert.Equal(t, "base-infra-bucket-test-us-east-1", outputBucketName)
+	assert.Equal(t, "ci-test-bucket-test-us-east-1", outputBucketName)
 
 	// checks if region is us-east-1
 	outputBucketRegion := terraform.Output(t, terraformOptions, "bucket_region")
