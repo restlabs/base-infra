@@ -38,6 +38,10 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE }}
           aws-region: 'us-east-1'
 
+      - name: set up terraform
+        uses: hashicorp/setup-terraform@v2.0.3
+        with:
+          terraform_version: 1.6.1
+
       - name: running tests
         run: make test
-
