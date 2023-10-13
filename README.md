@@ -10,6 +10,9 @@ When you're ready to deploy your project build and install the base-infra-deploy
 __TESTED ON__: MacOS and Linux
 If you're developing on Windows, please use WSL2
 
+If you're developing on Windows, please use WSL2
+
+
 
 ### Requirements
 | Tools         | Version  |
