@@ -1,12 +1,6 @@
 name: Deploy Base Infra EKS
 on:
   workflow_dispatch:
-    inputs:
-      destroy:
-        description: 'destroy resource(s)'
-        default: false
-        required: false
-        type: boolean
 
 jobs:
   deploy-eks:
@@ -28,16 +22,13 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE }}
           aws-region: 'us-east-1'
 
-      - name: check input
-        run: |
-          if [ "${{ inputs.destroy }}" == "true" ]; then
-            echo "DESTROY=--destroy" >> $GITHUB_ENV
-          else
-            echo "DESTROY=" >> $GITHUB_ENV
-          fi
-
       - name: check python version
         run: python --version
+
+      - name: set up terraform
+        uses: hashicorp/setup-terraform@v2.0.3
+        with:
+          terraform_version: 1.6.1
 
       - name: install dependencies
         run: make install
