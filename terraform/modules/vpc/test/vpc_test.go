@@ -17,6 +17,7 @@ func TestTerraformBaseVpc(t *testing.T) {
 			"dynamodb_table": "terraform-lock",
 		},
 		Reconfigure: true,
+		Upgrade: true,
 		Vars: map[string]interface{}{
 			"app_name":    "base-infra",
 			"cidr_block":  "10.10.0.0/16",

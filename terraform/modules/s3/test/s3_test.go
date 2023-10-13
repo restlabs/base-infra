@@ -17,6 +17,7 @@ func TestTerraformBaseS3(t *testing.T) {
 			"dynamodb_table": "terraform-lock",
 		},
 		Reconfigure: true,
+		Upgrade: true,
 		Vars: map[string]interface{}{
 			"app_name": "base-infra",
 			"region":   "us-east-1",
