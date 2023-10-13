@@ -8,10 +8,9 @@ When adding more terraform resources into the project, create a folder for your 
 When you're ready to deploy your project build and install the base-infra-deployer code, it will create a CLI command called `base-deploy`.
 
 __TESTED ON__: MacOS and Linux
-If you're developing on Windows, please use WSL2
+
 
 If you're developing on Windows, please use WSL2
-
 
 
 ### Requirements
@@ -48,6 +47,20 @@ Fill in the parameters based on your environment. You can change the region for 
 | /account/region                 | region for terraform to deploy resources to (NOT THE TERRAFORM BACKEND REGION) |
 | /tools/terraform/state/bucket   | terraform s3 backend bucket                                                    |
 | /tools/terraform/state/dynamodb | terraform dynamodb backend                                                     |
+
+
+You can also use the aws-setup-params.sh script to generate these SSM parameters. Replace the entries in `<>` with your own.
+```commandline
+bash setup-aws-params.sh \
+  <ENVIRONMENT> \
+  <OWNER> \
+  <EMAIL> \
+  <PUBLIC_IP> \
+  <APP_REGION> \
+  <TF_STATE_BUCKET> \
+  <TF_STATE_DYNAMODB_LOCK>
+```
+
 
 ## Instructions:
 ### Building the project
