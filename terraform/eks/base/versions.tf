@@ -8,8 +8,10 @@ terraform {
 
 locals {
   base_tags = {
-    owner         = var.owner
+    branch        = var.branch
     code_location = "terraform/eks/base"
+    commit        = var.commit
+    owner         = var.owner
     project       = "base-infra"
     email         = var.email
     environment   = data.aws_ssm_parameter.account_env.value

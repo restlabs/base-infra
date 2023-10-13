@@ -1,3 +1,11 @@
+variable "branch" {
+  type = string
+}
+
+variable "commit" {
+  type = string
+}
+
 variable "eks_nodegroup_instance_type" {
   type        = string
   description = "EC2 instance type"

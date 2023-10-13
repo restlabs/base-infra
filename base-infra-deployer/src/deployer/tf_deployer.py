@@ -49,7 +49,7 @@ class TFDeployer:
         """
         validates terraform files have correct syntax
         """
-        logger.info('validating terraform files')
+        logger.info('validating terraform files...')
         subprocess.run(
             [
                 'terraform',
@@ -91,7 +91,7 @@ class TFDeployer:
         """
         creates a json file for terraform backend config
         """
-        logger.info('creating backend config file')
+        logger.info('creating backend config file...')
         data = {
             'bucket': self.backend_bucket,
             'key': f'{self.tf_key}/terraform.tfstate',
@@ -106,7 +106,7 @@ class TFDeployer:
         """
         creates a json file for tfvars
         """
-        logger.info('creating tfvars')
+        logger.info('creating tfvars...')
 
         _branch = subprocess.run(
             [
@@ -147,14 +147,15 @@ class TFDeployer:
         """
         self._create_backend_config()
         self._create_tfvars()
-        logger.info('initializing terraform')
+        logger.info('initializing terraform...')
         subprocess.run(
             [
                 'terraform',
                 f'-chdir={self.tf_dir}',
                 'init',
                 f'-backend-config={self.backend_file}',
-                '-reconfigure'
+                '-reconfigure',
+                '-upgrade'
             ],
             # will throw an error and stop the script if terraform runs into an error
             check=True
@@ -166,7 +167,7 @@ class TFDeployer:
         creates a terraform plan
         """
         self._tf_init()
-        logger.info('creating plan')
+        logger.info('creating plan...')
 
         tf_commands = [
             'terraform',
@@ -191,7 +192,7 @@ class TFDeployer:
         applies a terraform plan
         """
         self._plan()
-        logger.info('applying plan')
+        logger.info('applying plan...')
         subprocess.run(
             [
                 'terraform',
