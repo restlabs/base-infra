@@ -15,7 +15,7 @@ locals {
     githubConfigSecret = {
       github_app_id              = data.aws_ssm_parameter.github_app_id.value
       github_app_installation_id = data.aws_ssm_parameter.github_app_install_id.value
-      github_app_private_key     = data.aws_ssm_parameter.github_app_install_id
+      github_app_private_key     = data.aws_ssm_parameter.github_app_private_key.value
     }
 
     maxRunners         = 20
@@ -38,7 +38,7 @@ module "arc_scale_set" {
   source        = "../../modules/helm-install"
   chart         = local.scale_set_chart
   chart_version = local.controller_chart_version
-  namespace     = local.controller_namespace
+  namespace     = local.scale_set_namespace
   release_name  = local.scale_set_namespace
   repository    = local.controller_repository
   values_map    = local.values_map
