@@ -20,3 +20,23 @@ data "aws_ssm_parameter" "account_env" {
   provider = aws.parameters
   name     = "/account/env"
 }
+
+data "aws_ssm_parameter" "github_org_url" {
+  provider = aws.parameters
+  name     = "/github/organization/url"
+}
+
+data "aws_ssm_parameter" "github_app_id" {
+  provider = aws.parameters
+  name     = "/gihub/app/id"
+}
+
+data "aws_ssm_parameter" "github_app_install_id" {
+  provider = aws.parameters
+  name     = "/github/app/installation/id"
+}
+
+data "aws_ssm_parameter" "github_app_private_key" {
+  provider = aws.parameters
+  name     = "/github/app/private/key"
+}

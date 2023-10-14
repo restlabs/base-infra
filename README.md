@@ -41,24 +41,32 @@ Fill in the parameters based on your environment. You can change the region for 
 
 | Parameters                      | Description                                                                    |
 |---------------------------------|--------------------------------------------------------------------------------|
+| /account/env                    | account's environment                                                          | 
 | /account/owner/email            | owner email                                                                    |
 | /account/owner                  | owner                                                                          |
 | /account/owner/public/ip        | your public ip to access the kubernetes api server                             |
 | /account/region                 | region for terraform to deploy resources to (NOT THE TERRAFORM BACKEND REGION) |
 | /tools/terraform/state/bucket   | terraform s3 backend bucket                                                    |
 | /tools/terraform/state/dynamodb | terraform dynamodb backend                                                     |
-
+| /gihub/app/id                   | github app id                                                                  |  
+| /github/app/installation/id     | github app installation id                                                     |
+| /github/app/private/key         | private key for github app                                                     |
+| /github/organization/url        | github organization url                                                        | 
 
 You can also use the aws-setup-params.sh script to generate these SSM parameters. Replace the entries in `<>` with your own.
 ```commandline
-bash setup-aws-params.sh \
-  <ENVIRONMENT> \
-  <OWNER> \
-  <EMAIL> \
-  <PUBLIC_IP> \
-  <APP_REGION> \
-  <TF_STATE_BUCKET> \
-  <TF_STATE_DYNAMODB_LOCK>
+./setup-aws-params.sh 
+    <ENVIRONMENT> \
+    <OWNER> \
+    <EMAIL> \
+    <PUBLIC_IP> \   # must be in /32. ex: 100.100.100.100/32
+    <APP_REGION> \
+    <TF_STATE_BUCKET> \
+    <TF_STATE_DYNAMODB_LOCK> \
+    <GITHUB_APP_ID> \
+    <GITHUB_APP_INSTALL_ID> \
+    <GITHUB_APP_PRIVATE_KEY_FILE> \
+    <GITHUB_ORGANIZATION_URL>
 ```
 
 
