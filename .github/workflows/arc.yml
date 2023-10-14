@@ -1,4 +1,4 @@
-name: Deploy Base Infra EKS
+name: Deploy Github Actions Runner Controller
 on:
   workflow_dispatch:
 
@@ -35,4 +35,4 @@ jobs:
         run: make install
 
       - name: deploy
-        run: make deploy-eks
+        run: make deploy-arc
