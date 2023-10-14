@@ -7,8 +7,8 @@ locals {
   max_size                  = 4
   min_size                  = 1
   instance_types            = ["t3.small"]
-  is_private_access_enabled = local.base_tags.environment == "poc" || local.base_tags.environment == "dev" ? false : true
-  is_public_access_enabled  = local.base_tags.environment == "poc" || local.base_tags.environment == "dev" ? true : false
+  is_private_access_enabled = local.base_tags.environment == "test" || local.base_tags.environment == "dev" ? false : true
+  is_public_access_enabled  = local.base_tags.environment == "test" || local.base_tags.environment == "dev" ? true : false
 }
 
 module "base_eks" {
