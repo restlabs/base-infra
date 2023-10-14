@@ -9,18 +9,18 @@ locals {
 
   values_map = {
     # create a github org
-    githubConfigUrl = ""
+    githubConfigUrl = data.aws_ssm_parameter.github_org_url.value
 
     # create secrets in github app
     githubConfigSecret = {
-      github_app_id              = ""
-      github_app_installation_id = ""
-      github_app_private_key     = ""
+      github_app_id              = data.aws_ssm_parameter.github_app_id.value
+      github_app_installation_id = data.aws_ssm_parameter.github_app_install_id.value
+      github_app_private_key     = data.aws_ssm_parameter.github_app_install_id
     }
 
     maxRunners         = 20
-    minRunners         = 5
-    runnerScaleSetName = "base-infra-runner"
+    minRunners         = 0
+    runnerScaleSetName = "hydra"
   }
 }
 
