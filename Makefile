@@ -19,7 +19,7 @@ deploy-all:
 destroy-all:
 	make deploy-arc DESTROY=--destroy
 	make deploy-argo-example DESTROY=--destroy
-	#make deploy-argo DESTROY=--destroy
+	make deploy-argo DESTROY=--destroy
 	make deploy-eks DESTROY=--destroy
 	make deploy-s3 DESTROY=--destroy
 	make deploy-vpc DESTROY=--destroy
