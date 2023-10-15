@@ -42,4 +42,5 @@ module "arc_scale_set" {
   release_name  = local.scale_set_namespace
   repository    = local.controller_repository
   values_map    = local.values_map
+  depends_on    = [ module.arc_controller ]
 }
