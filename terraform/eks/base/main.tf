@@ -6,7 +6,7 @@ locals {
   desired_size              = 3
   max_size                  = 4
   min_size                  = 1
-  instance_types            = ["t3.small"]
+  instance_types            = [ "t3.small" ]
   is_private_access_enabled = local.base_tags.environment == "test" || local.base_tags.environment == "dev" ? false : true
   is_public_access_enabled  = local.base_tags.environment == "test" || local.base_tags.environment == "dev" ? true : false
 }
@@ -16,7 +16,7 @@ module "base_eks" {
   version                              = "19.17.2"
   cluster_name                         = local.cluster_name
   cluster_version                      = local.eks_version
-  cluster_endpoint_public_access_cidrs = [data.aws_ssm_parameter.my_public_ip.value]
+#  cluster_endpoint_public_access_cidrs = [ data.aws_ssm_parameter.my_public_ip.value ]
   control_plane_subnet_ids             = data.aws_subnets.tf_subnet.ids
   cluster_endpoint_private_access      = local.is_private_access_enabled
   cluster_endpoint_public_access       = local.is_public_access_enabled
