@@ -41,7 +41,7 @@ Fill in the parameters based on your environment. You can change the region for 
 
 | Parameters                      | Description                                                                    |
 |---------------------------------|--------------------------------------------------------------------------------|
-| /account/env                    | account's environment                                                          | 
+| /account/environment            | account's environment                                                          | 
 | /account/owner/email            | owner email                                                                    |
 | /account/owner                  | owner                                                                          |
 | /account/owner/public/ip        | your public ip to access the kubernetes api server                             |

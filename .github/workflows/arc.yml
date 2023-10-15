@@ -1,38 +1,13 @@
-name: Deploy Github Actions Runner Controller
+name: Test job for custom actions runner
 on:
   workflow_dispatch:
 
 jobs:
   deploy-eks:
-    runs-on: ubuntu-latest
-    environment: deploy
+    runs-on: hydra
     steps:
       - uses: actions/checkout@v4
 
-      - name: setup Python
-        uses: actions/setup-python@v4.7.0
-        with:
-          python-version: '3.11'
-
-      - name: configuring aws
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          role-to-assume: ${{ secrets.AWS_ROLE }}
-          aws-region: 'us-east-1'
-
-      - name: check python version
-        run: python --version
-
-      - name: set up terraform
-        uses: hashicorp/setup-terraform@v2.0.3
-        with:
-          terraform_version: 1.6.1
-          terraform_wrapper: false
-
-      - name: install dependencies
-        run: make install
-
-      - name: deploy
-        run: make deploy-arc
+      - name: say hello
+        run: |
+          echo hello world!
