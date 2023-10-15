@@ -31,6 +31,8 @@ GITHUB_APP_INSTALL_ID=${9}
 GITHUB_APP_PRIVATE_KEY_FILE=${10} # make sure the pem file is the root directory of this project
 GITHUB_ORGANIZATION_URL=${11}
 
+# shellcheck disable=SC2034
+export AWS_PAGER=""
 
 function ssm_put() {
   if [ "${3}" == "secure"  ]; then
@@ -46,49 +48,31 @@ function ssm_put() {
     --name "${1}" \
     --value "${FILE}" \
     --type ${TYPE} \
+    --output json \
     --overwrite \
     --region "${AWS_REGION}"
-}
 
-function add_tag() {
-    aws ssm add-tags-to-resource \
-      --resource-type "Parameter" \
-      --resource-id "${1}" \
-      --tags "Key=project,Value=base-infra"
+  aws ssm add-tags-to-resource \
+    --resource-type "Parameter" \
+    --resource-id "${1}" \
+    --tags '[{"Key":"project","Value":"base-infra"}, {"Key":"code_location","Value":"setup-aws-params.sh"}]'
 }
 
 # account params
-ssm_put "/account/env" "${ENV}"
-add_tag "/account/env"
-
+ssm_put "/account/environment" "${ENV}"
 ssm_put "/account/owner" "${OWNER}"
-add_tag "/account/owner"
-
 ssm_put "/account/owner/email" "${EMAIL}"
-add_tag "/account/owner/email"
-
 ssm_put "/account/owner/public/ip" "${PUBLIC_IP}"
-add_tag "/account/owner/public/ip"
-
 ssm_put "/account/region" "${APP_REGION}"
-add_tag "/account/region"
 
 # terraform params
 ssm_put "/tools/terraform/state/bucket" "${TF_STATE_BUCKET}"
-add_tag "/account/owner"
-
 ssm_put "/tools/terraform/state/dynamodb" "${TF_STATE_DYNAMODB_LOCK}"
-add_tag "/tools/terraform/state/bucket"
 
 # github arc params
 ssm_put "/gihub/app/id" "${GITHUB_APP_ID}"
-add_tag "/gihub/app/id"
-
 ssm_put "/github/app/installation/id" "${GITHUB_APP_INSTALL_ID}"
-add_tag "/github/app/installation/id"
-
 ssm_put "/github/app/private/key" "${GITHUB_APP_PRIVATE_KEY_FILE}" "secure"
-add_tag "/github/app/private/key"
-
 ssm_put "/github/organization/url" "${GITHUB_ORGANIZATION_URL}"
-add_tag "/github/organization/url"
+
+unset AWS_PAGER
