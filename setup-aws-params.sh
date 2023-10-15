@@ -6,7 +6,7 @@
 #
 # Usage:
 #   setup-aws-params.sh \
-#     <ENV> \
+#     <ENVIRONMENT> \
 #     <OWNER> \
 #     <EMAIL> \
 #     <PUBLIC_IP> \
@@ -19,7 +19,7 @@
 #     <GITHUB_ORGANIZATION_URL>
 
 AWS_REGION='us-east-1'
-ENV=${1}
+ENVIRONMENT=${1}
 OWNER=${2}
 EMAIL=${3}
 PUBLIC_IP=${4}
@@ -59,7 +59,7 @@ function ssm_put() {
 }
 
 # account params
-ssm_put "/account/environment" "${ENV}"
+ssm_put "/account/environment" "${ENVIRONMENT}"
 ssm_put "/account/owner" "${OWNER}"
 ssm_put "/account/owner/email" "${EMAIL}"
 ssm_put "/account/owner/public/ip" "${PUBLIC_IP}"
