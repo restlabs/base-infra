@@ -29,14 +29,16 @@ class DockerDeployer:
         checks build system info
         """
         logger.info('checking build system info...')
-        return subprocess.run(
-            [
-                'docker',
-                'info'
-            ],
-            check=True,
-            capture_output=True
-        ).stdout.decode()
+        return logger.info(
+                '\n' + subprocess.run(
+                    [
+                        'docker',
+                        'info'
+                    ],
+                    check=True,
+                    capture_output=True
+                ).stdout.decode()
+            )
 
     def create_image(self):
         """
@@ -47,16 +49,8 @@ class DockerDeployer:
             [
                 'docker',
                 'build',
-                f'--tag {self.tag}',
+                f'--tag={self.tag}',
                 f'{self.directory}'
             ],
             check=True
         )
-
-
-d = DockerDeployer(
-    'test',
-    'test'
-)
-
-logger.info('\n%s', d.system_info)
