@@ -77,5 +77,3 @@ ssm_put "/gihub/app/id" "${GITHUB_APP_ID}"
 ssm_put "/github/app/installation/id" "${GITHUB_APP_INSTALL_ID}"
 ssm_put "/github/app/private/key" "${GITHUB_APP_PRIVATE_KEY_FILE}" "secure"
 ssm_put "/github/organization/url" "${GITHUB_ORGANIZATION_URL}"
-
-unset AWS_PAGER
