@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 # NAME: Setup AWS Params
 # DESC: This script will create entries in SSM parameters in AWS Parameter Store
 # Default region: us-east-1
