@@ -10,10 +10,12 @@ try:
     from .deployer_logger import logger
     from .tf_deployer import TFDeployer
     from .base_args import Base
+    from .docker_deployer import DockerDeployer
 except ImportError:
     from deployer_logger import logger
     from tf_deployer import TFDeployer
     from base_args import Base
+    from docker_deployer import DockerDeployer
 
 dirname = f'{os.getcwd()}'
 TFPLAN_DEPLOY_FILENAME = 'terraform-deploy.plan'
@@ -62,51 +64,94 @@ def cleanup(
 def main():
     # pylint: disable=C0116
     parser = Base(description='Runs base infra deployer')
-    parser.add_argument(
+
+    subparsers = parser.add_subparsers(title='subcommand', dest='subcommand')
+
+    # terraform commands
+    tf_subparser = subparsers.add_parser(
+        name='terraform',
+        help='Specify the target directory to deploy with terraform'
+    )
+
+    tf_subparser.add_argument(
         '--target',
         '-t',
         help='Specify the target directory to deploy',
         required=True
     )
-    parser.add_argument(
+
+    tf_subparser.add_argument(
         '--destroy',
         '-d',
         action='store_true',
-        help='Destroy',
+        help='Destroys terraform resources',
         required=False
     )
 
+    # docker commands
+    docker_parser = subparsers.add_parser(
+        name='docker',
+        help='Specify the target directory to create a docker image'
+    )
+
+    docker_parser.add_argument(
+        '--tag',
+        '-ta',
+        help='Creates tags for docker image',
+        required=False
+    )
+
+    docker_parser.add_argument(
+        '--target',
+        '-t',
+        help='Specify the target directory to build',
+        required=True
+    )
+
     args = parser.parse_args()
+    print(args.subcommand)
 
     try:
-        # pylint: disable=W1309
-        # pylint: disable=W1203
-        logger.info(f'DEPLOYING: {args.target.upper()}')
         app_dir = f'{dirname}/{str(args.target.strip())}'
 
-        tf_deployer = TFDeployer(
-            TFPLAN_DEPLOY_FILENAME,
-            TFVARS_FILENAME,
-            app_dir,
-            args.target,
-            app_email,
-            app_owner,
-            app_region,
-            tf_state_bucket,
-            tf_state_lock_db,
-            TFBACKEND_FILE,
-            PARAMS_REGION,
-            bool(args.destroy)
-        )
+        if args.subcommand == 'terraform':
+            # pylint: disable=W1309
+            # pylint: disable=W1203
+            logger.info(f'DEPLOYING: {args.target.upper()}')
 
-        # run cleanup even on errors or exits
-        atexit.register(
-            cleanup,
-            app_dir,
-            args.target
-        )
+            tf_deployer = TFDeployer(
+                TFPLAN_DEPLOY_FILENAME,
+                TFVARS_FILENAME,
+                app_dir,
+                args.target,
+                app_email,
+                app_owner,
+                app_region,
+                tf_state_bucket,
+                tf_state_lock_db,
+                TFBACKEND_FILE,
+                PARAMS_REGION,
+                bool(args.destroy)
+            )
 
-        tf_deployer.apply()
+            # run cleanup even on errors or exits
+            atexit.register(
+                cleanup,
+                app_dir,
+                args.target
+            )
+
+            tf_deployer.apply()
+
+        if args.subcommand == 'docker':
+            logger.info('CREATING IMAGE FROM: %s', args.target.upper())
+            docker_deployer = DockerDeployer(
+                args.tag,
+                app_dir
+            )
+
+            docker_deployer.system_info()
+            docker_deployer.create_image()
 
     except Exception as e:
         raise logger.critical(e)

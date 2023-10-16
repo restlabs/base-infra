@@ -1,0 +1,21 @@
+name: Test job for custom actions runner
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy-eks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: setup Python
+        uses: actions/setup-python@v4.7.0
+        with:
+          python-version: '3.11'
+
+      - name: install dependencies
+        run: make install
+
+      - name: create container image
+        run: |
+          make create-container

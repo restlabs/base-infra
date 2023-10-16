@@ -3,6 +3,12 @@ PIP ?= $(PYTHON) -m pip
 GO ?= go
 TRIVY ?= trivy
 
+
+.PHONY: create-container
+create-container:
+	base-deploy --tag hydra-runner:0.0.1 --target dockerfiles/github-arc-runners
+
+
 .PHONY: deploy-all
 deploy-all:
 	base-deploy --version
@@ -27,37 +33,37 @@ destroy-all:
 
 .PHONY: deploy-arc
 deploy-arc:
-	base-deploy --target "terraform/helm/github-arc" $(DESTROY)
+	base-deploy terraform --target "terraform/helm/github-arc" $(DESTROY)
 
 
 .PHONY: deploy-argo
 deploy-argo:
-	base-deploy --target "terraform/helm/argo" $(DESTROY)
+	base-deploy terraform --target "terraform/helm/argo" $(DESTROY)
 
 
 .PHONY: deploy-argo-example
 deploy-argo-example:
-	base-deploy --target "terraform/kubernetes/manifests/argo-example-app" $(DESTROY)
+	base-deploy terraform --target "terraform/kubernetes/manifests/argo-example-app" $(DESTROY)
 
 
 .PHONY: deploy-jenkins-example
 deploy-jenkins-example:
-	base-deploy --target "terraform/kubernetes/manifests/jenkins-example"	$(DESTROY)
+	base-deploy terraform --target "terraform/kubernetes/manifests/jenkins-example"	$(DESTROY)
 
 
 .PHONY: deploy-eks
 deploy-eks:
-	base-deploy --target "terraform/eks/base" $(DESTROY)
+	base-deploy terraform --target "terraform/eks/base" $(DESTROY)
 
 
 .PHONY: deploy-s3
 deploy-s3:
-	base-deploy --target "terraform/s3/base" $(DESTROY)
+	base-deploy terraform --target "terraform/s3/base" $(DESTROY)
 
 
 .PHONY: deploy-vpc
 deploy-vpc:
-	base-deploy --target "terraform/vpc/base" $(DESTROY)
+	base-deploy terraform --target "terraform/vpc/base" $(DESTROY)
 
 
 .PHONY: deployer-test
