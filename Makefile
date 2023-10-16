@@ -6,7 +6,7 @@ TRIVY ?= trivy
 
 .PHONY: create-container
 create-container:
-	base-deploy --tag hydra-runner:0.0.1 --target dockerfiles/github-arc-runners
+	base-deploy docker --tag hydra-runner:0.0.1 --target dockerfiles/github-arc-runners
 
 
 .PHONY: deploy-all
