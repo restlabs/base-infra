@@ -55,7 +55,7 @@ Fill in the parameters based on your environment. You can change the region for 
 
 You can also use the aws-setup-params.sh script to generate these SSM parameters. Replace the entries in `<>` with your own.
 ```commandline
-./setup-aws-params.sh 
+./setup-aws-params.sh \
     <ENVIRONMENT> \
     <OWNER> \
     <EMAIL> \
