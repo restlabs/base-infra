@@ -34,6 +34,7 @@ GITHUB_APP_PRIVATE_KEY_FILE=${10} # make sure the pem file is the root directory
 GITHUB_ORGANIZATION_URL=${11}
 
 # shellcheck disable=SC2034
+trap unset AWS_PAGER EXIT
 export AWS_PAGER=""
 
 function ssm_put() {
