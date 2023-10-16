@@ -150,7 +150,7 @@ def main():
                 app_dir
             )
 
-            docker_deployer.system_info()
+            logger.info('\n%s', docker_deployer.system_info)
             docker_deployer.create_image()
 
     except Exception as e:

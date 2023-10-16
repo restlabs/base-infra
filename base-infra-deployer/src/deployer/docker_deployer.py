@@ -1,5 +1,4 @@
 """
-THIS IS STILL A WIP
 Docker deployer
 """
 
@@ -29,8 +28,7 @@ class DockerDeployer:
         checks build system info
         """
         logger.info('checking build system info...')
-        return logger.info(
-                    '%s', subprocess.run(
+        return subprocess.run(
                     [
                         'docker',
                         'info'
@@ -38,7 +36,6 @@ class DockerDeployer:
                     check=True,
                     capture_output=True
                 ).stdout.decode()
-            )
 
     def create_image(self):
         """
