@@ -1,4 +1,4 @@
-name: Test job for custom actions runner
+name: Runner Factory
 on:
   workflow_dispatch:
 
