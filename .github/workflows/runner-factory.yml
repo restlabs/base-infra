@@ -5,6 +5,7 @@ on:
 jobs:
   deploy-eks:
     runs-on: ubuntu-latest
+    environment: deploy
     steps:
       - uses: actions/checkout@v4
 
