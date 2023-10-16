@@ -144,13 +144,13 @@ def main():
             tf_deployer.apply()
 
         if args.subcommand == 'docker':
-            logger.info(f'CREATING IMAGE FROM: {args.target.upper()}')
+            logger.info('CREATING IMAGE FROM: %s', args.target.upper())
             docker_deployer = DockerDeployer(
                 args.tag,
                 app_dir
             )
 
-            docker_deployer.system_info
+            docker_deployer.system_info()
             docker_deployer.create_image()
 
     except Exception as e:

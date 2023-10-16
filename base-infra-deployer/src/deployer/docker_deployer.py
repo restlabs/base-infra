@@ -30,7 +30,7 @@ class DockerDeployer:
         """
         logger.info('checking build system info...')
         return logger.info(
-                '\n' + subprocess.run(
+                    '%s', subprocess.run(
                     [
                         'docker',
                         'info'
