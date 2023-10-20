@@ -6,7 +6,7 @@ locals {
   desired_size              = 3
   max_size                  = 4
   min_size                  = 1
-  instance_types            = [ "t3.small" ]
+  instance_types            = [ "t3.medium" ]
   is_private_access_enabled = local.base_tags.environment == "test" || local.base_tags.environment == "dev" ? false : true
   is_public_access_enabled  = local.base_tags.environment == "test" || local.base_tags.environment == "dev" ? true : false
 }
