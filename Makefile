@@ -19,6 +19,7 @@ deploy-all:
 	make deploy-argo-example
 	make deploy-jenkins-example
 	make deploy-arc
+	make deploy-nexus
 
 
 .PHONY: destroy-all
@@ -54,6 +55,11 @@ deploy-jenkins-example:
 .PHONY: deploy-eks
 deploy-eks:
 	base-deploy terraform --target "terraform/eks/base" $(DESTROY)
+
+
+.PHONY: deploy-nexus
+deploy-nexus:
+	base-deploy terraform --target "terraform/kubernetes/manifests/nexus" $(DESTROY)
 
 
 .PHONY: deploy-s3
