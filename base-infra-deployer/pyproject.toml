@@ -6,17 +6,33 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [project]
+authors = [
+    {name = "pafable", email = "pafable@github.com"}
+]
+
+classifiers = [
+    "Programming Language :: Python :: 3.10"
+]
+
 dependencies = [
     "boto3",
-    "pylint"
+    "build",
+    "pylint",
+    "twine"
 ]
+
 description = "base-infra-deployer deployer utility"
+license = {file = "../LICENSE.txt"}
 name = "base-infra-deployer"
+readme = "README.md"
 requires-python = ">=3.10"
 version = "1.1.0"
 
 [project.scripts]
 base-deploy = "deployer.main:main"
+
+[project.urls]
+"Homepage" = "https://github.com/we-are-discussing-rest/base-infra"
 
 [tool.setuptools.packages.find]
 where = ["src"]

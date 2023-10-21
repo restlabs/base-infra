@@ -1,4 +1,4 @@
-PYTHON ?= python3
+PYTHON ?= python
 PIP ?= $(PYTHON) -m pip
 GO ?= go
 TRIVY ?= trivy
@@ -119,20 +119,43 @@ clean:
 		base-infra-deployer \
 		boto3 \
 		botocore \
+		certifi \
+		charset-normalizer \
+		colorama \
 		dill \
+		docutils \
+		importlib-metadata \
+		idna \
 		isort \
+		jaraco.classes \
 		jmespath \
+		keyring \
+		markdown-it-py \
 		mccabe \
+		mdurl \
+		more-itertools \
+		nh3 \
+		pkginfo \
 		platformdirs \
 		pylint \
+		Pygments \
 		python-dateutil \
-		six \
+		pywin32-ctypes \
+		readme-renderer \
+		requests \
+		requests-toolbelt \
+		rfc3986 \
+		rich \
 		s3transfer \
+		six \
 		tomlkit \
-		urllib3
+		twine \
+		urllib3 \
+		zipp
 
 	rm -rf build \
 		*.egg-info \
 		base-infra-deployer/build \
+		base-infra-deployer/dist \
 		base-infra-deployer/src/*egg-info \
 		src/*.egg-info
