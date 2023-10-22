@@ -19,6 +19,7 @@ deploy-all:
 	make deploy-argo-example
 	make deploy-jenkins-example
 	make deploy-arc
+	make deploy-nexus
 
 
 .PHONY: destroy-all
@@ -56,6 +57,11 @@ deploy-eks:
 	base-deploy terraform --target "terraform/eks/base" $(DESTROY)
 
 
+.PHONY: deploy-nexus
+deploy-nexus:
+	base-deploy terraform --target "terraform/kubernetes/manifests/nexus" $(DESTROY)
+
+
 .PHONY: deploy-s3
 deploy-s3:
 	base-deploy terraform --target "terraform/s3/base" $(DESTROY)
@@ -72,10 +78,16 @@ deployer-test:
 	$(PYTHON) -m unittest -v base-infra-deployer/tests/test_deployer.py
 
 
+.PHONY: build
+build:
+	$(PYTHON) -m build base-infra-deployer
+	$(PYTHON) -m twine check base-infra-deployer/dist/*
+
+
 .PHONY: install
 install:
 	$(PYTHON) --version
-	$(PYTHON) -m pip install --upgrade pip
+	$(PIP) install --upgrade pip
 	$(PIP) install base-infra-deployer/
 
 
@@ -108,25 +120,4 @@ tf-trivy:
 
 .PHONY: clean
 clean:
-	$(PIP) uninstall -y \
-		astroid \
-		base-infra-deployer \
-		boto3 \
-		botocore \
-		dill \
-		isort \
-		jmespath \
-		mccabe \
-		platformdirs \
-		pylint \
-		python-dateutil \
-		six \
-		s3transfer \
-		tomlkit \
-		urllib3
-
-	rm -rf build \
-		*.egg-info \
-		base-infra-deployer/build \
-		base-infra-deployer/src/*egg-info \
-		src/*.egg-info
+	$(PYTHON) base-infra-deployer/cleanup_build.py
