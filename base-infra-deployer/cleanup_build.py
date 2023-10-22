@@ -64,29 +64,31 @@ PYTHON_PACKAGES = {
 
 
 def remove_dir() -> None:
-    dirname = os.getcwd()
-    base_infra_deployer_root = 'base-infra-deployer'
+    try:
+        dirname = os.getcwd()
+        base_infra_deployer_root = 'base-infra-deployer'
 
-    if os.name != 'posix':
-        build = f'\\{base_infra_deployer_root}\\build'
-        dist = f'\\{base_infra_deployer_root}\\dist'
-        egg = f'\\{base_infra_deployer_root}\\src\\base_infra_deployer.egg-info'
-    else:
-        build = f'/{base_infra_deployer_root}/build'
-        dist = f'/{base_infra_deployer_root}/dist'
-        egg = f'/{base_infra_deployer_root}/src/base_infra_deployer.egg-info'
+        if os.name != 'posix':
+            build = f'\\{base_infra_deployer_root}\\build'
+            dist = f'\\{base_infra_deployer_root}\\dist'
+            egg = f'\\{base_infra_deployer_root}\\src\\base_infra_deployer.egg-info'
+        else:
+            build = f'/{base_infra_deployer_root}/build'
+            dist = f'/{base_infra_deployer_root}/dist'
+            egg = f'/{base_infra_deployer_root}/src/base_infra_deployer.egg-info'
 
-    build_dir = f'{dirname}{build}'
-    dist_dir = f'{dirname}{dist}'
-    egg_dir = f'{dirname}{egg}'
+        build_dir = f'{dirname}{build}'
+        dist_dir = f'{dirname}{dist}'
+        egg_dir = f'{dirname}{egg}'
 
-    shutil.rmtree(build_dir)
-    shutil.rmtree(dist_dir)
-    shutil.rmtree(egg_dir)
+        for directory in [build_dir, dist_dir, egg_dir]:
+            shutil.rmtree(directory)
+
+    except Exception as e:
+        logger.info(e)
 
 
 def uninstall_package(package: str) -> None:
-    logger.info(f'Deleting {package}')
     subprocess.run(
         [
             'python',

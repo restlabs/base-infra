@@ -1,4 +1,4 @@
-PYTHON ?= python
+PYTHON ?= python3
 PIP ?= $(PYTHON) -m pip
 GO ?= go
 TRIVY ?= trivy
@@ -78,10 +78,16 @@ deployer-test:
 	$(PYTHON) -m unittest -v base-infra-deployer/tests/test_deployer.py
 
 
+.PHONY: build
+build:
+	$(PYTHON) -m build base-infra-deployer
+	$(PYTHON) -m twine check base-infra-deployer/dist/*
+
+
 .PHONY: install
 install:
 	$(PYTHON) --version
-	$(PYTHON) -m pip install --upgrade pip
+	$(PIP) install --upgrade pip
 	$(PIP) install base-infra-deployer/
 
 
@@ -114,4 +120,4 @@ tf-trivy:
 
 .PHONY: clean
 clean:
-	$(PYTHON) base-infra-deployer/cleanup-build.py
+	$(PYTHON) base-infra-deployer/cleanup_build.py
