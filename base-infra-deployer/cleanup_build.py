@@ -42,7 +42,7 @@ PYTHON_PACKAGES = {
     'mdurl',
     'more-itertools',
     'nh3',
-    'packaging'
+    'packaging',
     'pkginfo',
     'platformdirs',
     'pylint',
