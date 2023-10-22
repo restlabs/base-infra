@@ -13,12 +13,12 @@ create-container:
 deploy-all:
 	base-deploy --version
 	make deploy-vpc
-	#make deploy-s3
+	make deploy-s3
 	make deploy-eks
-	#make deploy-argo
-	#make deploy-argo-example
-	#make deploy-jenkins-example
-	#make deploy-arc
+	make deploy-argo
+	make deploy-argo-example
+	make deploy-jenkins-example
+	make deploy-arc
 	make deploy-nexus
 
 
