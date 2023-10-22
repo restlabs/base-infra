@@ -1,10 +1,23 @@
-#!/usr/env python
 """
 Cleanup Build
 """
 
+import logging
 import os
+import shutil
 import subprocess
+
+# logger
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+log_formatter = logging.Formatter(
+    datefmt='%Y-%m-%d %H:%M:%S',
+    fmt='%(asctime)s [%(levelname)s] - %(message)s'
+)
+stream_handler = logging.StreamHandler()
+stream_handler.setFormatter(log_formatter)
+logger.addHandler(stream_handler)
+
 
 PYTHON_PACKAGES = {
     'astroid',
@@ -50,8 +63,30 @@ PYTHON_PACKAGES = {
 }
 
 
+def remove_dir() -> None:
+    dirname = os.getcwd()
+    base_infra_deployer_root = 'base-infra-deployer'
+
+    if os.name != 'posix':
+        build = f'\\{base_infra_deployer_root}\\build'
+        dist = f'\\{base_infra_deployer_root}\\dist'
+        egg = f'\\{base_infra_deployer_root}\\src\\base_infra_deployer.egg-info'
+    else:
+        build = f'/{base_infra_deployer_root}/build'
+        dist = f'/{base_infra_deployer_root}/dist'
+        egg = f'/{base_infra_deployer_root}/src/base_infra_deployer.egg-info'
+
+    build_dir = f'{dirname}{build}'
+    dist_dir = f'{dirname}{dist}'
+    egg_dir = f'{dirname}{egg}'
+
+    shutil.rmtree(build_dir)
+    shutil.rmtree(dist_dir)
+    shutil.rmtree(egg_dir)
+
+
 def uninstall_package(package: str) -> None:
-    print(f'Deleting {package}')
+    logger.info(f'Deleting {package}')
     subprocess.run(
         [
             'python',
@@ -65,8 +100,14 @@ def uninstall_package(package: str) -> None:
     )
 
 
-if __name__ == '__main__':
-    def main():
+def main():
+    try:
+        remove_dir()
         for pkg in PYTHON_PACKAGES:
             uninstall_package(pkg)
-    
+    except Exception as e:
+        logger.critical(e)
+
+
+if __name__ == '__main__':
+    main()
