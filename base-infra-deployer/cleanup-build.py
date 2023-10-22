@@ -20,6 +20,7 @@ logger.addHandler(stream_handler)
 
 
 PYTHON_PACKAGES = {
+    'Pygments',
     'astroid',
     'base-infra-deployer',
     'boto3',
@@ -30,8 +31,8 @@ PYTHON_PACKAGES = {
     'colorama',
     'dill',
     'docutils',
-    'importlib-metadata',
     'idna',
+    'importlib-metadata',
     'isort',
     'jaraco.classes',
     'jmespath',
@@ -45,7 +46,6 @@ PYTHON_PACKAGES = {
     'pkginfo',
     'platformdirs',
     'pylint',
-    'Pygments',
     'pyproject_hooks',
     'python-dateutil',
     'pywin32-ctypes',
