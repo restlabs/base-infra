@@ -1,5 +1,5 @@
 """
-Cleanup Build
+Cleanup Build on Linux, MacOS, and Windows
 """
 
 import logging
@@ -46,7 +46,7 @@ PYTHON_PACKAGES = {
     'pkginfo',
     'platformdirs',
     'pylint',
-    'pyproject_hooks',
+    'pyproject-hooks',
     'python-dateutil',
     'pywin32-ctypes',
     'readme-renderer',
