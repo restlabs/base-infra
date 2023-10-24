@@ -4,9 +4,14 @@ GO ?= go
 TRIVY ?= trivy
 
 
+.PHONY: check-python
+check-python:
+	$(PYTHON) --version
+
+
 .PHONY: create-container
 create-container:
-	base-deploy docker --tag hydra-runner:0.0.1 --target dockerfiles/github-arc-runners
+	base-deploy docker --tag hydra-runner --target dockerfiles/github-actions-runner
 
 
 .PHONY: deploy-all
@@ -119,5 +124,5 @@ tf-trivy:
 
 
 .PHONY: clean
-clean:
+clean: check-python
 	$(PYTHON) base-infra-deployer/cleanup_build.py
