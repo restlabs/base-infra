@@ -1,5 +1,10 @@
 # Ansible Tutorial
 
+#### Set ansible.cfg
+```commandline
+export ANSBILE_CONFG=ansible.cfg
+```
+
 #### Check hosts
 Add public key on the 3 servers
 ```commandline
@@ -27,5 +32,13 @@ ansible test \
  ansible-playbook \
     --ask-become-pass \
     -u <USER> \
-    playbook/install_apache.yml
+    playbook/<PLAYBOOK>
+```
+
+alternatively you can pass in the password using `--extra-vars`
+```commandline
+ansible-playbook \
+    -u scleft \
+    playbooks/uninstall_apache.yml \
+    --extra-vars "ansible_sudo_pass=<YOUR_SUDO_PASSWORD>"
 ```
