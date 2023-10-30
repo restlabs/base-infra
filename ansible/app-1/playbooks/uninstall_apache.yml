@@ -2,13 +2,9 @@
 - hosts: all
   become: true
   tasks:
-  - name: update repository index
-    apt:
-      update_cache: yes
-
-  - name: install apache2 package
-    apt:
-      name: apache2
-      autoremove: yes
+  - name: uninstall apache package
+    package:
+      name: "{{ apache_package }}"
       purge: true
       state: absent
+      update_cache: true

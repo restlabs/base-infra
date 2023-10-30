@@ -1,4 +1,4 @@
 [test]
-192.168.109.179
-192.168.109.178
-192.168.109.159
+192.168.109.179 apache_package=apache2
+192.168.109.178 apache_package=apache2
+192.168.109.159 apache_package=apache2
