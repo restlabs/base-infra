@@ -1,0 +1,8 @@
+[web_servers]
+192.168.109.179 apache_package=apache2
+
+[db_servers]
+192.168.109.178 apache_package=apache2
+
+[file_servers]
+192.168.109.159 apache_package=apache2

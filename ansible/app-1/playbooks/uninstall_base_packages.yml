@@ -1,0 +1,14 @@
+---
+- hosts: all
+  become: true
+  tasks:
+  - name: uninstall base packages
+    package:
+      name:
+        - vim
+        - tmux
+        - htop
+        - net-tools
+#      purge: true
+      state: absent
+      update_cache: yes
