@@ -35,7 +35,7 @@ ansible test \
     playbook/<PLAYBOOK>
 ```
 
-alternatively you can pass in the password using `-E`
+alternatively you can pass in the password using `-e`
 ```commandline
 ansible-playbook \
     -u scleft \
