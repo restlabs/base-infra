@@ -2,7 +2,7 @@
 
 #### Set ansible.cfg
 ```commandline
-export ANSBILE_CONFG=ansible.cfg
+export ANSIBLE_CONFIG=ansible.cfg
 ```
 
 #### Check hosts

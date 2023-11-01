@@ -9,5 +9,15 @@
         - tmux
         - htop
         - net-tools
+        - unzip
       state: latest
       update_cache: yes
+
+  - name: install terraform 1.6.2
+    unarchive:
+      src: https://releases.hashicorp.com/terraform/1.6.2/terraform_1.6.2_linux_amd64.zip
+      dest: /usr/local/bin
+      remote_src: yes
+      mode: 0755
+      owner: root
+      group: root
