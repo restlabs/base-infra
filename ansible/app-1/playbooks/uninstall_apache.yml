@@ -8,3 +8,8 @@
       purge: true
       state: absent
       update_cache: true
+
+  - name: uninstall default_site.html
+    file:
+      state: absent
+      path: /var/www/html/index.html

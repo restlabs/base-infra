@@ -9,6 +9,12 @@
         - tmux
         - htop
         - net-tools
-#      purge: true
+        - unzip
+      purge: true
       state: absent
       update_cache: yes
+
+  - name: uninstall terraform 1.6.2
+    file:
+      state: absent
+      path: /usr/local/bin/terraform

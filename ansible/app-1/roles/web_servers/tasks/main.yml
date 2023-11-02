@@ -1,0 +1,13 @@
+- name: install apache
+  package:
+    name: "{{ apache_package }}"
+    state: latest
+    update_cache: true
+
+- name: copy default_site
+  copy:
+    src: ../files/default_site.html
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: 0644

@@ -1,9 +1,5 @@
 ---
 - hosts: all
   become: true
-  tasks:
-  - name: install apache
-    package:
-      name: "{{ apache_package }}"
-      state: latest
-      update_cache: true
+  roles:
+  - web_servers

@@ -1,13 +1,5 @@
 ---
 - hosts: all
   become: true
-  tasks:
-  - name: install base packages
-    package:
-      name:
-        - vim
-        - tmux
-        - htop
-        - net-tools
-      state: latest
-      update_cache: yes
+  roles:
+  - base_packages

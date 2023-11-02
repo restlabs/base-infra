@@ -2,7 +2,7 @@
 
 #### Set ansible.cfg
 ```commandline
-export ANSBILE_CONFG=ansible.cfg
+export ANSIBLE_CONFIG=ansible.cfg
 ```
 
 #### Check hosts
@@ -40,5 +40,5 @@ alternatively you can pass in the password using `-e`
 ansible-playbook \
     -u scleft \
     playbooks/uninstall_apache.yml \
-    --extra-vars "ansible_become_pass=<YOUR_SUDO_PASSWORD>"
+    --extra-vars "ansible_sudo_pass=<YOUR_SUDO_PASSWORD>"
 ```
