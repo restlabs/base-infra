@@ -175,6 +175,11 @@ resource "aws_iam_policy" "karpenter_controller" {
   })
 }
 
+data "aws_ssm_parameter" "eks_oidc_arn" {
+  provider = aws.parameters
+  name     = "/eks/oidc/provider/arn"
+}
+
 resource "aws_iam_role" "karpenter_role" {
   name = format("karpenter-role")
 
@@ -186,7 +191,7 @@ resource "aws_iam_role" "karpenter_role" {
         Effect = "Allow"
         Sid    = ""
         Principal = {
-          Federated = module.eks_cluster.oidc.arn
+          Federated = data.aws_ssm_parameter.eks_oidc_arn
         }
       },
     ]
