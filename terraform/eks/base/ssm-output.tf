@@ -20,6 +20,11 @@ module "ssm_param" {
       name        = "/eks/base/id"
       value       = module.base_eks.cluster_name
       description = "EKS cluster ID for base-infra"
+    },
+    {
+      name        = "/eks/oidc/provider/arn"
+      value       = module.base_eks.oidc_provider_arn
+      description = "EKS oidc provider arn"
     }
   ]
 

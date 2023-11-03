@@ -6,22 +6,22 @@ locals {
   desired_size              = 3
   max_size                  = 4
   min_size                  = 1
-  instance_types            = [ "t3.medium" ]
+  instance_types            = ["t3.medium"]
   is_private_access_enabled = local.base_tags.environment == "test" || local.base_tags.environment == "dev" ? false : true
   is_public_access_enabled  = local.base_tags.environment == "test" || local.base_tags.environment == "dev" ? true : false
 }
 
 module "base_eks" {
-  source                               = "terraform-aws-modules/eks/aws"
-  version                              = "19.17.2"
-  cluster_name                         = local.cluster_name
-  cluster_version                      = local.eks_version
-#  cluster_endpoint_public_access_cidrs = [ data.aws_ssm_parameter.my_public_ip.value ]
-  control_plane_subnet_ids             = data.aws_subnets.tf_subnet.ids
-  cluster_endpoint_private_access      = local.is_private_access_enabled
-  cluster_endpoint_public_access       = local.is_public_access_enabled
-  subnet_ids                           = data.aws_subnets.tf_subnet.ids
-  vpc_id                               = data.aws_vpc.selected.id
+  source          = "terraform-aws-modules/eks/aws"
+  version         = "19.17.2"
+  cluster_name    = local.cluster_name
+  cluster_version = local.eks_version
+  #  cluster_endpoint_public_access_cidrs = [ data.aws_ssm_parameter.my_public_ip.value ]
+  control_plane_subnet_ids        = data.aws_subnets.tf_subnet.ids
+  cluster_endpoint_private_access = local.is_private_access_enabled
+  cluster_endpoint_public_access  = local.is_public_access_enabled
+  subnet_ids                      = data.aws_subnets.tf_subnet.ids
+  vpc_id                          = data.aws_vpc.selected.id
 
   eks_managed_node_group_defaults = {
     ami_type       = local.ami_type

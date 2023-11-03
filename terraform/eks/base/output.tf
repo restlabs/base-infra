@@ -21,3 +21,7 @@ output "eks_endpoint" {
 output "eks_status" {
   value = module.base_eks.cluster_status
 }
+
+output "eks_oidc_arn" {
+  value = module.base_eks.oidc_provider_arn
+}

@@ -13,4 +13,5 @@ module "karpenter" {
   namespace     = local.karpenter_namespace
   release_name  = local.karpenter_chart
   repository    = local.karpenter_repository
+  values_map    = {}
 }
