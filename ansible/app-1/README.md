@@ -38,7 +38,7 @@ ansible test \
 alternatively you can pass in the password using `-e`
 ```commandline
 ansible-playbook \
-    -u scleft \
+    -u <USER> \
     playbooks/uninstall_apache.yml \
     --extra-vars "ansible_sudo_pass=<YOUR_SUDO_PASSWORD>"
 ```
