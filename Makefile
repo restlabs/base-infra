@@ -1,4 +1,4 @@
-PYTHON ?= python3
+PYTHON ?= python
 PIP ?= $(PYTHON) -m pip
 GO ?= go
 TRIVY ?= trivy
@@ -25,6 +25,16 @@ deploy-all:
 	#make deploy-jenkins-example
 	#make deploy-arc
 	#make deploy-nexus
+
+
+.PHONY: deploy-karpenter
+deploy-karpenter:
+	base-deploy terraform --target "terraform/helm/karpenter" $(DESTROY)
+
+
+.PHONY: destroy-karpenter
+destroy-karpenter:
+	make deploy-karpenter DESTROY=--destroy
 
 
 .PHONY: destroy-all

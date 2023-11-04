@@ -3,8 +3,6 @@ resource "aws_iam_instance_profile" "karpenter" {
   role = aws_iam_role.karpenter_profile_instance_role.name
 }
 
-
-
 resource "aws_iam_policy" "instance_profile_policy" {
   name        = "instance_profile-karpenter-policy"
   description = "instance profile for karpenter policy"
@@ -181,7 +179,7 @@ data "aws_ssm_parameter" "eks_oidc_arn" {
 }
 
 resource "aws_iam_role" "karpenter_role" {
-  name = format("karpenter-role")
+  name = "karpenter-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -189,9 +187,8 @@ resource "aws_iam_role" "karpenter_role" {
       {
         Action = "sts:AssumeRoleWithWebIdentity"
         Effect = "Allow"
-        Sid    = ""
         Principal = {
-          Federated = data.aws_ssm_parameter.eks_oidc_arn
+          Federated = data.aws_ssm_parameter.eks_oidc_arn.value
         }
       },
     ]

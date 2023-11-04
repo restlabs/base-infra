@@ -3,10 +3,10 @@ locals {
   cluster_name              = "${var.owner}-${local.base_tags.environment}-eks-${var.region}"
   eks_version               = 1.28
   disk_size                 = 50
-  desired_size              = 3
-  max_size                  = 4
+  desired_size              = 1
+  max_size                  = 3
   min_size                  = 1
-  instance_types            = ["t3.medium"]
+  instance_types            = ["t3.small"]
   is_private_access_enabled = local.base_tags.environment == "test" || local.base_tags.environment == "dev" ? false : true
   is_public_access_enabled  = local.base_tags.environment == "test" || local.base_tags.environment == "dev" ? true : false
 }
