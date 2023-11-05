@@ -8,7 +8,7 @@ module "helm_version" {
 
 locals {
   base_tags = {
-    code_location = "terraform/helm/github-arc"
+    code_location = "terraform/helm/karpenter"
     email         = var.email
     environment   = data.aws_ssm_parameter.account_env.value
     owner         = var.owner
