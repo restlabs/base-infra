@@ -20,6 +20,7 @@ module "base_eks" {
   control_plane_subnet_ids        = data.aws_subnets.tf_subnet.ids
   cluster_endpoint_private_access = local.is_private_access_enabled
   cluster_endpoint_public_access  = local.is_public_access_enabled
+  iam_role_arn                    = aws_iam_role.eks_cluster_role.arn
   subnet_ids                      = data.aws_subnets.tf_subnet.ids
   vpc_id                          = data.aws_vpc.selected.id
 
@@ -34,6 +35,7 @@ module "base_eks" {
 
   eks_managed_node_groups = {
     default = {
+      iam_role_arn = aws_iam_role.nodegroup_role.arn
       use_custom_launch_template = true
       launch_template_tags = {
         Name = "${local.base_tags.project}-eks-default-node"
@@ -41,3 +43,4 @@ module "base_eks" {
     }
   }
 }
+
