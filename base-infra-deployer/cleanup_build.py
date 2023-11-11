@@ -1,5 +1,5 @@
 """
-Cleanup Build on Linux, MacOS, and Windows
+Cleanup Build on Linux, macOS, and Windows
 """
 
 import logging
