@@ -10,6 +10,14 @@ output "eks_cluster_role" {
   value = module.base_eks.cluster_iam_role_arn
 }
 
+output "eks_iam_role_arn" {
+  value = aws_iam_role.nodegroup_role.arn
+}
+
+output "eks_iam_role_name" {
+  value = aws_iam_role.nodegroup_role.name
+}
+
 output "eks_fargate_role" {
   value = module.base_eks.fargate_profiles
 }

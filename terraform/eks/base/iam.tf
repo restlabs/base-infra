@@ -1,3 +1,4 @@
+# EKS cluster IAM role
 resource "aws_iam_role" "eks_cluster_role" {
   name               = "${local.cluster_name}-role"
   assume_role_policy = <<EOF
@@ -21,6 +22,7 @@ resource "aws_iam_role_policy_attachment" "eks_cluster_policy" {
   role       = aws_iam_role.eks_cluster_role.name
 }
 
+# Node group IAM role
 resource "aws_iam_role" "nodegroup_role" {
   name = "${local.cluster_name}-nodegroup-role"
   assume_role_policy = jsonencode({

@@ -13,7 +13,7 @@ locals {
   values_map = {
     serviceAccount = {
       annotations = {
-        tostring("eks.amazonaws.com/role-arn") = aws_iam_role.karpenter_role.arn
+        tostring("eks.amazonaws.com/role-arn") = aws_iam_role.karpenter_controller.arn
       }
     }
 
@@ -49,20 +49,24 @@ resource "kubernetes_manifest" "karpenter_provisioner" {
     }
 
     spec = {
-      requirements = [{
-        key = "karpenter.sh/capacity-type"
-        operator = "In"
-        values = [
-          "on-demand"
-        ]
-      },
-      {
-        key = "node.kubernetes.io/instance-type"
-        operator = "In"
-        values = [
-          "t3.small", "t3.medium"
-        ]
-      }]
+      requirements = [
+        {
+          key      = "karpenter.sh/capacity-type"
+          operator = "In"
+          values = [
+            "on-demand"
+          ]
+        },
+        {
+          key      = "node.kubernetes.io/instance-type"
+          operator = "In"
+          values = [
+            "t3.small",
+            "t3.medium",
+            "t3.large"
+          ]
+        }
+      ]
 
       limits = {
         resources = {
@@ -75,8 +79,8 @@ resource "kubernetes_manifest" "karpenter_provisioner" {
           deviceName = "/dev/xvda",
           ebs = {
             deleteOnTermination = true
-            volumeSize = local.ebs_volume_size
-            volumeType = local.ebs_volume_type
+            volumeSize          = local.ebs_volume_size
+            volumeType          = local.ebs_volume_type
           }
         }]
 
@@ -89,7 +93,7 @@ resource "kubernetes_manifest" "karpenter_provisioner" {
         }
 
         tags = {
-           "karpenter.sh/discovery/${data.aws_ssm_parameter.eks_cluster_name.value}" = data.aws_ssm_parameter.eks_cluster_name.value
+          "karpenter.sh/discovery/${data.aws_ssm_parameter.eks_cluster_name.value}" = data.aws_ssm_parameter.eks_cluster_name.value
         }
 
         ttlSecondsAfterEmpty = 30

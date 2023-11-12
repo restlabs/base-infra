@@ -16,6 +16,16 @@ data "aws_eks_cluster_auth" "eks_cluster" {
   name = local.cluster_name
 }
 
+data "aws_ssm_parameter" "eks_nodegroup_role_arn" {
+  provider = aws.parameters
+  name     = "/eks/iam/role/nodegroup/arn"
+}
+
+data "aws_ssm_parameter" "eks_nodegroup_role_name" {
+  provider = aws.parameters
+  name     = "/eks/iam/role/nodegroup/name"
+}
+
 data "aws_ssm_parameter" "account_env" {
   provider = aws.parameters
   name     = "/account/environment"
