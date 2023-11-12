@@ -49,6 +49,8 @@ resource "kubernetes_manifest" "karpenter_provisioner" {
     }
 
     spec = {
+      ttlSecondsAfterEmpty   = 60     # scale down nodes after 60 seconds without workloads
+      ttlSecondsUntilExpired = 604800 # expire nodes after 7 days (in seconds)
       requirements = [
         {
           key      = "karpenter.sh/capacity-type"
@@ -83,10 +85,6 @@ resource "kubernetes_manifest" "karpenter_provisioner" {
             volumeType          = local.ebs_volume_type
           }
         }]
-
-#        subnetSeletor = {
-#          "kubernetes.io/cluster" = "shared"
-#        }
 
         securityGroupSelector = {
           "karpenter.sh/discovery/${data.aws_ssm_parameter.eks_cluster_name.value}" = data.aws_ssm_parameter.eks_cluster_name.value
