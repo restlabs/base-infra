@@ -41,8 +41,7 @@ module "karpenter" {
 resource "kubernetes_manifest" "karpenter_provisioner" {
   manifest = {
     apiVersion = "karpenter.sh/v1alpha5"
-
-    kind = "Provisioner"
+    kind       = "Provisioner"
 
     metadata = {
       name = "karpenter-provisioner-1"
@@ -85,6 +84,10 @@ resource "kubernetes_manifest" "karpenter_provisioner" {
             volumeType          = local.ebs_volume_type
           }
         }]
+
+        subnetSelector = {
+          "kubernetes.io/cluster" = "public"
+        }
 
         securityGroupSelector = {
           "karpenter.sh/discovery/${data.aws_ssm_parameter.eks_cluster_name.value}" = data.aws_ssm_parameter.eks_cluster_name.value
