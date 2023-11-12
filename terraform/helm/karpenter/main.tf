@@ -70,6 +70,8 @@ resource "kubectl_manifest" "karpenter_provisioner" {
         karpenter.sh/discovery${data.aws_ssm_parameter.eks_cluster_name.value}: ${data.aws_ssm_parameter.eks_cluster_name.value}
       tags:
         karpenter.sh/discovery/${data.aws_ssm_parameter.eks_cluster_name.value}: ${data.aws_ssm_parameter.eks_cluster_name.value}
+    providerRef:
+      name: default
     ttlSecondsAfterEmpty: 30
   EOF
 }
