@@ -84,9 +84,9 @@ resource "kubernetes_manifest" "karpenter_provisioner" {
           }
         }]
 
-        subnetSeletor = {
-          "kubernetes.io/cluster" = "shared"
-        }
+#        subnetSeletor = {
+#          "kubernetes.io/cluster" = "shared"
+#        }
 
         securityGroupSelector = {
           "karpenter.sh/discovery/${data.aws_ssm_parameter.eks_cluster_name.value}" = data.aws_ssm_parameter.eks_cluster_name.value
