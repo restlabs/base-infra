@@ -51,6 +51,7 @@ data "aws_ssm_parameter" "github_app_private_key" {
   name     = "/github/app/private/key"
 }
 
-data "tls_certificate" "eks" {
-  url = data.aws_eks_cluster.eks_cluster.identity[0].oidc[0].issuer
+data "aws_ssm_parameter" "eks_oidc_arn" {
+  provider = aws.parameters
+  name     = "/eks/oidc/provider/arn"
 }

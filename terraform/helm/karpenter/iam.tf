@@ -1,8 +1,8 @@
-resource "aws_iam_openid_connect_provider" "eks" {
-  client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
-  url             = data.aws_eks_cluster.eks_cluster.identity[0].oidc[0].issuer
-}
+#resource "aws_iam_openid_connect_provider" "eks" {
+#  client_id_list  = ["sts.amazonaws.com"]
+#  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+#  url             = data.aws_eks_cluster.eks_cluster.identity[0].oidc[0].issuer
+#}
 
 data "aws_iam_policy_document" "karpenter_controller_assume_role_policy" {
   statement {
@@ -11,12 +11,12 @@ data "aws_iam_policy_document" "karpenter_controller_assume_role_policy" {
 
     condition {
       test     = "StringEquals"
-      variable = "${replace(aws_iam_openid_connect_provider.eks.url, "https://", "")}:sub"
+      variable = "${replace(data.aws_eks_cluster.eks_cluster.identity[0].oidc[0].issuer, "https://", "")}:sub"
       values   = ["system:serviceaccount:karpenter:karpenter"]
     }
 
     principals {
-      identifiers = [aws_iam_openid_connect_provider.eks.arn]
+      identifiers = [data.aws_ssm_parameter.eks_oidc_arn.value]
       type        = "Federated"
     }
   }

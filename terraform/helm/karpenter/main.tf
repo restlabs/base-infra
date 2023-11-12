@@ -38,71 +38,38 @@ module "karpenter" {
   values_map    = local.values_map
 }
 
-resource "kubernetes_manifest" "karpenter_provisioner" {
-  manifest = {
-    apiVersion = "karpenter.sh/v1alpha5"
-    kind       = "Provisioner"
-
-    metadata = {
-      name = "karpenter-provisioner-1"
-    }
-
-    spec = {
-      ttlSecondsAfterEmpty   = 60     # scale down nodes after 60 seconds without workloads
-      ttlSecondsUntilExpired = 604800 # expire nodes after 7 days (in seconds)
-      requirements = [
-        {
-          key      = "karpenter.sh/capacity-type"
-          operator = "In"
-          values = [
-            "on-demand"
-          ]
-        },
-        {
-          key      = "node.kubernetes.io/instance-type"
-          operator = "In"
-          values = [
-            "t3.small",
-            "t3.medium",
-            "t3.large"
-          ]
-        }
-      ]
-
-      limits = {
-        resources = {
-          cpu = 95
-        }
-      }
-
-      provider = {
-        blockDeviceMappings = [{
-          deviceName = "/dev/xvda",
-          ebs = {
-            deleteOnTermination = true
-            volumeSize          = local.ebs_volume_size
-            volumeType          = local.ebs_volume_type
-          }
-        }]
-
-        subnetSelector = {
-          "kubernetes.io/cluster" = "public"
-        }
-
-        securityGroupSelector = {
-          "karpenter.sh/discovery/${data.aws_ssm_parameter.eks_cluster_name.value}" = data.aws_ssm_parameter.eks_cluster_name.value
-        }
-
-        tags = {
-          "karpenter.sh/discovery/${data.aws_ssm_parameter.eks_cluster_name.value}" = data.aws_ssm_parameter.eks_cluster_name.value
-        }
-
-        ttlSecondsAfterEmpty = 30
-      }
-    }
-  }
-
-  depends_on = [
-    module.karpenter
-  ]
+resource "kubectl_manifest" "karpenter_provisioner" {
+  yaml_body = <<EOF
+  apiVersion: karpenter.sh/v1alpha5
+  kind: Provisioner
+  metadata:
+    name: default
+  spec:
+    ttlSecondsAfterEmpty: 60     # scale down nodes after 60 seconds without workloads
+    ttlSecondsUntilExpired: 604800 # expire nodes after 7 days (in seconds)
+    requirements:
+      - key: karpenter.sh/capacity-type
+        operator: In
+        values: ["on-demand" ]
+      - key: "node.kubernetes.io/instance-type"
+        operator: In
+        values: ["t3.medium", "t3.large"]
+    limits:
+      resources:
+        cpu: 100
+    provider:
+      blockDeviceMappings:
+      - deviceName: /dev/xvda
+        ebs:
+          deleteOnTermination: true
+          volumeSize: ${local.ebs_volume_size}
+          volumeType: ${local.ebs_volume_type}
+      subnetSelector:
+        kubernetes.io/cluster: shared
+      securityGroupSelector:
+        karpenter.sh/discovery${data.aws_ssm_parameter.eks_cluster_name.value}: ${data.aws_ssm_parameter.eks_cluster_name.value}
+      tags:
+        karpenter.sh/discovery/${data.aws_ssm_parameter.eks_cluster_name.value}: ${data.aws_ssm_parameter.eks_cluster_name.value}
+    ttlSecondsAfterEmpty: 30
+  EOF
 }
