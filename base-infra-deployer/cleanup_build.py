@@ -37,6 +37,7 @@ PYTHON_PACKAGES = {
     'jaraco.classes',
     'jmespath',
     'keyring',
+    'localstack',
     'markdown-it-py',
     'mccabe',
     'mdurl',
