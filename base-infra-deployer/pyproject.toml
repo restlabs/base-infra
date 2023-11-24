@@ -27,7 +27,7 @@ license = {file = "../LICENSE.txt"}
 name = "base-infra-deployer"
 readme = "README.md"
 requires-python = ">=3.10"
-version = "1.1.0"
+version = "1.1.1"
 
 [project.scripts]
 base-deploy = "deployer.main:main"
