@@ -124,7 +124,7 @@ test-shell:
 
 
 .PHONY: test
-test: install deployer-test tftest
+test: test-shell install deployer-test tftest
 
 
 .PHONY: tf-trivy
