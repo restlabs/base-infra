@@ -17,6 +17,7 @@ classifiers = [
 dependencies = [
     "boto3",
     "build",
+    "localstack",
     "pylint",
     "twine"
 ]

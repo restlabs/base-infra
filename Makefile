@@ -111,12 +111,9 @@ kitchen-test:
 	cd cookbooks/base-ami && kitchen test
 
 
-.PHONY: terratest
-terratest:
-	$(GO) -C terraform/modules/s3/test mod tidy
-	$(GO) -C terraform/modules/s3/test test -v
-	$(GO) -C terraform/modules/vpc/test mod tidy
-	$(GO) -C terraform/modules/vpc/test test -v
+.PHONY: tftest
+tftest:
+	base-deploy terraform --target "terraform/modules/s3/test"
 
 
 .PHONY: test-shell
@@ -125,7 +122,7 @@ test-shell:
 
 
 .PHONY: test
-test:  test-shell terratest install deployer-test
+test:  test-shell tftest install deployer-test
 
 
 .PHONY: tf-trivy
