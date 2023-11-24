@@ -20,7 +20,6 @@ If you're developing on Windows, please use WSL2
 | AWSCli        | 2+       |
 | Chef          | 18+      |
 | Docker        | 24+      |
-| Go            | 1.21+    |
 | Helm          | 3.13+    |
 | Kitchen       | 3.5+     |
 | Kubectl       | 1.28+    |
