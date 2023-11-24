@@ -36,8 +36,5 @@ jobs:
           terraform_version: 1.6.1
           terraform_wrapper: false
 
-      - name: run localstack
-        run: localstack start
-
       - name: running tests
         run: make test

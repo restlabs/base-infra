@@ -113,7 +113,9 @@ kitchen-test:
 
 .PHONY: tftest
 tftest:
+	localstack start -d
 	base-deploy terraform --target "terraform/modules/s3/test"
+	localstack stop
 
 
 .PHONY: test-shell
@@ -122,7 +124,7 @@ test-shell:
 
 
 .PHONY: test
-test:  test-shell tftest install deployer-test
+test: install deployer-test tftest
 
 
 .PHONY: tf-trivy
