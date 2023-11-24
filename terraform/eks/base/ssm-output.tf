@@ -25,6 +25,16 @@ module "ssm_param" {
       name        = "/eks/oidc/provider/arn"
       value       = module.base_eks.oidc_provider_arn
       description = "EKS oidc provider arn"
+    },
+    {
+      name        = "/eks/iam/role/nodegroup/arn"
+      value       = aws_iam_role.nodegroup_role.arn
+      description = "EKS Nodegroup role arn"
+    },
+    {
+      name        = "/eks/iam/role/nodegroup/name"
+      value       = aws_iam_role.nodegroup_role.name
+      description = "EKS Nodegroup role name"
     }
   ]
 
