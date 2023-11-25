@@ -10,6 +10,7 @@ resource "aws_ssm_parameter" "ssm_param_output" {
 
   description = each.value.description
   name        = each.key
+  overwrite   = true
   tags        = var.tags
   type        = "String"
   value       = each.value.value
