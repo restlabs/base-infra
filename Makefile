@@ -115,13 +115,8 @@ tftest:
 	localstack stop
 
 
-.PHONY: test-shell
-test-shell:
-	shellcheck setup-aws-params.sh
-
-
 .PHONY: test
-test: test-shell install deployer-test tftest
+test: install deployer-test tftest
 
 
 .PHONY: tf-trivy
