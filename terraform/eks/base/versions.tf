@@ -48,8 +48,8 @@ provider "aws" {
   dynamic "endpoints" {
     for_each = local.aws_settings.override_endpoint[*]
     content {
-      ec2  = endpoints.value
-      iam  = endpoints.value
+      ec2 = endpoints.value
+      iam = endpoints.value
     }
   }
 
