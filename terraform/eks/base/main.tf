@@ -1,7 +1,8 @@
 locals {
   ami_type                   = "AL2_x86_64"
-  azure_application_id       = ""
-  azure_tenant_id            = ""
+  azure_application_id       = data.aws_ssm_parameter.azure_application_id.value
+  azure_tenant_id            = data.aws_ssm_parameter.azure_tenant_id.value
+  capacity_type              = "SPOT"
   cluster_name               = "${var.owner}-${local.base_tags.environment}-eks-${var.region}"
   create_iam_role            = false
   eks_version                = 1.28
@@ -28,6 +29,8 @@ module "base_eks" {
   subnet_ids                      = data.aws_subnets.tf_subnet.ids
   vpc_id                          = data.aws_vpc.selected.id
 
+  # adds azure ad as an identity provider
+  # this will allow users to use kubectl with their ad credentials
   cluster_identity_providers = {
     azure-ad = {
       client_id    = local.azure_application_id
@@ -39,6 +42,7 @@ module "base_eks" {
   eks_managed_node_groups = {
     pafable-default = {
       ami_type                   = local.ami_type
+      capacity_type              = local.capacity_type
       create_iam_role            = local.create_iam_role
       disk_size                  = local.disk_size
       desired_size               = local.desired_size
