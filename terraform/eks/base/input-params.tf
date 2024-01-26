@@ -27,3 +27,13 @@ data "aws_subnets" "tf_subnet" {
     subnet_type = "public"
   }
 }
+
+data "aws_ssm_parameter" "azure_application_id" {
+  provider = aws.parameters
+  name     = "/azure/application/id"
+}
+
+data "aws_ssm_parameter" "azure_tenant_id" {
+  provider = aws.parameters
+  name     = "/azure/tenant/id"
+}
