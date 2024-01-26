@@ -40,7 +40,7 @@ module "base_eks" {
   }
 
   eks_managed_node_groups = {
-    pafable-default = {
+    pafable-main = {
       ami_type                   = local.ami_type
       capacity_type              = local.capacity_type
       create_iam_role            = local.create_iam_role
