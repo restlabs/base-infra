@@ -1,5 +1,7 @@
 locals {
   ami_type                   = "AL2_x86_64"
+  azure_application_id       = ""
+  azure_tenant_id            = ""
   cluster_name               = "${var.owner}-${local.base_tags.environment}-eks-${var.region}"
   create_iam_role            = false
   eks_version                = 1.28
@@ -22,15 +24,16 @@ module "base_eks" {
   control_plane_subnet_ids        = data.aws_subnets.tf_subnet.ids
   cluster_endpoint_private_access = local.is_private_access_enabled
   cluster_endpoint_public_access  = local.is_public_access_enabled
-  enable_irsa                     = true
   iam_role_arn                    = aws_iam_role.eks_cluster_role.arn
   subnet_ids                      = data.aws_subnets.tf_subnet.ids
   vpc_id                          = data.aws_vpc.selected.id
 
   cluster_identity_providers = {
-       sts = {
-         client_id = "sts.amazonaws.com"
-       }
+    azure-ad = {
+      client_id    = local.azure_application_id
+      issuer_url   = "https://sts.windows.net/${local.azure_tenant_id}/"
+      groups_claim = "groups"
+    }
   }
 
   eks_managed_node_groups = {
