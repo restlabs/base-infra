@@ -3,7 +3,7 @@ locals {
   azure_application_id       = data.aws_ssm_parameter.azure_application_id.value
   azure_tenant_id            = data.aws_ssm_parameter.azure_tenant_id.value
   capacity_type              = "SPOT"
-  cluster_name               = "${var.owner}-${local.base_tags.environment}-eks-${var.region}"
+  cluster_name               = "${var.owner}-eks-${var.region}"
   create_iam_role            = false
   eks_version                = 1.28
   disk_size                  = 50
@@ -58,3 +58,104 @@ module "base_eks" {
   }
 }
 
+# karpenter
+
+module "karpenter" {
+  source                                     = "terraform-aws-modules/eks/aws//modules/karpenter"
+  version                                    = "19.21.0"
+  cluster_name                               = module.base_eks.cluster_name
+  irsa_oidc_provider_arn                     = module.base_eks.oidc_provider_arn
+  enable_karpenter_instance_profile_creation = true
+
+  iam_role_additional_policies = {
+    AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+  }
+}
+
+resource "helm_release" "karpenter" {
+  namespace        = "karpenter"
+  create_namespace = true
+
+  name                = "karpenter"
+  repository          = "oci://public.ecr.aws/karpenter"
+  repository_username = data.aws_ecrpublic_authorization_token.token.user_name
+  repository_password = data.aws_ecrpublic_authorization_token.token.password
+  chart               = "karpenter"
+  version             = "v0.32.6"
+
+  values = [
+    <<-EOT
+    settings:
+      clusterName: ${module.base_eks.cluster_name}
+      clusterEndpoint: ${module.base_eks.cluster_endpoint}
+      interruptionQueueName: ${module.karpenter.queue_name}
+    serviceAccount:
+      annotations:
+        eks.amazonaws.com/role-arn: ${module.karpenter.irsa_arn}
+    EOT
+  ]
+
+  depends_on = [
+    module.karpenter
+  ]
+}
+
+resource "kubectl_manifest" "karpenter_node_class" {
+  yaml_body = <<-YAML
+    apiVersion: karpenter.k8s.aws/v1beta1
+    kind: EC2NodeClass
+    metadata:
+      name: default
+    spec:
+      amiFamily: AL2
+      role: ${module.karpenter.role_name}
+      subnetSelectorTerms:
+        - tags:
+            karpenter.sh/discovery: ${module.base_eks.cluster_name}
+      securityGroupSelectorTerms:
+        - tags:
+            karpenter.sh/discovery: ${module.base_eks.cluster_name}
+      tags:
+        karpenter.sh/discovery: ${module.base_eks.cluster_name}
+  YAML
+
+  depends_on = [
+    helm_release.karpenter
+  ]
+}
+
+resource "kubectl_manifest" "karpenter_node_pool" {
+  yaml_body = <<-YAML
+    apiVersion: karpenter.sh/v1beta1
+    kind: NodePool
+    metadata:
+      name: default
+    spec:
+      template:
+        spec:
+          nodeClassRef:
+            name: default
+          requirements:
+            - key: "karpenter.k8s.aws/instance-category"
+              operator: In
+              values: ["c", "m", "r"]
+            - key: "karpenter.k8s.aws/instance-cpu"
+              operator: In
+              values: ["4", "8", "16", "32"]
+            - key: "karpenter.k8s.aws/instance-hypervisor"
+              operator: In
+              values: ["nitro"]
+            - key: "karpenter.k8s.aws/instance-generation"
+              operator: Gt
+              values: ["2"]
+      limits:
+        cpu: 1000
+      disruption:
+        consolidationPolicy: WhenEmpty
+        consolidateAfter: 30s
+  YAML
+
+  depends_on = [
+    kubectl_manifest.karpenter_node_class
+  ]
+}
