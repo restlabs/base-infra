@@ -1,6 +1,6 @@
 locals {
-  public_subnet_list  = [ "0", "1", "2" ]       # needs to be strings
-  private_subnet_list = [ "100", "101", "102" ] # needs to be strings
+  public_subnet_list  = ["0", "1", "2"]       # needs to be strings
+  private_subnet_list = ["100", "101", "102"] # needs to be strings
 }
 
 module "base_vpc" {
@@ -12,7 +12,6 @@ module "base_vpc" {
   region      = var.region
   environment = data.aws_ssm_parameter.account_env.value
   project     = local.common_tags.project
-  tags        = local.common_tags
 }
 
 module "base_igw" {
