@@ -21,13 +21,41 @@ module "base_eks" {
   version         = "19.21.0"
   cluster_name    = local.cluster_name
   cluster_version = local.eks_version
-  #  cluster_endpoint_public_access_cidrs = [ data.aws_ssm_parameter.my_public_ip.value ]
-  control_plane_subnet_ids        = data.aws_subnets.tf_subnet.ids
+  control_plane_subnet_ids        = module.vpc.intra_subnets
   cluster_endpoint_private_access = local.is_private_access_enabled
   cluster_endpoint_public_access  = local.is_public_access_enabled
+  create_cluster_security_group   = false
+  create_node_security_group      = false
   iam_role_arn                    = aws_iam_role.eks_cluster_role.arn
-  subnet_ids                      = data.aws_subnets.tf_subnet.ids
-  vpc_id                          = data.aws_vpc.selected.id
+  manage_aws_auth_configmap       = true
+  subnet_ids                      = module.vpc.private_subnets
+  vpc_id                          = module.vpc.vpc_id
+
+  # creates karpenter node IAM role
+  aws_auth_roles = [
+    {
+      rolearn  = module.karpenter.role_arn
+      username = "system:node:{{EC2PrivateDNSName}}"
+      groups = [
+        "system:bootstrappers",
+        "system:nodes"
+      ]
+    },
+  ]
+
+  # creates fargate profiles
+  fargate_profiles = {
+    karpenter = {
+      selectors = [
+        { namespace = "karpenter" }
+      ]
+    }
+    kube-system = {
+      selectors = [
+        { namespace = "kube-system" }
+      ]
+    }
+  }
 
   # adds azure ad as an identity provider
   # this will allow users to use kubectl with their ad credentials
@@ -56,137 +84,13 @@ module "base_eks" {
       }
     }
   }
-}
 
-# karpenter
-
-module "karpenter" {
-  source                                     = "terraform-aws-modules/eks/aws//modules/karpenter"
-  version                                    = "19.21.0"
-  cluster_name                               = module.base_eks.cluster_name
-  irsa_oidc_provider_arn                     = module.base_eks.oidc_provider_arn
-  enable_karpenter_instance_profile_creation = true
-
-  iam_role_additional_policies = {
-    AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-  }
-}
-
-resource "helm_release" "karpenter" {
-  namespace        = "karpenter"
-  create_namespace = true
-
-  name                = "karpenter"
-  repository          = "oci://public.ecr.aws/karpenter"
-  repository_username = data.aws_ecrpublic_authorization_token.token.user_name
-  repository_password = data.aws_ecrpublic_authorization_token.token.password
-  chart               = "karpenter"
-  version             = "v0.32.6"
-
-  values = [
-    <<-EOT
-    settings:
-      clusterName: ${module.base_eks.cluster_name}
-      clusterEndpoint: ${module.base_eks.cluster_endpoint}
-      interruptionQueueName: ${module.karpenter.queue_name}
-    serviceAccount:
-      annotations:
-        eks.amazonaws.com/role-arn: ${module.karpenter.irsa_arn}
-    EOT
-  ]
+  tags = merge(local.base_tags, {
+    "kubernetes.io/cluster/${local.cluster_name}" = "shared"
+    "karpenter.sh/discovery"                      = local.cluster_name
+  })
 
   depends_on = [
-    module.karpenter
-  ]
-}
-
-resource "kubectl_manifest" "karpenter_node_class" {
-  yaml_body = <<-YAML
-    apiVersion: karpenter.k8s.aws/v1beta1
-    kind: EC2NodeClass
-    metadata:
-      name: default
-    spec:
-      amiFamily: AL2
-      role: ${module.karpenter.role_name}
-      subnetSelectorTerms:
-        - tags:
-            karpenter.sh/discovery: ${module.base_eks.cluster_name}
-      securityGroupSelectorTerms:
-        - tags:
-            karpenter.sh/discovery: ${module.base_eks.cluster_name}
-      tags:
-        karpenter.sh/discovery: ${module.base_eks.cluster_name}
-  YAML
-
-  depends_on = [
-    helm_release.karpenter
-  ]
-}
-
-resource "kubectl_manifest" "karpenter_node_pool" {
-  yaml_body = <<-YAML
-    apiVersion: karpenter.sh/v1beta1
-    kind: NodePool
-    metadata:
-      name: default
-    spec:
-      template:
-        spec:
-          nodeClassRef:
-            name: default
-          requirements:
-            - key: "karpenter.k8s.aws/instance-category"
-              operator: In
-              values: ["c", "m", "r"]
-            - key: "karpenter.k8s.aws/instance-cpu"
-              operator: In
-              values: ["4", "8", "16", "32"]
-            - key: "karpenter.k8s.aws/instance-hypervisor"
-              operator: In
-              values: ["nitro"]
-            - key: "karpenter.k8s.aws/instance-generation"
-              operator: Gt
-              values: ["2"]
-      limits:
-        cpu: 1000
-      disruption:
-        consolidationPolicy: WhenEmpty
-        consolidateAfter: 30s
-  YAML
-
-  depends_on = [
-    kubectl_manifest.karpenter_node_class
-  ]
-}
-
-# Test deployment
-resource "kubectl_manifest" "karpenter_example_deployment" {
-  yaml_body = <<-YAML
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      name: inflate
-    spec:
-      replicas: 0
-      selector:
-        matchLabels:
-          app: inflate
-      template:
-        metadata:
-          labels:
-            app: inflate
-        spec:
-          terminationGracePeriodSeconds: 0
-          containers:
-            - name: inflate
-              image: public.ecr.aws/eks-distro/kubernetes/pause:3.7
-              resources:
-                requests:
-                  cpu: 1
-  YAML
-
-  depends_on = [
-    helm_release.karpenter
+    module.vpc
   ]
 }
