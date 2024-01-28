@@ -8,10 +8,6 @@ module "karpenter" {
   iam_role_additional_policies = {
     AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
   }
-
-  depends_on = [
-    module.base_eks
-  ]
 }
 
 resource "helm_release" "karpenter" {
@@ -36,10 +32,6 @@ resource "helm_release" "karpenter" {
         eks.amazonaws.com/role-arn: ${module.karpenter.irsa_arn}
     EOT
   ]
-
-  depends_on = [
-    module.karpenter
-  ]
 }
 
 resource "kubectl_manifest" "karpenter_node_class" {
@@ -60,10 +52,6 @@ resource "kubectl_manifest" "karpenter_node_class" {
       tags:
         karpenter.sh/discovery: ${module.base_eks.cluster_name}
   YAML
-
-  depends_on = [
-    helm_release.karpenter
-  ]
 }
 
 resource "kubectl_manifest" "karpenter_node_pool" {
@@ -83,7 +71,7 @@ resource "kubectl_manifest" "karpenter_node_pool" {
               values: ["t", "c", "m", "r"]
             - key: "karpenter.k8s.aws/instance-cpu"
               operator: In
-              values: ["2" "4", "8", "16", "32"]
+              values: ["2", "4", "8", "16", "32"]
             - key: "karpenter.k8s.aws/instance-hypervisor"
               operator: In
               values: ["nitro"]

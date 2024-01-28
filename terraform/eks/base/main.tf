@@ -17,10 +17,10 @@ locals {
 }
 
 module "base_eks" {
-  source          = "terraform-aws-modules/eks/aws"
-  version         = "19.21.0"
-  cluster_name    = local.cluster_name
-  cluster_version = local.eks_version
+  source                          = "terraform-aws-modules/eks/aws"
+  version                         = "19.21.0"
+  cluster_name                    = local.cluster_name
+  cluster_version                 = local.eks_version
   control_plane_subnet_ids        = module.vpc.intra_subnets
   cluster_endpoint_private_access = local.is_private_access_enabled
   cluster_endpoint_public_access  = local.is_public_access_enabled
@@ -42,6 +42,36 @@ module "base_eks" {
       ]
     },
   ]
+
+  cluster_addons = {
+    kube-proxy = {}
+    vpc-cni    = {}
+    coredns = {
+      configuration_values = jsonencode({
+        computeType = "Fargate"
+        # Ensure that we fully utilize the minimum amount of resources that are supplied by
+        # Fargate https://docs.aws.amazon.com/eks/latest/userguide/fargate-pod-configuration.html
+        # Fargate adds 256 MB to each pod's memory reservation for the required Kubernetes
+        # components (kubelet, kube-proxy, and containerd). Fargate rounds up to the following
+        # compute configuration that most closely matches the sum of vCPU and memory requests in
+        # order to ensure pods always have the resources that they need to run.
+        resources = {
+          limits = {
+            cpu = "0.25"
+            # We are targeting the smallest Task size of 512Mb, so we subtract 256Mb from the
+            # request/limit to ensure we can fit within that task
+            memory = "256M"
+          }
+          requests = {
+            cpu = "0.25"
+            # We are targeting the smallest Task size of 512Mb, so we subtract 256Mb from the
+            # request/limit to ensure we can fit within that task
+            memory = "256M"
+          }
+        }
+      })
+    }
+  }
 
   # creates fargate profiles
   fargate_profiles = {
@@ -67,30 +97,26 @@ module "base_eks" {
     }
   }
 
-  eks_managed_node_groups = {
-    pafable-main = {
-      ami_type                   = local.ami_type
-      capacity_type              = local.capacity_type
-      create_iam_role            = local.create_iam_role
-      disk_size                  = local.disk_size
-      desired_size               = local.desired_size
-      iam_role_arn               = aws_iam_role.nodegroup_role.arn
-      instance_types             = local.instance_types
-      min_size                   = local.min_size
-      max_size                   = local.max_size
-      use_custom_launch_template = local.use_custom_launch_template
-      launch_template_tags = {
-        Name = "${local.base_tags.project}-eks-default-node"
-      }
-    }
-  }
+#  eks_managed_node_groups = {
+#    pafable-main = {
+#      ami_type                   = local.ami_type
+#      capacity_type              = local.capacity_type
+#      create_iam_role            = local.create_iam_role
+#      disk_size                  = local.disk_size
+#      desired_size               = local.desired_size
+#      iam_role_arn               = aws_iam_role.nodegroup_role.arn
+#      instance_types             = local.instance_types
+#      min_size                   = local.min_size
+#      max_size                   = local.max_size
+#      use_custom_launch_template = local.use_custom_launch_template
+#      launch_template_tags = {
+#        Name = "${local.base_tags.project}-eks-default-node"
+#      }
+#    }
+#  }
 
   tags = merge(local.base_tags, {
     "kubernetes.io/cluster/${local.cluster_name}" = "shared"
     "karpenter.sh/discovery"                      = local.cluster_name
   })
-
-  depends_on = [
-    module.vpc
-  ]
 }
