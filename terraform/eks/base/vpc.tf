@@ -29,7 +29,3 @@ module "vpc" {
     "karpenter.sh/discovery" = local.cluster_name
   }
 }
-
-output "azs" {
-  value = local.azs
-}
