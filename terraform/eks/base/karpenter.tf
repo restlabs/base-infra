@@ -1,3 +1,8 @@
+locals {
+  node_class_name = "${local.base_tags.project}-node-class"
+  node_pool_name  = "${local.base_tags.project}-node-pool"
+}
+
 module "karpenter" {
   source                                     = "terraform-aws-modules/eks/aws//modules/karpenter"
   version                                    = "19.21.0"
@@ -39,7 +44,7 @@ resource "kubectl_manifest" "karpenter_node_class" {
     apiVersion: karpenter.k8s.aws/v1beta1
     kind: EC2NodeClass
     metadata:
-      name: default
+      name: ${local.node_class_name}
     spec:
       amiFamily: AL2
       role: ${module.karpenter.role_name}
@@ -51,6 +56,7 @@ resource "kubectl_manifest" "karpenter_node_class" {
             karpenter.sh/discovery: ${module.base_eks.cluster_name}
       tags:
         karpenter.sh/discovery: ${module.base_eks.cluster_name}
+        Name: ${local.base_tags.project}-eks-node
   YAML
 }
 
@@ -59,19 +65,22 @@ resource "kubectl_manifest" "karpenter_node_pool" {
     apiVersion: karpenter.sh/v1beta1
     kind: NodePool
     metadata:
-      name: default
+      name: ${local.node_pool_name}
     spec:
       template:
         spec:
           nodeClassRef:
-            name: default
+            name: ${local.node_class_name}
           requirements:
             - key: "karpenter.k8s.aws/instance-category"
               operator: In
               values: ["t", "c", "m", "r"]
             - key: "karpenter.k8s.aws/instance-cpu"
               operator: In
-              values: ["2", "4", "8", "16", "32"]
+              values: ["2", "4", "8", "16384", "32768", "65536"]
+            - key: "karpenter.k8s.aws/instance-memory"
+              operator: In
+              values: ["2048", "4096", "8192", "32768"]
             - key: "karpenter.k8s.aws/instance-hypervisor"
               operator: In
               values: ["nitro"]
