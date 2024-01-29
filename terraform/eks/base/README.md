@@ -29,4 +29,4 @@ Azure AD integration is enabled to allow users to authenticate to the cluster us
 https://aws.amazon.com/pt/blogs/containers/using-azure-active-directory-to-authenticate-to-amazon-eks/
 
 ### Karpenter
-Add karpenter as the cluster autoscaler
+Added karpenter as the cluster autoscaler
