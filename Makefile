@@ -66,6 +66,10 @@ deploy-jenkins-example:
 deploy-eks:
 	base-deploy terraform --target "terraform/eks/base" $(DESTROY)
 
+.PHONY: destroy-eks
+destroy-eks:
+	make deploy-eks DESTROY=--destroy
+
 
 .PHONY: deploy-nexus
 deploy-nexus:

@@ -115,8 +115,11 @@ module "base_eks" {
 #    }
 #  }
 
-  tags = merge(local.base_tags, {
-    "kubernetes.io/cluster/${local.cluster_name}" = "shared"
-    "karpenter.sh/discovery"                      = local.cluster_name
-  })
+  tags = merge(
+        local.base_tags,
+        {
+          "kubernetes.io/cluster/${local.cluster_name}" = "shared"
+          "karpenter.sh/discovery"                      = local.cluster_name
+        }
+      )
 }

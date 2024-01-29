@@ -6,7 +6,7 @@ locals {
     owner         = var.owner
     project       = "base-infra"
     email         = var.email
-    environment   = data.aws_ssm_parameter.account_env.value
+    environment   = nonsensitive(data.aws_ssm_parameter.account_env.value)
   }
 
   use_localstack = (terraform.workspace == "ci-test")
