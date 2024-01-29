@@ -3,11 +3,6 @@ data "aws_ssm_parameter" "account_env" {
   name     = "/account/environment"
 }
 
-data "aws_ssm_parameter" "base_vpc_id" {
-  provider = aws.parameters
-  name     = "/vpc/base/id"
-}
-
 data "aws_ssm_parameter" "my_public_ip" {
   provider = aws.parameters
   name     = "/account/owner/public/ip"
