@@ -15,6 +15,8 @@ GITHUB_APP_ID = sys.argv[8]
 GITHUB_APP_INSTALL_ID = sys.argv[9]
 GITHUB_APP_PRIVATE_KEY_FILE = sys.argv[10]  # make sure the pem file is the root directory of this project
 GITHUB_ORGANIZATION_URL = sys.argv[11]
+AZURE_APP_ID = sys.argv[12]
+AZURE_TENANT_ID = sys.argv[13]
 
 
 def ssm_put(
@@ -23,24 +25,28 @@ def ssm_put(
         is_secure: bool = False
 ):
     file_type = 'SecureString' if is_secure else 'String'
+
     ssm = boto3.client('ssm', region_name=SSM_REGION)
 
-    ssm.put_parameter(
-        Name=param_name,
-        Overwrite=True,
-        Type=file_type,
-        Value=param_value,
-        Tags=[
-            {
-                'Key': 'project',
-                'Value': 'base-infra'
-            },
-            {
-                'key': 'code_location',
-                'Value': 'setup-aws-params.py'
-            }
-        ]
-    )
+    try:
+        ssm.put_parameter(
+            Name=param_name,
+            # Overwrite=True,
+            Type=file_type,
+            Value=param_value,
+            Tags=[
+                {
+                    'Key': 'project',
+                    'Value': 'base-infra'
+                },
+                {
+                    'Key': 'code_location',
+                    'Value': 'setup-aws-params.py'
+                }
+            ]
+        )
+    except Exception as e:
+        print(e)
 
 
 def main():
@@ -60,6 +66,10 @@ def main():
     ssm_put('/github/app/installation/id', GITHUB_APP_INSTALL_ID)
     ssm_put('/github/app/private/key', GITHUB_APP_PRIVATE_KEY_FILE, True)
     ssm_put('/github/organization/url', GITHUB_ORGANIZATION_URL)
+
+    # azure params
+    ssm_put('/azure/application/id', AZURE_APP_ID)
+    ssm_put('/azure/tenant/id', AZURE_TENANT_ID)
 
 
 if __name__ == '__main__':

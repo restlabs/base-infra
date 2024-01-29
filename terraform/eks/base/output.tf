@@ -1,5 +1,5 @@
 output "eks_cluster_name" {
-  value = nonsensitive(module.base_eks.cluster_name)
+  value = module.base_eks.cluster_name
 }
 
 output "eks_cluster_arn" {

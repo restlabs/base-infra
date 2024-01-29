@@ -50,11 +50,13 @@ Fill in the parameters based on your environment. You can change the region for 
 | /gihub/app/id                   | github app id                                                                  |  
 | /github/app/installation/id     | github app installation id                                                     |
 | /github/app/private/key         | private key for github app                                                     |
-| /github/organization/url        | github organization url                                                        | 
+| /github/organization/url        | github organization url                                                        |
+| /azure/application/id           | azure application id                                                           |
+| /azure/tenant/id                | azure tenant id                                                                |
 
 You can also use the aws-setup-params.sh script to generate these SSM parameters. Replace the entries in `<>` with your own.
 ```commandline
-./setup-aws-params.sh \
+./setup-aws-params.py \
     <ENVIRONMENT> \
     <OWNER> \
     <EMAIL> \
@@ -65,7 +67,9 @@ You can also use the aws-setup-params.sh script to generate these SSM parameters
     <GITHUB_APP_ID> \
     <GITHUB_APP_INSTALL_ID> \
     <GITHUB_APP_PRIVATE_KEY_FILE> \
-    <GITHUB_ORGANIZATION_URL>
+    <GITHUB_ORGANIZATION_URL> \
+    <AZURE_APPLICATION_ID> \
+    <AZURE_TENANT_ID>
 ```
 
 

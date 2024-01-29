@@ -27,3 +27,6 @@ aws eks \
 ### Azure AD integration
 Azure AD integration is enabled to allow users to authenticate to the cluster using their Azure AD credentials.
 https://aws.amazon.com/pt/blogs/containers/using-azure-active-directory-to-authenticate-to-amazon-eks/
+
+### Karpenter
+Added karpenter as the cluster autoscaler
