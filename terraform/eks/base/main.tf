@@ -89,13 +89,13 @@ module "base_eks" {
 
   # adds azure ad as an identity provider
   # this will allow users to use kubectl with their ad credentials
-  cluster_identity_providers = {
-    azure-ad = {
-      client_id    = local.azure_application_id
-      issuer_url   = "https://sts.windows.net/${local.azure_tenant_id}/"
-      groups_claim = "groups"
-    }
-  }
+#  cluster_identity_providers = {
+#    azure-ad = {
+#      client_id    = local.azure_application_id
+#      issuer_url   = "https://sts.windows.net/${local.azure_tenant_id}/"
+#      groups_claim = "groups"
+#    }
+#  }
 
 #  eks_managed_node_groups = {
 #    pafable-main = {

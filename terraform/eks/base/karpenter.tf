@@ -100,32 +100,34 @@ resource "kubectl_manifest" "karpenter_node_pool" {
 }
 
 # Test deployment
-resource "kubectl_manifest" "karpenter_example_deployment" {
-  yaml_body = <<-YAML
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      name: inflate
-    spec:
-      replicas: 0
-      selector:
-        matchLabels:
-          app: inflate
-      template:
-        metadata:
-          labels:
-            app: inflate
-        spec:
-          terminationGracePeriodSeconds: 0
-          containers:
-            - name: inflate
-              image: public.ecr.aws/eks-distro/kubernetes/pause:3.7
-              resources:
-                requests:
-                  cpu: 1
-  YAML
-
-  depends_on = [
-    helm_release.karpenter
-  ]
-}
+# this will create an example deployment called inflate
+# this deployment can be used to test karpeneter's auto scaling capabilities
+#resource "kubectl_manifest" "karpenter_example_deployment" {
+#  yaml_body = <<-YAML
+#    apiVersion: apps/v1
+#    kind: Deployment
+#    metadata:
+#      name: inflate
+#    spec:
+#      replicas: 0
+#      selector:
+#        matchLabels:
+#          app: inflate
+#      template:
+#        metadata:
+#          labels:
+#            app: inflate
+#        spec:
+#          terminationGracePeriodSeconds: 0
+#          containers:
+#            - name: inflate
+#              image: public.ecr.aws/eks-distro/kubernetes/pause:3.7
+#              resources:
+#                requests:
+#                  cpu: 1
+#  YAML
+#
+#  depends_on = [
+#    helm_release.karpenter
+#  ]
+#}
