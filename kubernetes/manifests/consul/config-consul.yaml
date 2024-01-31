@@ -1,0 +1,450 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: emailservice
+spec:
+  selector:
+    matchLabels:
+      app: emailservice
+  template:
+    metadata:
+      labels:
+        app: emailservice
+      annotations:
+        consul.hashicorp.com/connect-inject: 'true'
+    spec:
+      containers:
+      - name: server
+        image: gcr.io/google-samples/microservices-demo/emailservice:v0.8.0
+        ports:
+        - containerPort: 8080
+        env:
+        - name: PORT
+          value: "8080"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: emailservice
+spec:
+  type: ClusterIP
+  selector:
+    app: emailservice
+  ports:
+  - protocol: TCP
+    port: 5000
+    targetPort: 8080
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recommendationservice
+spec:
+  selector:
+    matchLabels:
+      app: recommendationservice
+  template:
+    metadata:
+      labels:
+        app: recommendationservice
+      annotations:
+        # consul.hashicorp.com/connect-inject: 'true'
+        consul.hashicorp.com/connect-service-upstreams: 'productcatalogservice:3550'
+    spec:
+      containers:
+      - name: server
+        image: gcr.io/google-samples/microservices-demo/recommendationservice:v0.8.0
+        ports:
+        - containerPort: 8080
+        env:
+        - name: PORT
+          value: "8080"
+        - name: PRODUCT_CATALOG_SERVICE_ADDR
+          value: "localhost:3550"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: recommendationservice
+spec:
+  type: ClusterIP
+  selector:
+    app: recommendationservice
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paymentservice
+spec:
+  selector:
+    matchLabels:
+      app: paymentservice
+  template:
+    metadata:
+      labels:
+        app: paymentservice
+      # annotations:
+        # consul.hashicorp.com/connect-inject: 'true'
+    spec:
+      containers:
+      - name: server
+        image: gcr.io/google-samples/microservices-demo/paymentservice:v0.8.0
+        ports:
+        - containerPort: 50051
+        env:
+        - name: PORT
+          value: "50051"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: paymentservice
+spec:
+  type: ClusterIP
+  selector:
+    app: paymentservice
+  ports:
+  - protocol: TCP
+    port: 50051
+    targetPort: 50051
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: productcatalogservice
+spec:
+  selector:
+    matchLabels:
+      app: productcatalogservice
+  template:
+    metadata:
+      labels:
+        app: productcatalogservice
+      # annotations:
+        # consul.hashicorp.com/connect-inject: 'true'
+    spec:
+      containers:
+      - name: server
+        image: gcr.io/google-samples/microservices-demo/productcatalogservice:v0.8.0
+        ports:
+        - containerPort: 3550
+        env:
+        - name: PORT
+          value: "3550"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: productcatalogservice
+spec:
+  type: ClusterIP
+  selector:
+    app: productcatalogservice
+  ports:
+  - protocol: TCP
+    port: 3550
+    targetPort: 3550
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: currencyservice
+spec:
+  selector:
+    matchLabels:
+      app: currencyservice
+  template:
+    metadata:
+      labels:
+        app: currencyservice
+      # annotations:
+        # consul.hashicorp.com/connect-inject: 'true'
+    spec:
+      containers:
+      - name: server
+        image: gcr.io/google-samples/microservices-demo/currencyservice
+        ports:
+        - containerPort: 7000
+        env:
+        - name: PORT
+          value: "7000"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: currencyservice
+spec:
+  type: ClusterIP
+  selector:
+    app: currencyservice
+  ports:
+  - protocol: TCP
+    port: 7000
+    targetPort: 7000
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shippingservice
+spec:
+  selector:
+    matchLabels:
+      app: shippingservice
+  template:
+    metadata:
+      labels:
+        app: shippingservice
+      # annotations:
+        # consul.hashicorp.com/connect-inject: 'true'
+    spec:
+      containers:
+      - name: server
+        image: gcr.io/google-samples/microservices-demo/shippingservice:v0.8.0
+        ports:
+        - containerPort: 50052
+        env:
+        - name: PORT
+          value: "50052"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shippingservice
+spec:
+  type: ClusterIP
+  selector:
+    app: shippingservice
+  ports:
+  - protocol: TCP
+    port: 50052
+    targetPort: 50052
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adservice
+spec:
+  selector:
+    matchLabels:
+      app: adservice
+  template:
+    metadata:
+      labels:
+        app: adservice
+      # annotations:
+        # consul.hashicorp.com/connect-inject: 'true'
+    spec:
+      containers:
+      - name: server
+        image: gcr.io/google-samples/microservices-demo/adservice:v0.8.0
+        ports:
+        - containerPort: 9555
+        env:
+        - name: PORT
+          value: "9555"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: adservice
+spec:
+  type: ClusterIP
+  selector:
+    app: adservice
+  ports:
+  - protocol: TCP
+    port: 9555
+    targetPort: 9555
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cartservice
+spec:
+  selector:
+    matchLabels:
+      app: cartservice
+  template:
+    metadata:
+      labels:
+        app: cartservice
+      # annotations:
+        # consul.hashicorp.com/connect-inject: 'true'
+    spec:
+      containers:
+      - name: server
+        image: gcr.io/google-samples/microservices-demo/cartservice:v0.8.0
+        ports:
+        - containerPort: 7070
+        env:
+        - name: REDIS_ADDR
+          value: "redis-cart:6379"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cartservice
+spec:
+  type: ClusterIP
+  selector:
+    app: cartservice
+  ports:
+  - protocol: TCP
+    port: 7070
+    targetPort: 7070
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: checkoutservice
+spec:
+  selector:
+    matchLabels:
+      app: checkoutservice
+  template:
+    metadata:
+      labels:
+        app: checkoutservice
+      annotations:
+        # consul.hashicorp.com/connect-inject: 'true'
+        consul.hashicorp.com/connect-service-upstreams: 'productcatalogservice:3550,shippingservice:50052,paymentservice:50051,emailservice:5000,currencyservice:7000,cartservice:7070'
+    spec:
+      containers:
+        - name: server
+          image: gcr.io/google-samples/microservices-demo/checkoutservice:v0.8.0
+          ports:
+          - containerPort: 5050
+          env:
+          - name: PORT
+            value: "5050"
+          - name: PRODUCT_CATALOG_SERVICE_ADDR
+            value: "localhost:3550"
+          - name: SHIPPING_SERVICE_ADDR
+            value: "localhost:50052"
+          - name: PAYMENT_SERVICE_ADDR
+            value: "localhost:50051"
+          - name: EMAIL_SERVICE_ADDR
+            value: "localhost:5000"
+          - name: CURRENCY_SERVICE_ADDR
+            value: "localhost:7000"
+          - name: CART_SERVICE_ADDR
+            value: "localhost:7070"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: checkoutservice
+spec:
+  type: ClusterIP
+  selector:
+    app: checkoutservice
+  ports:
+  - protocol: TCP
+    port: 5050
+    targetPort: 5050
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+      annotations:
+        # consul.hashicorp.com/connect-inject: 'true'
+        consul.hashicorp.com/transparent-proxy: 'false'
+        consul.hashicorp.com/connect-service-upstreams: 'productcatalogservice:3550,shippingservice:50052,currencyservice:7000,cartservice:7070,recommendationservice:8080,checkoutservice:5050,adservice:9555'
+    spec:
+      containers:
+        - name: server
+          image: gcr.io/google-samples/microservices-demo/frontend:v0.8.0
+          ports:
+          - containerPort: 8080
+          env:
+          - name: PORT
+            value: "8080"
+          - name: PRODUCT_CATALOG_SERVICE_ADDR
+            value: "localhost:3550"
+          - name: CURRENCY_SERVICE_ADDR
+            value: "localhost:7000"
+          - name: CART_SERVICE_ADDR
+            value: "localhost:7070"
+          - name: RECOMMENDATION_SERVICE_ADDR
+            value: "localhost:8080"
+          - name: SHIPPING_SERVICE_ADDR
+            value: "localhost:50052"
+          - name: CHECKOUT_SERVICE_ADDR
+            value: "locahost:5050"
+          - name: AD_SERVICE_ADDR
+            value: "localhost:9555"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-external
+spec:
+  type: LoadBalancer
+  selector:
+    app: frontend
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-cart
+spec:
+  selector:
+    matchLabels:
+      app: redis-cart
+  template:
+    metadata:
+      labels:
+        app: redis-cart
+    spec:
+      containers:
+      - name: redis
+        image: redis:alpine
+        ports:
+        - containerPort: 6379
+        volumeMounts:
+        - mountPath: /data
+          name: redis-data
+      volumes:
+      - name: redis-data
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-cart
+spec:
+  type: ClusterIP
+  selector:
+    app: redis-cart
+  ports:
+  - name: redis
+    port: 6379
+    targetPort: 6379
+

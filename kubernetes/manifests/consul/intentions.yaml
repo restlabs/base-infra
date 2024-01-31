@@ -1,0 +1,11 @@
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceIntentions
+metadata:
+  name: shipping-allow-eks
+spec:
+  destination:
+    name: shippingservice
+  sources:
+   - name: frontendxx # name of service within eks sending traffic to frontend
+     action: allow
+     peer: eks
