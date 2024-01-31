@@ -1,19 +1,19 @@
 locals {
-  ami_type                   = "AL2_x86_64"
-  azure_application_id       = data.aws_ssm_parameter.azure_application_id.value
-  azure_tenant_id            = data.aws_ssm_parameter.azure_tenant_id.value
-  capacity_type              = "SPOT"
-  cluster_name               = "${var.owner}-eks-${var.region}"
-  create_iam_role            = false
-  eks_version                = 1.28
-  disk_size                  = 50
-  desired_size               = 1
-  max_size                   = 3
-  min_size                   = 1
-  instance_types             = ["t3.small"]
-  is_private_access_enabled  = local.base_tags.environment == "test" || local.base_tags.environment == "dev" ? false : true
-  is_public_access_enabled   = local.base_tags.environment == "test" || local.base_tags.environment == "dev" ? true : false
-  use_custom_launch_template = true
+  ami_type                     = "AL2_x86_64"
+  azure_application_id         = data.aws_ssm_parameter.azure_application_id.value
+  azure_tenant_id              = data.aws_ssm_parameter.azure_tenant_id.value
+  capacity_type                = "SPOT"
+  cluster_name                 = "${var.owner}-eks-${var.region}"
+  create_iam_role              = false
+  eks_version                  = 1.28
+  disk_size                    = 50
+  desired_size                 = 1
+  max_size                     = 3
+  min_size                     = 1
+  managed_nodes_instance_types = ["t4g.small", "t3.small"]
+  is_private_access_enabled    = local.base_tags.environment == "test" || local.base_tags.environment == "dev" ? false : true
+  is_public_access_enabled     = local.base_tags.environment == "test" || local.base_tags.environment == "dev" ? true : false
+  use_custom_launch_template   = true
 }
 
 module "base_eks" {
@@ -87,6 +87,27 @@ module "base_eks" {
     }
   }
 
+  # ports needed by consul
+  # this is wide open for the demo, when going to prod lock this down!
+  # Use the link below to see what ports are needed
+  # https://developer.hashicorp.com/consul/docs/install/ports
+  node_security_group_additional_rules = {
+    all_ingress = {
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      type        = "ingress"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  }
+
+  # IAM policy needed by consul for EBS storage creation
+  iam_role_additional_policies = {
+    AmazonEBSCSIDriverPolicy = {
+      AmazonEBSCSIDriverPolicy = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+    }
+  }
+
   # adds azure ad as an identity provider
   # this will allow users to use kubectl with their ad credentials
 #  cluster_identity_providers = {
@@ -96,7 +117,7 @@ module "base_eks" {
 #      groups_claim = "groups"
 #    }
 #  }
-
+#
 #  eks_managed_node_groups = {
 #    pafable-main = {
 #      ami_type                   = local.ami_type
@@ -105,7 +126,7 @@ module "base_eks" {
 #      disk_size                  = local.disk_size
 #      desired_size               = local.desired_size
 #      iam_role_arn               = aws_iam_role.nodegroup_role.arn
-#      instance_types             = local.instance_types
+#      instance_types             = local.managed_nodes_instance_types
 #      min_size                   = local.min_size
 #      max_size                   = local.max_size
 #      use_custom_launch_template = local.use_custom_launch_template
@@ -116,10 +137,16 @@ module "base_eks" {
 #  }
 
   tags = merge(
-        local.base_tags,
-        {
-          "kubernetes.io/cluster/${local.cluster_name}" = "shared"
-          "karpenter.sh/discovery"                      = local.cluster_name
-        }
-      )
+    local.base_tags,
+    {
+      "kubernetes.io/cluster/${local.cluster_name}" = "shared"
+      "karpenter.sh/discovery"                      = local.cluster_name
+    }
+  )
+}
+
+# enables ebs-csi-driver addon for ebs storage for consul
+resource "aws_eks_addon" "ebs" {
+  cluster_name = module.base_eks.cluster_name
+  addon_name   = "ebs-csi-driver"
 }
