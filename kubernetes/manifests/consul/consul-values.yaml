@@ -1,5 +1,5 @@
 global:
-  image: "hashicorp/consul:1.14.0"
+  image: "hashicorp/consul:1.15.4"
   peering:
     enabled: true
   tls:
