@@ -87,7 +87,7 @@ module "base_eks" {
     }
   }
 
-  # ports needed by consul
+  # ports needed by example-microservice-for-consul-testing
   # this is wide open for the demo, when going to prod lock this down!
   # Use the link below to see what ports are needed
   # https://developer.hashicorp.com/consul/docs/install/ports
@@ -101,38 +101,38 @@ module "base_eks" {
     }
   }
 
-  # IAM policy needed by consul for EBS storage creation
+  # IAM policy needed by example-microservice-for-consul-testing for EBS storage creation
   iam_role_additional_policies = {
-      AmazonEBSCSIDriverPolicy = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
-    }
+    AmazonEBSCSIDriverPolicy = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+  }
 
   # adds azure ad as an identity provider
   # this will allow users to use kubectl with their ad credentials
-#  cluster_identity_providers = {
-#    azure-ad = {
-#      client_id    = local.azure_application_id
-#      issuer_url   = "https://sts.windows.net/${local.azure_tenant_id}/"
-#      groups_claim = "groups"
-#    }
-#  }
-#
-#  eks_managed_node_groups = {
-#    pafable-main = {
-#      ami_type                   = local.ami_type
-#      capacity_type              = local.capacity_type
-#      create_iam_role            = local.create_iam_role
-#      disk_size                  = local.disk_size
-#      desired_size               = local.desired_size
-#      iam_role_arn               = aws_iam_role.nodegroup_role.arn
-#      instance_types             = local.managed_nodes_instance_types
-#      min_size                   = local.min_size
-#      max_size                   = local.max_size
-#      use_custom_launch_template = local.use_custom_launch_template
-#      launch_template_tags = {
-#        Name = "${local.base_tags.project}-eks-default-node"
-#      }
-#    }
-#  }
+  #  cluster_identity_providers = {
+  #    azure-ad = {
+  #      client_id    = local.azure_application_id
+  #      issuer_url   = "https://sts.windows.net/${local.azure_tenant_id}/"
+  #      groups_claim = "groups"
+  #    }
+  #  }
+  #
+  #  eks_managed_node_groups = {
+  #    pafable-main = {
+  #      ami_type                   = local.ami_type
+  #      capacity_type              = local.capacity_type
+  #      create_iam_role            = local.create_iam_role
+  #      disk_size                  = local.disk_size
+  #      desired_size               = local.desired_size
+  #      iam_role_arn               = aws_iam_role.nodegroup_role.arn
+  #      instance_types             = local.managed_nodes_instance_types
+  #      min_size                   = local.min_size
+  #      max_size                   = local.max_size
+  #      use_custom_launch_template = local.use_custom_launch_template
+  #      launch_template_tags = {
+  #        Name = "${local.base_tags.project}-eks-default-node"
+  #      }
+  #    }
+  #  }
 
   tags = merge(
     local.base_tags,
@@ -143,8 +143,26 @@ module "base_eks" {
   )
 }
 
-# enables ebs-csi-driver addon for ebs storage for consul
+# enables ebs-csi-driver addon for ebs storage for example-microservice-for-consul-testing
 resource "aws_eks_addon" "ebs" {
   cluster_name = module.base_eks.cluster_name
   addon_name   = "aws-ebs-csi-driver"
+}
+
+module "ebs_csi_irsa_role" {
+  source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+
+  role_name             = "ebs-csi"
+  attach_ebs_csi_policy = true
+
+  oidc_providers = {
+    main = {
+      provider_arn               = module.base_eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:ebs-csi-controller-sa"]
+    }
+  }
+}
+
+data "aws_iam_policy" "ebs_csi_policy" {
+  arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
 }

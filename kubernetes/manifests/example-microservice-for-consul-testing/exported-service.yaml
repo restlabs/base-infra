@@ -1,4 +1,4 @@
-apiVersion: consul.hashicorp.com/v1alpha1
+apiVersion: example-microservice-for-consul-testing.hashicorp.com/v1alpha1
 kind: ExportedServices
 metadata:
   name: default 
