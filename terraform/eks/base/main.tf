@@ -146,5 +146,5 @@ module "base_eks" {
 # enables ebs-csi-driver addon for ebs storage for consul
 resource "aws_eks_addon" "ebs" {
   cluster_name = module.base_eks.cluster_name
-  addon_name   = "ebs-csi-driver"
+  addon_name   = "aws-ebs-csi-driver"
 }
