@@ -103,10 +103,8 @@ module "base_eks" {
 
   # IAM policy needed by consul for EBS storage creation
   iam_role_additional_policies = {
-    AmazonEBSCSIDriverPolicy = {
       AmazonEBSCSIDriverPolicy = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
     }
-  }
 
   # adds azure ad as an identity provider
   # this will allow users to use kubectl with their ad credentials
