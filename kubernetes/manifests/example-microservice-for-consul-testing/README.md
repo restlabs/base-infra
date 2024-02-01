@@ -20,7 +20,7 @@ helm repo add hashicorp https://helm.releases.hashicorp.com
 ```
 ```commandline
 helm install consul hashicorp/consul \
-    --set global.name=consul \
+    --set global.name=eks-consul \
     --set global.datacenter=eks \
     --create-namespace --namespace default
 ```
