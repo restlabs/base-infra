@@ -22,7 +22,8 @@ helm repo add hashicorp https://helm.releases.hashicorp.com
 helm install consul hashicorp/consul \
     --set global.name=eks-consul \
     --set global.datacenter=eks \
-    --create-namespace --namespace default
+    --create-namespace --namespace default \
+    --values kubernetes/manifests/example-microservice-for-consul-testing/consul-values.yaml
 ```
 
 ### Errors to investigate
