@@ -10,7 +10,7 @@ locals {
   desired_size                 = 1
   max_size                     = 3
   min_size                     = 1
-  managed_nodes_instance_types = ["t4g.small", "t3.small"]
+  managed_nodes_instance_types = ["t3.small"]
   is_private_access_enabled    = local.base_tags.environment == "test" || local.base_tags.environment == "dev" ? false : true
   is_public_access_enabled     = local.base_tags.environment == "test" || local.base_tags.environment == "dev" ? true : false
   use_custom_launch_template   = true
