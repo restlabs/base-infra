@@ -44,11 +44,16 @@ module "base_eks" {
   ]
 
   cluster_addons = {
-    kube-proxy = {}
-    vpc-cni    = {}
+    kube-proxy = {
+      most_recent = true
+    }
+    vpc-cni = {
+      most_recent = true
+    }
     coredns = {
+      most_recent = true
       configuration_values = jsonencode({
-#        computeType = "Fargate"
+        #        computeType = "Fargate"
         # Ensure that we fully utilize the minimum amount of resources that are supplied by
         # Fargate https://docs.aws.amazon.com/eks/latest/userguide/fargate-pod-configuration.html
         # Fargate adds 256 MB to each pod's memory reservation for the required Kubernetes
@@ -77,18 +82,18 @@ module "base_eks" {
   }
 
   # creates fargate profiles
-#  fargate_profiles = {
-#        karpenter = {
-#          selectors = [
-#            { namespace = "karpenter" }
-#          ]
-#        }
-#    kube-system = {
-#      selectors = [
-#        { namespace = "kube-system" }
-#      ]
-#    }
-#  }
+  #  fargate_profiles = {
+  #        karpenter = {
+  #          selectors = [
+  #            { namespace = "karpenter" }
+  #          ]
+  #        }
+  #    kube-system = {
+  #      selectors = [
+  #        { namespace = "kube-system" }
+  #      ]
+  #    }
+  #  }
 
   # ports needed by example-microservice-for-consul-testing
   # this is wide open for the demo, when going to prod lock this down!
@@ -139,7 +144,7 @@ module "base_eks" {
       }
       # IAM policy needed by example-microservice-for-consul-testing for EBS storage creation
       iam_role_additional_policies = {
-          AmazonEBSCSIDriverPolicy = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+        AmazonEBSCSIDriverPolicy = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
       }
     }
   }
@@ -165,4 +170,11 @@ module "ebs_csi_irsa_role" {
       namespace_service_accounts = ["kube-system:ebs-csi-controller-sa"]
     }
   }
+}
+
+# for some reason there is a bug where this policy is not attached to the nodegroup role
+resource "aws_iam_policy_attachment" "attach-ebs-csi-policy" {
+  name       = "AmazonEBSCSIDriverPolicy"
+  roles      = ["${module.base_eks.cluster_name}-nodegroup-role"]
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
 }
