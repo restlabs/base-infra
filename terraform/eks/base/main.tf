@@ -10,7 +10,7 @@ locals {
   desired_size                 = 1
   max_size                     = 3
   min_size                     = 1
-  managed_nodes_instance_types = ["t3.small"]
+  managed_nodes_instance_types = ["t3.medium"]
   is_private_access_enabled    = local.base_tags.environment == "test" || local.base_tags.environment == "dev" ? false : true
   is_public_access_enabled     = local.base_tags.environment == "test" || local.base_tags.environment == "dev" ? true : false
   use_custom_launch_template   = true
@@ -139,9 +139,7 @@ module "base_eks" {
         Name = "${local.base_tags.project}-eks-default-node"
       }
       # IAM policy needed by example-microservice-for-consul-testing for EBS storage creation
-      iam_role_additional_policies = {
-        AmazonEBSCSIDriverPolicy = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
-      }
+      iam_role_additional_policies = ["arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"]
     }
   }
 
@@ -153,12 +151,6 @@ module "base_eks" {
     }
   )
 }
-
-# enables ebs-csi-driver addon for ebs storage for example-microservice-for-consul-testing
-#resource "aws_eks_addon" "ebs" {
-#  cluster_name = module.base_eks.cluster_name
-#  addon_name   = "aws-ebs-csi-driver"
-#}
 
 module "ebs_csi_irsa_role" {
   source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
