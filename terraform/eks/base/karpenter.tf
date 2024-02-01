@@ -77,7 +77,7 @@ resource "kubectl_manifest" "karpenter_node_pool" {
               values: ["t", "c", "m", "r"]
             - key: "karpenter.k8s.aws/instance-cpu"
               operator: In
-              values: ["2", "4", "8", "16384", "32768", "65536"]
+              values: ["2", "4", "8", "16", "32", "64"]
             - key: "karpenter.k8s.aws/instance-memory"
               operator: In
               values: ["2048", "4096", "8192", "32768"]
