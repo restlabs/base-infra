@@ -73,7 +73,6 @@ module "base_eks" {
     }
     aws-ebs-csi-driver = {
       most_recent = true
-      resolve_conflicts = "OVERWRITE"
     }
   }
 
@@ -139,7 +138,9 @@ module "base_eks" {
         Name = "${local.base_tags.project}-eks-default-node"
       }
       # IAM policy needed by example-microservice-for-consul-testing for EBS storage creation
-      iam_role_additional_policies = ["arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"]
+      iam_role_additional_policies = {
+          AmazonEBSCSIDriverPolicy = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+      }
     }
   }
 
@@ -165,7 +166,3 @@ module "ebs_csi_irsa_role" {
     }
   }
 }
-
-#data "aws_iam_policy" "ebs_csi_policy" {
-#  arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
-#}
