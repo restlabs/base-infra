@@ -48,7 +48,7 @@ module "base_eks" {
     vpc-cni    = {}
     coredns = {
       configuration_values = jsonencode({
-        computeType = "Fargate"
+#        computeType = "Fargate"
         # Ensure that we fully utilize the minimum amount of resources that are supplied by
         # Fargate https://docs.aws.amazon.com/eks/latest/userguide/fargate-pod-configuration.html
         # Fargate adds 256 MB to each pod's memory reservation for the required Kubernetes
@@ -71,21 +71,25 @@ module "base_eks" {
         }
       })
     }
+    aws-ebs-csi-driver = {
+      most_recent = true
+      resolve_conflicts = "OVERWRITE"
+    }
   }
 
   # creates fargate profiles
-  fargate_profiles = {
-    karpenter = {
-      selectors = [
-        { namespace = "karpenter" }
-      ]
-    }
-    kube-system = {
-      selectors = [
-        { namespace = "kube-system" }
-      ]
-    }
-  }
+#  fargate_profiles = {
+#        karpenter = {
+#          selectors = [
+#            { namespace = "karpenter" }
+#          ]
+#        }
+#    kube-system = {
+#      selectors = [
+#        { namespace = "kube-system" }
+#      ]
+#    }
+#  }
 
   # ports needed by example-microservice-for-consul-testing
   # this is wide open for the demo, when going to prod lock this down!
@@ -99,11 +103,14 @@ module "base_eks" {
       type        = "ingress"
       cidr_blocks = ["0.0.0.0/0"]
     }
-  }
 
-  # IAM policy needed by example-microservice-for-consul-testing for EBS storage creation
-  iam_role_additional_policies = {
-    AmazonEBSCSIDriverPolicy = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+    all_egress = {
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      type        = "egress"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
   }
 
   # adds azure ad as an identity provider
@@ -115,24 +122,28 @@ module "base_eks" {
   #      groups_claim = "groups"
   #    }
   #  }
-  #
-  #  eks_managed_node_groups = {
-  #    pafable-main = {
-  #      ami_type                   = local.ami_type
-  #      capacity_type              = local.capacity_type
-  #      create_iam_role            = local.create_iam_role
-  #      disk_size                  = local.disk_size
-  #      desired_size               = local.desired_size
-  #      iam_role_arn               = aws_iam_role.nodegroup_role.arn
-  #      instance_types             = local.managed_nodes_instance_types
-  #      min_size                   = local.min_size
-  #      max_size                   = local.max_size
-  #      use_custom_launch_template = local.use_custom_launch_template
-  #      launch_template_tags = {
-  #        Name = "${local.base_tags.project}-eks-default-node"
-  #      }
-  #    }
-  #  }
+
+  eks_managed_node_groups = {
+    pafable-main = {
+      ami_type                   = local.ami_type
+      capacity_type              = local.capacity_type
+      create_iam_role            = local.create_iam_role
+      disk_size                  = local.disk_size
+      desired_size               = local.desired_size
+      iam_role_arn               = aws_iam_role.nodegroup_role.arn
+      instance_types             = local.managed_nodes_instance_types
+      min_size                   = local.min_size
+      max_size                   = local.max_size
+      use_custom_launch_template = local.use_custom_launch_template
+      launch_template_tags = {
+        Name = "${local.base_tags.project}-eks-default-node"
+      }
+      # IAM policy needed by example-microservice-for-consul-testing for EBS storage creation
+      iam_role_additional_policies = {
+        AmazonEBSCSIDriverPolicy = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+      }
+    }
+  }
 
   tags = merge(
     local.base_tags,
@@ -144,10 +155,10 @@ module "base_eks" {
 }
 
 # enables ebs-csi-driver addon for ebs storage for example-microservice-for-consul-testing
-resource "aws_eks_addon" "ebs" {
-  cluster_name = module.base_eks.cluster_name
-  addon_name   = "aws-ebs-csi-driver"
-}
+#resource "aws_eks_addon" "ebs" {
+#  cluster_name = module.base_eks.cluster_name
+#  addon_name   = "aws-ebs-csi-driver"
+#}
 
 module "ebs_csi_irsa_role" {
   source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
@@ -163,6 +174,6 @@ module "ebs_csi_irsa_role" {
   }
 }
 
-data "aws_iam_policy" "ebs_csi_policy" {
-  arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
-}
+#data "aws_iam_policy" "ebs_csi_policy" {
+#  arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+#}
