@@ -53,7 +53,7 @@ module "base_eks" {
     coredns = {
       most_recent = true
       configuration_values = jsonencode({
-        #        computeType = "Fargate"
+        computeType = "Fargate"
         # Ensure that we fully utilize the minimum amount of resources that are supplied by
         # Fargate https://docs.aws.amazon.com/eks/latest/userguide/fargate-pod-configuration.html
         # Fargate adds 256 MB to each pod's memory reservation for the required Kubernetes
@@ -82,18 +82,18 @@ module "base_eks" {
   }
 
   # creates fargate profiles
-  #  fargate_profiles = {
-  #        karpenter = {
-  #          selectors = [
-  #            { namespace = "karpenter" }
-  #          ]
-  #        }
-  #    kube-system = {
-  #      selectors = [
-  #        { namespace = "kube-system" }
-  #      ]
-  #    }
-  #  }
+    fargate_profiles = {
+          karpenter = {
+            selectors = [
+              { namespace = "karpenter" }
+            ]
+          }
+      kube-system = {
+        selectors = [
+          { namespace = "kube-system" }
+        ]
+      }
+    }
 
   # ports needed by example-microservice-for-consul-testing
   # this is wide open for the demo, when going to prod lock this down!
@@ -105,14 +105,6 @@ module "base_eks" {
       to_port     = 0
       protocol    = "-1"
       type        = "ingress"
-      cidr_blocks = ["0.0.0.0/0"]
-    }
-
-    all_egress = {
-      from_port   = 0
-      to_port     = 0
-      protocol    = "-1"
-      type        = "egress"
       cidr_blocks = ["0.0.0.0/0"]
     }
   }
