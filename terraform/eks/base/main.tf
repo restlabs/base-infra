@@ -148,6 +148,8 @@ module "base_eks" {
       "karpenter.sh/discovery"                      = local.cluster_name
     }
   )
+
+  depends_on = [module.vpc]
 }
 
 module "ebs_csi_irsa_role" {
