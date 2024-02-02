@@ -20,12 +20,14 @@ locals {
     server = {
       replicas        = 3
       bootstrapExpect = 3
-#      extraConfig = {
-#          log_level = "TRACE"
-#      }
-#      storage = {
-#        size = "10Gi"
-#      }
+      extraConfig     = <<EOF
+        {
+          log_level = "TRACE"
+        }
+      EOF
+      #      storage = {
+      #        size = "10Gi"
+      #      }
     }
 
     connectInject = {
