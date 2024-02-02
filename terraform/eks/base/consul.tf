@@ -1,7 +1,10 @@
 locals {
-  consul_name    = "consul"
-  consul_repo    = "hashicorp/${local.consul_name}"
-  consul_version = "1.14.8"
+  consul_name          = "consul"
+  consul_chart_name    = "hashicorp/${local.consul_name}"
+  consul_repo          = "https://helm.releases.hashicorp.com"
+  consul_chart_version = "1.3.2"
+  consul_version       = "1.14.8"
+  timeout              = 1800
 
   values_map = {
     "global" = {
@@ -54,7 +57,7 @@ locals {
 module "argo" {
   source        = "../../modules/helm-install"
   chart         = local.consul_name
-  chart_version = "1.0.0"
+  chart_version = local.consul_chart_version
   namespace     = local.consul_name
   release_name  = local.consul_name
   repository    = local.consul_repo
