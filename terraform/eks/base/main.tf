@@ -82,18 +82,18 @@ module "base_eks" {
   }
 
   # creates fargate profiles
-#  fargate_profiles = {
-#    karpenter = {
-#      selectors = [
-#        { namespace = "karpenter" }
-#      ]
-#    }
-#    kube-system = {
-#      selectors = [
-#        { namespace = "kube-system" }
-#      ]
-#    }
-#  }
+  #  fargate_profiles = {
+  #    karpenter = {
+  #      selectors = [
+  #        { namespace = "karpenter" }
+  #      ]
+  #    }
+  #    kube-system = {
+  #      selectors = [
+  #        { namespace = "kube-system" }
+  #      ]
+  #    }
+  #  }
 
   # ports needed by example-microservice-for-consul-testing
   # this is wide open for the demo, when going to prod lock this down!
