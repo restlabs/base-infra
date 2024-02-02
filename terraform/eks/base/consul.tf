@@ -35,7 +35,7 @@ locals {
     }
 
     server = {
-      replicas        = 3
+      replicas        = 2
       bootstrapExpect = 3
       #      extraConfig     = <<EOF
       #        {
