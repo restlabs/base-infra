@@ -3,7 +3,7 @@ locals {
   azure_application_id         = data.aws_ssm_parameter.azure_application_id.value
   azure_tenant_id              = data.aws_ssm_parameter.azure_tenant_id.value
   capacity_type                = "SPOT"
-  cluster_name                 = "base-infra-eks-${var.region}"
+  cluster_name                 = "base-eks-${var.region}"
   create_iam_role              = false
   eks_version                  = 1.28
   disk_size                    = 50
