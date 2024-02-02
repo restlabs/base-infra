@@ -4,7 +4,8 @@ locals {
   consul_repo          = "https://helm.releases.hashicorp.com"
   consul_chart_version = "1.3.2"
   consul_version       = "1.14.8"
-  timeout              = 900
+  release_name         = "consul"
+  timeout              = 1000
 
   values_map = {
     global = {
@@ -51,6 +52,9 @@ locals {
         type    = "LoadBalancer"
       }
     }
+
+    global.name       = "eks-consul"
+    global.datacenter = "eks"
   }
 }
 
@@ -59,7 +63,7 @@ module "consul" {
   chart         = local.consul_name
   chart_version = local.consul_chart_version
   namespace     = local.consul_name
-  release_name  = local.consul_name
+  release_name  = local.release_name
   repository    = local.consul_repo
   timeout       = local.timeout
   values_map    = local.values_map
