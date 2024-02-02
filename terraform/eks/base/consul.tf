@@ -5,7 +5,7 @@ locals {
   consul_chart_version = "1.3.2"
   consul_version       = "1.14.8"
   release_name         = "consul"
-  timeout              = 1000
+  timeout              = 800
 
   values_map = {
     connectInject = {
