@@ -4,7 +4,7 @@ locals {
   consul_repo          = "https://helm.releases.hashicorp.com"
   consul_chart_version = "1.3.2"
   consul_version       = "1.14.8"
-  timeout              = 1800
+  timeout              = 900
 
   values_map = {
     global = {
