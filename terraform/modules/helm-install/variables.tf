@@ -29,6 +29,10 @@ variable "repository" {
   type        = string
 }
 
+variable "timeout" {
+  description = "timout for the helm install"
+  type        = number
+}
 
 variable "values_map" {
   description = "values to be passed into the chart"

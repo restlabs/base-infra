@@ -7,27 +7,25 @@ locals {
   timeout              = 1800
 
   values_map = {
-    "global" = {
-      "image" = "${local.consul_repo}:${local.consul_version}"
-      "peering" = {
-        "enabled" = true
+    global = {
+      image = "${local.consul_chart_name}:${local.consul_version}"
+      peering = {
+        enabled = true
       }
       tls = {
         enabled = true
       }
     }
 
-    "server" = {
-      "replicas"        = 3
-      "bootstrapExpect" = 3
-      "extraConfig" = {
-        "connect" = {
-          "log_level" = "TRACE"
-        }
-      }
-      "storage" = {
-        "size" = "10Gi"
-      }
+    server = {
+      replicas        = 3
+      bootstrapExpect = 3
+#      extraConfig = {
+#          log_level = "TRACE"
+#      }
+#      storage = {
+#        size = "10Gi"
+#      }
     }
 
     connectInject = {
@@ -54,13 +52,14 @@ locals {
   }
 }
 
-module "argo" {
+module "consul" {
   source        = "../../modules/helm-install"
   chart         = local.consul_name
   chart_version = local.consul_chart_version
   namespace     = local.consul_name
   release_name  = local.consul_name
   repository    = local.consul_repo
+  timeout       = local.timeout
   values_map    = local.values_map
 
   depends_on = [module.base_eks]
