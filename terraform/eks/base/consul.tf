@@ -8,8 +8,19 @@ locals {
   timeout              = 1000
 
   values_map = {
+    connectInject = {
+      enabled = true
+      default = true
+    }
+
+    controller = {
+      enabled = true
+    }
+
     global = {
-      image = "${local.consul_chart_name}:${local.consul_version}"
+      datacenter = "eks"
+      image      = "${local.consul_chart_name}:${local.consul_version}"
+      name       = "eks-consul"
       peering = {
         enabled = true
       }
@@ -18,31 +29,22 @@ locals {
       }
     }
 
-    server = {
-      replicas        = 3
-      bootstrapExpect = 3
-      extraConfig     = <<EOF
-        {
-          log_level = "TRACE"
-        }
-      EOF
-      #      storage = {
-      #        size = "10Gi"
-      #      }
-    }
-
-    connectInject = {
-      enabled = true
-      default = true
-    }
-
     meshGateway = {
       enabled  = true
       replicas = 1
     }
 
-    controller = {
-      enabled = true
+    server = {
+      replicas        = 3
+      bootstrapExpect = 3
+      #      extraConfig     = <<EOF
+      #        {
+      #          log_level = "TRACE"
+      #        }
+      #      EOF
+      #      storage = {
+      #        size = "10Gi"
+      #      }
     }
 
     ui = {
@@ -52,9 +54,6 @@ locals {
         type    = "LoadBalancer"
       }
     }
-
-    global.name       = "eks-consul"
-    global.datacenter = "eks"
   }
 }
 
