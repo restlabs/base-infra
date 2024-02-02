@@ -37,11 +37,11 @@ locals {
     server = {
       replicas        = 2
       bootstrapExpect = 3
-      #      extraConfig     = <<EOF
-      #        {
-      #          log_level = "TRACE"
-      #        }
-      #      EOF
+      extraConfig     = <<EOF
+        {
+        log_level = "TRACE"
+        }
+      EOF
       #      storage = {
       #        size = "10Gi"
       #      }
