@@ -2,7 +2,7 @@ locals {
   consul_name          = "consul"
   consul_chart_name    = "hashicorp/${local.consul_name}"
   consul_repo          = "https://helm.releases.hashicorp.com"
-  consul_chart_version = "1.3.2"
+  consul_chart_version = "1.0.0"
   consul_version       = "1.14.8"
   release_name         = "consul"
   timeout              = 800
