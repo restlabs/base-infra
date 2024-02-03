@@ -15,6 +15,6 @@ resource "aws_ssm_parameter" "ssm_param_output" {
   value       = each.value.value
 
   lifecycle {
-    prevent_destroy = false
+    ignore_changes = [value]
   }
 }
