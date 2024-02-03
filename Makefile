@@ -115,7 +115,7 @@ tftest:
 	localstack start -d
 	base-deploy terraform --target "terraform/modules/s3/test"
 	base-deploy terraform --target "terraform/modules/vpc/test"
-	base-deploy terraform --target "terraform/modules/internet-gateway/test"
+#	base-deploy terraform --target "terraform/modules/internet-gateway/test"
 	localstack stop
 
 

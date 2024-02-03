@@ -37,11 +37,11 @@ locals {
     server = {
       replicas        = 2
       bootstrapExpect = 3
-#      extraConfig     = <<EOF
-#        {
-#        log_level = "TRACE"
-#        }
-#      EOF
+      #      extraConfig     = <<EOF
+      #        {
+      #        log_level = "TRACE"
+      #        }
+      #      EOF
       #      storage = {
       #        size = "10Gi"
       #      }
@@ -58,7 +58,7 @@ locals {
 }
 
 module "consul" {
-  source        = "../../modules/helm-install"
+  source        = "../../../modules/helm-install"
   chart         = local.consul_name
   chart_version = local.consul_chart_version
   namespace     = local.consul_name
