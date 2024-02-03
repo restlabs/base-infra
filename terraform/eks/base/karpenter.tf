@@ -25,7 +25,7 @@ resource "helm_release" "karpenter" {
   repository_password = data.aws_ecrpublic_authorization_token.token.password
   chart               = "karpenter"
   version             = "v0.32.6"
-  timeout             = 800
+  timeout             = 500
 
   values = [
     <<-EOT
