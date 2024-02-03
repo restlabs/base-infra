@@ -9,12 +9,12 @@ module "ssm_param" {
     {
       name        = "/vpc/base/id"
       value       = module.test_base_vpc.vpc_id
-      description = "Base Infra VPC ID"
+      description = "Test Base Infra VPC ID"
     },
     {
       name        = "/vpc/base/arn"
       value       = module.test_base_vpc.vpc_arn
-      description = "Base Infra VPC arn"
+      description = "Test Base Infra VPC arn"
     }
   ]
 
