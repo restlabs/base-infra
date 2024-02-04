@@ -66,4 +66,6 @@ module "consul" {
   repository    = local.consul_repo
   timeout       = local.timeout
   values_map    = local.values_map
+
+  depends_on = [module.base_eks]
 }
