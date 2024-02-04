@@ -62,6 +62,8 @@ resource "kubectl_manifest" "karpenter_node_class" {
         karpenter.sh/discovery: ${module.base_eks.cluster_name}
         Name: ${local.base_tags.project}-eks-node
   YAML
+
+  depends_on = [helm_release.karpenter]
 }
 
 resource "kubectl_manifest" "karpenter_node_pool" {

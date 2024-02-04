@@ -1,3 +1,6 @@
+# THIS NEEDS TO BE DEPLOYED AFTER THE CLUSTER IS CREATED!
+# I Separated Consul to it's own folder because it's causing issues with updating and destroying releases in helm
+
 locals {
   consul_name          = "consul"
   consul_chart_name    = "hashicorp/${local.consul_name}"
@@ -37,11 +40,11 @@ locals {
     server = {
       replicas        = 2
       bootstrapExpect = 2
-#      extraConfig     = <<EOF
-#        {
-#          log_level = "TRACE"
-#        }
-#      EOF
+      #      extraConfig     = <<EOF
+      #        {
+      #          log_level = "TRACE"
+      #        }
+      #      EOF
       #      storage = {
       #        size = "10Gi"
       #      }
@@ -58,7 +61,7 @@ locals {
 }
 
 module "consul" {
-  source        = "../../modules/helm-install"
+  source        = "../../../modules/helm-install"
   chart         = local.consul_name
   chart_version = local.consul_chart_version
   namespace     = local.consul_name
@@ -66,7 +69,4 @@ module "consul" {
   repository    = local.consul_repo
   timeout       = local.timeout
   values_map    = local.values_map
-
-  # karpenter needs to be installed before deploying consul
-  depends_on = [kubectl_manifest.karpenter_node_pool]
 }

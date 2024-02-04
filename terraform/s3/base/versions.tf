@@ -14,10 +14,6 @@ module "terraform_aws_version" {
   source = "../../modules/terraform-aws-version"
 }
 
-terraform {
-  backend "s3" {}
-}
-
 provider "aws" {
   region = var.region
 
