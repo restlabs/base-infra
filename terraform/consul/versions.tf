@@ -6,6 +6,10 @@ module "helm-version" {
   source = "../modules/helm-version"
 }
 
+terraform {
+  backend "s3" {}
+}
+
 provider "aws" {
   region = var.region
 }

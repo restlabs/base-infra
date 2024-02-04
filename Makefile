@@ -64,7 +64,7 @@ deploy-jenkins-example:
 
 .PHONY: deploy-consul
 deploy-consul:
-	base-deploy terraform --target "terraform/helm/consul" $(DESTROY)
+	base-deploy terraform --target "terraform/consul" $(DESTROY)
 
 .PHONY: destroy-consul
 destroy-consul:
