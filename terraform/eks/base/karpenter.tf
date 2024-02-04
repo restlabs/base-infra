@@ -39,6 +39,8 @@ resource "helm_release" "karpenter" {
         eks.amazonaws.com/role-arn: ${module.karpenter.irsa_arn}
     EOT
   ]
+
+  depends_on = [module.base_eks]
 }
 
 resource "kubectl_manifest" "karpenter_node_class" {
