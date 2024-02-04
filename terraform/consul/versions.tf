@@ -1,9 +1,9 @@
 module "terraform_aws_version" {
-  source = "../../../modules/terraform-aws-version"
+  source = "../modules/terraform-aws-version"
 }
 
 module "helm-version" {
-  source = "../../../modules/helm-version"
+  source = "../modules/helm-version"
 }
 
 provider "aws" {

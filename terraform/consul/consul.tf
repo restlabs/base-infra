@@ -61,7 +61,7 @@ locals {
 }
 
 module "consul" {
-  source        = "../../../modules/helm-install"
+  source        = "../modules/helm-install"
   chart         = local.consul_name
   chart_version = local.consul_chart_version
   namespace     = local.consul_name

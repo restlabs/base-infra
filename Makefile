@@ -62,6 +62,14 @@ deploy-jenkins-example:
 	base-deploy terraform --target "terraform/kubernetes/manifests/jenkins-example"	$(DESTROY)
 
 
+.PHONY: deploy-consul
+deploy-consul:
+	base-deploy terraform --target "terraform/helm/consul" $(DESTROY)
+
+.PHONY: destroy-consul
+destroy-consul:
+	make deploy-consul DESTROY=--destroy
+
 .PHONY: deploy-eks
 deploy-eks:
 	base-deploy terraform --target "terraform/eks/base" $(DESTROY)
