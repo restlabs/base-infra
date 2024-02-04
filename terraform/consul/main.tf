@@ -1,4 +1,4 @@
-# THIS NEEDS TO BE DEPLOYED AFTER THE CLUSTER IS CREATED!
+# THIS NEEDS TO BE DEPLOYED AFTER THE EKS CLUSTER IS CREATED!
 # I Separated Consul to it's own folder because it's causing issues with updating and destroying releases in helm
 
 locals {
