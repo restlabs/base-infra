@@ -9,12 +9,9 @@ resource "aws_ssm_parameter" "ssm_param_output" {
   }
 
   description = each.value.description
+  overwrite   = true
   name        = each.key
   tags        = var.tags
   type        = "String"
   value       = each.value.value
-
-  lifecycle {
-    prevent_destroy = false
-  }
 }

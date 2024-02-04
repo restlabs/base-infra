@@ -1,0 +1,9 @@
+apiVersion: example-microservice-for-consul-testing.hashicorp.com/v1alpha1
+kind: ExportedServices
+metadata:
+  name: default 
+spec:
+  services:
+    - name: "shippingservice" 
+      consumers:
+      - peer: eks 

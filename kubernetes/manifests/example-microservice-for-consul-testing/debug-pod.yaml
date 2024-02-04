@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: curl-debug-pod
+spec:
+  containers:
+  - name: curl-container
+    image: curlimages/curl:latest  # Use the official curl image
+    command: ["sleep", "3600"]    # Keep the pod running for debugging

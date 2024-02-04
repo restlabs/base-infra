@@ -1,0 +1,10 @@
+apiVersion: example-microservice-for-consul-testing.hashicorp.com/v1alpha1
+kind: ServiceResolver
+metadata:
+  name: shippingservice
+spec:
+  connectTimeout: 15s
+  failover:
+    '*':
+      targets:
+        - peer: 'lke'

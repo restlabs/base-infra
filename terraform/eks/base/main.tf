@@ -1,19 +1,19 @@
 locals {
-  ami_type                   = "AL2_x86_64"
-  azure_application_id       = data.aws_ssm_parameter.azure_application_id.value
-  azure_tenant_id            = data.aws_ssm_parameter.azure_tenant_id.value
-  capacity_type              = "SPOT"
-  cluster_name               = "${var.owner}-eks-${var.region}"
-  create_iam_role            = false
-  eks_version                = 1.28
-  disk_size                  = 50
-  desired_size               = 1
-  max_size                   = 3
-  min_size                   = 1
-  instance_types             = ["t3.small"]
-  is_private_access_enabled  = local.base_tags.environment == "test" || local.base_tags.environment == "dev" ? false : true
-  is_public_access_enabled   = local.base_tags.environment == "test" || local.base_tags.environment == "dev" ? true : false
-  use_custom_launch_template = true
+  ami_type                     = "AL2_x86_64"
+  azure_application_id         = data.aws_ssm_parameter.azure_application_id.value
+  azure_tenant_id              = data.aws_ssm_parameter.azure_tenant_id.value
+  capacity_type                = "SPOT"
+  cluster_name                 = "base-eks-${var.region}"
+  create_iam_role              = false
+  eks_version                  = 1.28
+  disk_size                    = 50
+  desired_size                 = 1
+  max_size                     = 3
+  min_size                     = 1
+  managed_nodes_instance_types = ["t3.medium"]
+  is_private_access_enabled    = local.base_tags.environment == "test" || local.base_tags.environment == "dev" ? false : true
+  is_public_access_enabled     = local.base_tags.environment == "test" || local.base_tags.environment == "dev" ? true : false
+  use_custom_launch_template   = true
 }
 
 module "base_eks" {
@@ -44,9 +44,14 @@ module "base_eks" {
   ]
 
   cluster_addons = {
-    kube-proxy = {}
-    vpc-cni    = {}
+    kube-proxy = {
+      most_recent = true
+    }
+    vpc-cni = {
+      most_recent = true
+    }
     coredns = {
+      most_recent = true
       configuration_values = jsonencode({
         computeType = "Fargate"
         # Ensure that we fully utilize the minimum amount of resources that are supplied by
@@ -71,55 +76,97 @@ module "base_eks" {
         }
       })
     }
+    aws-ebs-csi-driver = {
+      most_recent = true
+    }
   }
 
   # creates fargate profiles
-  fargate_profiles = {
-    karpenter = {
-      selectors = [
-        { namespace = "karpenter" }
-      ]
-    }
-    kube-system = {
-      selectors = [
-        { namespace = "kube-system" }
-      ]
+  #  fargate_profiles = {
+  #    karpenter = {
+  #      selectors = [
+  #        { namespace = "karpenter" }
+  #      ]
+  #    }
+  #    kube-system = {
+  #      selectors = [
+  #        { namespace = "kube-system" }
+  #      ]
+  #    }
+  #  }
+
+  # ports needed by example-microservice-for-consul-testing
+  # this is wide open for the demo, when going to prod lock this down!
+  # Use the link below to see what ports are needed
+  # https://developer.hashicorp.com/consul/docs/install/ports
+  node_security_group_additional_rules = {
+    all_ingress = {
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      type        = "ingress"
+      cidr_blocks = ["0.0.0.0/0"]
     }
   }
 
   # adds azure ad as an identity provider
   # this will allow users to use kubectl with their ad credentials
-  cluster_identity_providers = {
-    azure-ad = {
-      client_id    = local.azure_application_id
-      issuer_url   = "https://sts.windows.net/${local.azure_tenant_id}/"
-      groups_claim = "groups"
+  #  cluster_identity_providers = {
+  #    azure-ad = {
+  #      client_id    = local.azure_application_id
+  #      issuer_url   = "https://sts.windows.net/${local.azure_tenant_id}/"
+  #      groups_claim = "groups"
+  #    }
+  #  }
+
+  eks_managed_node_groups = {
+    pafable-main = {
+      ami_type                   = local.ami_type
+      capacity_type              = local.capacity_type
+      create_iam_role            = local.create_iam_role
+      disk_size                  = local.disk_size
+      desired_size               = local.desired_size
+      iam_role_arn               = aws_iam_role.nodegroup_role.arn
+      instance_types             = local.managed_nodes_instance_types
+      min_size                   = local.min_size
+      max_size                   = local.max_size
+      use_custom_launch_template = local.use_custom_launch_template
+      launch_template_tags = {
+        Name = "${local.base_tags.project}-eks-default-node"
+      }
+      # IAM policy needed by example-microservice-for-consul-testing for EBS storage creation
+      iam_role_additional_policies = {
+        AmazonEBSCSIDriverPolicy = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+      }
     }
   }
 
-#  eks_managed_node_groups = {
-#    pafable-main = {
-#      ami_type                   = local.ami_type
-#      capacity_type              = local.capacity_type
-#      create_iam_role            = local.create_iam_role
-#      disk_size                  = local.disk_size
-#      desired_size               = local.desired_size
-#      iam_role_arn               = aws_iam_role.nodegroup_role.arn
-#      instance_types             = local.instance_types
-#      min_size                   = local.min_size
-#      max_size                   = local.max_size
-#      use_custom_launch_template = local.use_custom_launch_template
-#      launch_template_tags = {
-#        Name = "${local.base_tags.project}-eks-default-node"
-#      }
-#    }
-#  }
-
   tags = merge(
-        local.base_tags,
-        {
-          "kubernetes.io/cluster/${local.cluster_name}" = "shared"
-          "karpenter.sh/discovery"                      = local.cluster_name
-        }
-      )
+    local.base_tags,
+    {
+      "kubernetes.io/cluster/${local.cluster_name}" = "shared"
+      "karpenter.sh/discovery"                      = local.cluster_name
+    }
+  )
+}
+
+module "ebs_csi_irsa_role" {
+  source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+
+  role_name             = "ebs-csi"
+  attach_ebs_csi_policy = true
+
+  oidc_providers = {
+    main = {
+      provider_arn               = module.base_eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:ebs-csi-controller-sa"]
+    }
+  }
+}
+
+# for some reason there is a bug where this policy is not attached to the nodegroup role
+resource "aws_iam_policy_attachment" "attach-ebs-csi-policy" {
+  name       = "AmazonEBSCSIDriverPolicy"
+  roles      = ["${module.base_eks.cluster_name}-nodegroup-role"]
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
 }

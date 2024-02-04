@@ -12,6 +12,7 @@ module "karpenter" {
 
   iam_role_additional_policies = {
     AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+    AmazonEBSCSIDriverPolicy     = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
   }
 }
 
@@ -25,6 +26,7 @@ resource "helm_release" "karpenter" {
   repository_password = data.aws_ecrpublic_authorization_token.token.password
   chart               = "karpenter"
   version             = "v0.32.6"
+  timeout             = 500
 
   values = [
     <<-EOT
@@ -37,6 +39,8 @@ resource "helm_release" "karpenter" {
         eks.amazonaws.com/role-arn: ${module.karpenter.irsa_arn}
     EOT
   ]
+
+  depends_on = [module.base_eks]
 }
 
 resource "kubectl_manifest" "karpenter_node_class" {
@@ -77,7 +81,7 @@ resource "kubectl_manifest" "karpenter_node_pool" {
               values: ["t", "c", "m", "r"]
             - key: "karpenter.k8s.aws/instance-cpu"
               operator: In
-              values: ["2", "4", "8", "16384", "32768", "65536"]
+              values: ["2", "4", "8", "16", "32", "64"]
             - key: "karpenter.k8s.aws/instance-memory"
               operator: In
               values: ["2048", "4096", "8192", "32768"]
@@ -100,32 +104,34 @@ resource "kubectl_manifest" "karpenter_node_pool" {
 }
 
 # Test deployment
-resource "kubectl_manifest" "karpenter_example_deployment" {
-  yaml_body = <<-YAML
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      name: inflate
-    spec:
-      replicas: 0
-      selector:
-        matchLabels:
-          app: inflate
-      template:
-        metadata:
-          labels:
-            app: inflate
-        spec:
-          terminationGracePeriodSeconds: 0
-          containers:
-            - name: inflate
-              image: public.ecr.aws/eks-distro/kubernetes/pause:3.7
-              resources:
-                requests:
-                  cpu: 1
-  YAML
-
-  depends_on = [
-    helm_release.karpenter
-  ]
-}
+# this will create an example deployment called inflate
+# this deployment can be used to test karpeneter's auto scaling capabilities
+#resource "kubectl_manifest" "karpenter_example_deployment" {
+#  yaml_body = <<-YAML
+#    apiVersion: apps/v1
+#    kind: Deployment
+#    metadata:
+#      name: inflate
+#    spec:
+#      replicas: 0
+#      selector:
+#        matchLabels:
+#          app: inflate
+#      template:
+#        metadata:
+#          labels:
+#            app: inflate
+#        spec:
+#          terminationGracePeriodSeconds: 0
+#          containers:
+#            - name: inflate
+#              image: public.ecr.aws/eks-distro/kubernetes/pause:3.7
+#              resources:
+#                requests:
+#                  cpu: 1
+#  YAML
+#
+#  depends_on = [
+#    helm_release.karpenter
+#  ]
+#}

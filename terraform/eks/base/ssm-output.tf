@@ -35,6 +35,16 @@ module "ssm_param" {
       name        = "/eks/iam/role/nodegroup/name"
       value       = aws_iam_role.nodegroup_role.name
       description = "EKS Nodegroup role name"
+    },
+    {
+      name        = "/eks/vpc/base/name"
+      value       = module.vpc.name
+      description = "VPC name for base EKS"
+    },
+    {
+      name        = "/eks/vpc/base/arn"
+      value       = module.vpc.vpc_arn
+      description = "VPC arn for base EKS"
     }
   ]
 

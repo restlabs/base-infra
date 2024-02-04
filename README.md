@@ -74,7 +74,7 @@ You can also use the aws-setup-params.sh script to generate these SSM parameters
 
 
 ## Instructions:
-### Building the project
+### Building the base-infra-deployer
 1. _Install dependencies_
 
 This will automatically install python libraries needed by base-infra-deployer and create the `base-deploy` CLI command.
