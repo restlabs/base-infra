@@ -67,5 +67,6 @@ module "consul" {
   timeout       = local.timeout
   values_map    = local.values_map
 
-  depends_on = [module.base_eks]
+  # karpenter needs to be installed before deploying consul
+  depends_on = [kubectl_manifest.karpenter_node_pool]
 }
