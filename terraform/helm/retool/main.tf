@@ -1,20 +1,15 @@
 locals {
   chart_name    = "retool"
-  chart_repo    = "retool url"
-  chart_version = "0.1.0"
+  chart_repo    = "https://charts.retool.com/"
+  chart_version = "6.0.13"
   timeout       = 500
 
   values_map = {
-    "retool" = {
-      "config" = {
-        "license" = {
-          "key" = "license key"
-        }
-      }
+    "config" = {
+      "licenseKey" = data.aws_ssm_parameter.retool_license_key.value
     }
   }
 }
-
 
 module "retool" {
   source        = "../../modules/helm-install"
