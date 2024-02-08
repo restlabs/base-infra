@@ -7,7 +7,6 @@ locals {
   consul_repo          = "https://helm.releases.hashicorp.com"
   consul_chart_version = "1.0.0"
   consul_version       = "1.14.8"
-  release_name         = "consul"
   timeout              = 500
 
   values_map = {
@@ -65,7 +64,7 @@ module "consul" {
   chart         = local.consul_name
   chart_version = local.consul_chart_version
   namespace     = local.consul_name
-  release_name  = local.release_name
+  release_name  = local.consul_name
   repository    = local.consul_repo
   timeout       = local.timeout
   values_map    = local.values_map
