@@ -1,23 +1,13 @@
 locals {
-  function_name = "hello-world-lambda"
+  architecture  = "x86_64"
   code_dir      = "../../../aws/lambda/hello-world"
-}
-
-data "aws_iam_policy_document" "assume_role" {
-  statement {
-    effect = "Allow"
-
-    principals {
-      type        = "Service"
-      identifiers = ["lambda.amazonaws.com"]
-    }
-
-    actions = ["sts:AssumeRole"]
-  }
+  function_name = "hello-world-lambda"
+  handler       = "main"
+  runtime       = "provided.al2023"
 }
 
 resource "aws_iam_role" "iam_for_lambda" {
-  name               = "hello-world-lambda-role"
+  name               = "${local.function_name}-role"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
@@ -32,12 +22,13 @@ resource "null_resource" "package_file" {
 }
 
 resource "aws_lambda_function" "tf_lambda" {
-  architecture     = ["x86_64"]
+  architecture     = [local.architecture]
+  description      = "Hello World Lambda"
   filename         = "${local.code_dir}/main.zip"
   function_name    = local.function_name
-  handler          = "main"
+  handler          = local.handler
   role             = aws_iam_role.iam_for_lambda.arn
-  runtime          = "go1.x"
+  runtime          = local.runtime
   source_code_hash = data.archive_file.go_main.output_base64sha256
 
   environment {
@@ -45,14 +36,6 @@ resource "aws_lambda_function" "tf_lambda" {
       foo = "bar"
     }
   }
-
-  depends_on = [null_resource.package_file]
-}
-
-data "archive_file" "go_main" {
-  type        = "zip"
-  source_file = "${local.code_dir}/main"
-  output_path = "${local.code_dir}/main.zip"
 
   depends_on = [null_resource.package_file]
 }
