@@ -32,6 +32,7 @@ resource "null_resource" "package_file" {
 }
 
 resource "aws_lambda_function" "tf_lambda" {
+  architecture     = ["x86_64"]
   filename         = "${local.code_dir}/main.zip"
   function_name    = local.function_name
   handler          = "main"
