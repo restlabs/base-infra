@@ -1,6 +1,9 @@
 locals {
+  architecture = "x86_64"
+  code_dir    = "../../../aws/lambda/hello-world"
   function_name = "hello-world-lambda"
-  code_dir      = "../../../aws/lambda/hello-world"
+  handler = "main"
+  runtime  = "provided.al2023"
 }
 
 data "aws_iam_policy_document" "assume_role" {
@@ -32,13 +35,13 @@ resource "null_resource" "package_file" {
 }
 
 resource "aws_lambda_function" "tf_lambda" {
-  architecture     = ["x86_64"]
-  description = "Hello World Lambda"
+  architecture     = [local.architecture]
+  description      = "Hello World Lambda"
   filename         = "${local.code_dir}/main.zip"
   function_name    = local.function_name
-  handler          = "main"
+  handler          = local.handler
   role             = aws_iam_role.iam_for_lambda.arn
-  runtime          = "provided.al2023"
+  runtime          = local.runtime
   source_code_hash = data.archive_file.go_main.output_base64sha256
 
   environment {
