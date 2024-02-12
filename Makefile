@@ -93,6 +93,13 @@ deploy-s3:
 deploy-vpc:
 	base-deploy terraform --target "terraform/vpc/base" $(DESTROY)
 
+.PHONY: deploy-hello-world-lambda
+deploy-hello-world-lambda:
+	base-deploy terraform --target "terraform/lambda/hello-world" $(DESTROY)
+
+.PHONY: destroy-hello-world-lambda
+destroy-hello-world-lambda:
+	make deploy-hello-world-lambda DESTROY=--destroy
 
 .PHONY: deployer-test
 deployer-test:
