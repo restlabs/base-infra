@@ -33,11 +33,12 @@ resource "null_resource" "package_file" {
 
 resource "aws_lambda_function" "tf_lambda" {
   architecture     = ["x86_64"]
+  description = "Hello World Lambda"
   filename         = "${local.code_dir}/main.zip"
   function_name    = local.function_name
   handler          = "main"
   role             = aws_iam_role.iam_for_lambda.arn
-  runtime          = "go1.x"
+  runtime          = "provided.al2023"
   source_code_hash = data.archive_file.go_main.output_base64sha256
 
   environment {
