@@ -6,21 +6,8 @@ locals {
   runtime       = "provided.al2023"
 }
 
-data "aws_iam_policy_document" "assume_role" {
-  statement {
-    effect = "Allow"
-
-    principals {
-      type        = "Service"
-      identifiers = ["lambda.amazonaws.com"]
-    }
-
-    actions = ["sts:AssumeRole"]
-  }
-}
-
 resource "aws_iam_role" "iam_for_lambda" {
-  name               = "hello-world-lambda-role"
+  name               = "${local.function_name}-role"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
@@ -49,14 +36,6 @@ resource "aws_lambda_function" "tf_lambda" {
       foo = "bar"
     }
   }
-
-  depends_on = [null_resource.package_file]
-}
-
-data "archive_file" "go_main" {
-  type        = "zip"
-  source_file = "${local.code_dir}/main"
-  output_path = "${local.code_dir}/main.zip"
 
   depends_on = [null_resource.package_file]
 }
