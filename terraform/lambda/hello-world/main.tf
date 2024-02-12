@@ -51,7 +51,7 @@ resource "aws_lambda_function" "tf_lambda" {
 }
 
 data "archive_file" "go_main" {
-  type        = "zip"
+  type   = "zip"
   source_file = "${local.code_dir}/main"
   output_path = "${local.code_dir}/main.zip"
 
