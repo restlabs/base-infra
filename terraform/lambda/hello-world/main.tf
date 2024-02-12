@@ -32,14 +32,12 @@ resource "null_resource" "package_file" {
 }
 
 resource "aws_lambda_function" "tf_lambda" {
-  filename      = "${local.code_dir}/main.zip"
-  function_name = local.function_name
-  role          = aws_iam_role.iam_for_lambda.arn
-  handler       = "main"
-
+  filename         = "${local.code_dir}/main.zip"
+  function_name    = local.function_name
+  handler          = "main"
+  role             = aws_iam_role.iam_for_lambda.arn
+  runtime          = "go1.x"
   source_code_hash = data.archive_file.go_main.output_base64sha256
-
-  runtime = "go1.x"
 
   environment {
     variables = {
@@ -51,7 +49,7 @@ resource "aws_lambda_function" "tf_lambda" {
 }
 
 data "archive_file" "go_main" {
-  type   = "zip"
+  type        = "zip"
   source_file = "${local.code_dir}/main"
   output_path = "${local.code_dir}/main.zip"
 
