@@ -1,9 +1,9 @@
 locals {
-  architecture = "x86_64"
-  code_dir    = "../../../aws/lambda/hello-world"
+  architecture  = "x86_64"
+  code_dir      = "../../../aws/lambda/hello-world"
   function_name = "hello-world-lambda"
-  handler = "main"
-  runtime  = "provided.al2023"
+  handler       = "main"
+  runtime       = "provided.al2023"
 }
 
 data "aws_iam_policy_document" "assume_role" {
