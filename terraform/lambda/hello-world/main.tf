@@ -1,7 +1,8 @@
 locals {
-  architecture  = "arm64"
+  architecture  = "arm64" # use either amd64 or arm64
   code_dir      = "../../../aws/lambda/hello-world"
   function_name = "hello-world-lambda"
+  cpu_arch       = local.architecture == "amd64" ? "x86_64" : "arm64"
   handler       = "bootstrap" # handler function needs to be named bootstrap
   runtime       = "provided.al2023"
 }
@@ -27,14 +28,14 @@ resource "null_resource" "package_file" {
   }
 
   provisioner "local-exec" {
-    command = "cd ${local.code_dir} && GOOS=linux GOARCH=arm64 go build -o ${local.handler}"
+    command = "cd ${local.code_dir} && GOOS=linux GOARCH=${local.architecture} go build -o ${local.handler}"
   }
 
   depends_on = [null_resource.delete_go_files]
 }
 
 resource "aws_lambda_function" "tf_lambda" {
-  architectures    = [local.architecture]
+  architectures    = [local.cpu_arch]
   description      = "Hello World Lambda"
   filename         = "${local.code_dir}/${local.handler}.zip"
   function_name    = local.function_name
