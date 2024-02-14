@@ -2,7 +2,7 @@ locals {
   architecture  = "arm64" # use either amd64 or arm64
   code_dir      = "../../../aws/lambda/hello-world"
   function_name = "hello-world-lambda"
-  cpu_arch       = local.architecture == "amd64" ? "x86_64" : "arm64"
+  cpu_arch      = local.architecture == "amd64" ? "x86_64" : "arm64"
   handler       = "bootstrap" # handler function needs to be named bootstrap
   runtime       = "provided.al2023"
 }
