@@ -7,7 +7,7 @@ locals {
 }
 
 resource "aws_iam_role" "iam_for_lambda" {
-  name             = "${local.function_name}-role"
+  name               = "${local.function_name}-role"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
@@ -34,7 +34,7 @@ resource "null_resource" "package_file" {
 }
 
 resource "aws_lambda_function" "tf_lambda" {
-  architectures     = [local.architecture]
+  architectures    = [local.architecture]
   description      = "Hello World Lambda"
   filename         = "${local.code_dir}/${local.handler}.zip"
   function_name    = local.function_name
