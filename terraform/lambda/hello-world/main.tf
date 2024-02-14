@@ -1,8 +1,9 @@
 locals {
-  architecture  = "x86_64"
+  architecture  = "arm64" # use either amd64 or arm64
   code_dir      = "../../../aws/lambda/hello-world"
   function_name = "hello-world-lambda"
-  handler       = "main"
+  cpu_arch      = local.architecture == "amd64" ? "x86_64" : "arm64"
+  handler       = "bootstrap" # handler function needs to be named bootstrap
   runtime       = "provided.al2023"
 }
 
@@ -11,20 +12,32 @@ resource "aws_iam_role" "iam_for_lambda" {
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
+resource "null_resource" "delete_go_files" {
+  triggers = {
+    always_run = timestamp()
+  }
+
+  provisioner "local-exec" {
+    command = "rm -rf ${local.code_dir}/${local.handler} && rm -rf ${local.code_dir}/${local.handler}.zip"
+  }
+}
+
 resource "null_resource" "package_file" {
   triggers = {
     always_run = timestamp()
   }
 
   provisioner "local-exec" {
-    command = "cd ${local.code_dir} && rm -rf main && rm -rf main.zip && GOOS=linux GOARCH=amd64 go build -o main"
+    command = "cd ${local.code_dir} && GOOS=linux GOARCH=${local.architecture} go build -o ${local.handler}"
   }
+
+  depends_on = [null_resource.delete_go_files]
 }
 
 resource "aws_lambda_function" "tf_lambda" {
-  architecture     = [local.architecture]
+  architectures    = [local.cpu_arch]
   description      = "Hello World Lambda"
-  filename         = "${local.code_dir}/main.zip"
+  filename         = "${local.code_dir}/${local.handler}.zip"
   function_name    = local.function_name
   handler          = local.handler
   role             = aws_iam_role.iam_for_lambda.arn
